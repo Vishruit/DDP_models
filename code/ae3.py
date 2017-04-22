@@ -12,7 +12,7 @@ tf.device('/gpu:0')
 
 # https://keras.io/getting-started/faq/#how-can-i-run-keras-on-gpu
 # model.save('my_model.h5')  # creates a HDF5 file 'my_model.h5'
-# del model  # deletes the existing model
+# del model  # deletes the existing modelzsdgdzsbzs
 #
 # # returns a compiled model
 # # identical to the previous one
