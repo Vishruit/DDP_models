@@ -16,7 +16,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 tf.device('/gpu:0')
 
-# Add comment
+# Add commentsgfs
 from keras.datasets import mnist
 import numpy as np
 
