@@ -19,12 +19,6 @@ ax = []
 for j in range(options):
     ax.append(fig.add_subplot(3, 3, j+1))
 # ax_0 = fig.add_subplot(3, 3, 1)
-# ax_1 = fig.add_subplot(3, 3, 2)
-# ax_2 = fig.add_subplot(3, 3, 3)
-# ax_3 = fig.add_subplot(3, 3, 4)
-# ax_4 = fig.add_subplot(3, 3, 5)
-# ax_5 = fig.add_subplot(3, 3, 6)
-# ax_6 = fig.add_subplot(3, 3, 7)
 
 def f(i, option):
     if option == 1:
@@ -74,12 +68,7 @@ for j in range(options):
     fig.colorbar(imx[j],ax=ax[j])
 
 # im0 = ax_0.imshow(f(i, option(0) ), animated=True)
-# im1 = ax_1.imshow(f(i, option(1) ), animated=True)
-# im2 = ax_2.imshow(f(i, option(2) ), animated=True)
-# im3 = ax_3.imshow(f(i, option(3) ), animated=True)
-# im4 = ax_4.imshow(f(i, option(4) ), animated=True)
-# im5 = ax_5.imshow(f(i, option(5) ), animated=True)
-# im6 = ax_6.imshow(f(i, option(6) ), animated=True)
+
 
 def updatefig(*args):
     global i, option
@@ -87,13 +76,6 @@ def updatefig(*args):
     for j in range(options):
         imx[j].set_array( f(i, option(j)) )
     # im0.set_array( f(i, option(0)) )
-    # im1.set_array( f(i, option(1)) )
-    # im2.set_array( f(i, option(2)) )
-    # im3.set_array( f(i, option(3)) )
-    # im4.set_array( f(i, option(4)) )
-    # im5.set_array( f(i, option(5)) )
-    # im6.set_array( f(i, option(6)) )
-    # return im0,im1,im2,im3,im4,im5,im6
     return imx[0],imx[1],imx[2],imx[3],imx[4],imx[5],imx[6],
 
 ani = animation.FuncAnimation(fig, updatefig, interval=50, blit=True)

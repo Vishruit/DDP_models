@@ -113,7 +113,7 @@ def define_model(init,lr,verbose,restart):
     x = Reshape((frames, height, width, 1))(input_img)
 
     # x = BatchNormalization(mode=2, axis=1, input_shape=(ROWS, COLS, CHANNELS))
-    x = BatchNormalization(mode=2, axis=1) 
+    x = BatchNormalization(mode=2, axis=1)
 
     x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
     x = MaxPooling3D((2, 2, 2), padding='same')(x)
@@ -208,9 +208,15 @@ def unpickle(file):
 
 def read_data():
     def data_preprocess(data):
-        maxVal = np.max(data)
-        maxVal = np.min(data)
-        data = data / (maxVal+0.00001)
+        video,sample,height,width = data.shape
+        data = data.reshape((video*sample,height,width))
+        maxVal = np.max(data, axis = -1)
+        maxVal = np.max(maxVal, axis = -1)
+        minVal = np.min(data, axis = -1)
+        minVal = np.min(minVal, axis = -1)
+        for i in range(len(maxVal)):
+            data[i,...] = (data[i,...]-minVal[i]) / (maxVal[i]- minVal[i]+0.001)
+        data = data.reshape((video,sample,height,width))
         return data
     global train_file_name,  dataset_keyword
     data_slice_size = 202
