@@ -47,39 +47,26 @@ class TestCallback(Callback):
         val_loss, val_acc = self.model.evaluate(x_val, y_val, verbose=0, batch_size=batch_size)
         test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
         print('\n \x1b[6;30;42m :=:> \x1b[0m train_loss: {0:.3f}, train_acc: {1:.2f}|| val_loss: {2:.3f}, val_acc: {3:.2f} || test_loss: {4:.3f}, test_acc: {5:.2f}\n'.format(np.asscalar(train_loss), np.asscalar(train_acc), np.asscalar(val_loss), np.asscalar(val_acc), np.asscalar(test_loss), np.asscalar(test_acc)))
-        # print(type(np.asscalar(train_loss)), type(train_acc), type(val_loss), type(val_acc), type(test_loss), type(test_acc))
-        # print(train_loss, train_acc, val_loss, val_acc, test_loss, test_acc)
 
         #TODO TODO
-        decoded_imgs = model.predict(x_test, batch_size=batch_size)
-        # print(history.history.keys())
-        plot_group(history)
-
-        decoded_imgs = model.predict(x_test, batch_size=batch_size)
-        # video_index = [1,5,10,50,100,150,200]
         video_index = [1,5,10,15,20,25,30]
         frame_index = [1,5,10,25,40,50,60,75,90,99]
-        for video in video_index:
+        decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
+        for (video, vid_it) in zip(video_index, range(len(video_index))):
             plt.figure(figsize=(20, 4))
-            print('Processing video:',video)
             for i in range(len(frame_index)):
-                # decoded_imgs = autoencoder.predict(x_test[i].reshape(1, x_test.shape[1], x_test.shape[2], x_test.shape[3])
-                # display original
                 ax = plt.subplot(2, len(frame_index), i + 1)
-                # TODO remove hard links
-                # print(x_test.shape)
                 plt.imshow(x_test[video].reshape(frames, 256, 320)[frame_index[i],...])
                 plt.gray()
                 ax.get_xaxis().set_visible(False)
                 ax.get_yaxis().set_visible(False)
-                #plt.savefig('original.jpg')
-                # display reconstruction
+
                 ax = plt.subplot(2, len(frame_index), i + len(frame_index) + 1)
-                plt.imshow(decoded_imgs[video].reshape(frames, 256, 320)[frame_index[i],...])
+                plt.imshow(decoded_imgs[vid_it].reshape(frames, 256, 320)[frame_index[i],...])
                 plt.gray()
                 ax.get_xaxis().set_visible(False)
                 ax.get_yaxis().set_visible(False)
-                plt.savefig( visualization_filepath+ 'reconstruction_vid'+str(video)+'.png' )
+                plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+epoch+'.png' )
 
 class Histories(keras.callbacks.Callback):
     def on_train_begin(self, logs={}):
