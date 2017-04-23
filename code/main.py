@@ -206,7 +206,7 @@ def read_data():
             data[i,...] = (data[i,...]-minVal[i]) / (maxVal[i]- minVal[i]+0.001)
         if len(data.shape) == 4:
             data = data.reshape((video,sample,height,width))
-        
+        print(data.shape)
         return data
 
     global train_file_name,  dataset_keyword
