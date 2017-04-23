@@ -112,6 +112,9 @@ def define_model(init,lr,verbose,restart):
     input_img = Input(shape=(frames, height, width))
     x = Reshape((frames, height, width, 1))(input_img)
 
+    # x = BatchNormalization(mode=2, axis=1, input_shape=(ROWS, COLS, CHANNELS))
+    x = BatchNormalization(mode=2, axis=1) 
+
     x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
     x = MaxPooling3D((2, 2, 2), padding='same')(x)
 
@@ -315,7 +318,8 @@ if __name__ == "__main__":
                         validation_data=(x_valid, x_valid), \
                         callbacks=callback_list)
 
-    decoded_imgs = model.predict(x_test, batch_size=batch_size)
+    with open('model.json', 'w') as outfile:
+        json.dump(model.to_json(), outfile)
 
     # print(history.history.keys())
     plot_group(history)
