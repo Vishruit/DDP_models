@@ -31,10 +31,8 @@ import os, time, sys
 
 # model.save('my_model.h5')  # creates a HDF5 file 'my_model.h5'
 # del model  # deletes the existing model
-
-# # returns a compiled model
-# # identical to the previous one
 # model = load_model('my_model.h5')
+
 
 class TestCallback(Callback):
     def __init__(self, test_data, valid_data):
@@ -52,6 +50,7 @@ class TestCallback(Callback):
         # print(type(np.asscalar(train_loss)), type(train_acc), type(val_loss), type(val_acc), type(test_loss), type(test_acc))
         # print(train_loss, train_acc, val_loss, val_acc, test_loss, test_acc)
 
+        #TODO TODO
         decoded_imgs = model.predict(x_test, batch_size=batch_size)
         # print(history.history.keys())
         plot_group(history)
@@ -82,7 +81,6 @@ class TestCallback(Callback):
                 ax.get_yaxis().set_visible(False)
                 plt.savefig( visualization_filepath+ 'reconstruction_vid'+str(video)+'.png' )
 
-
 class Histories(keras.callbacks.Callback):
     def on_train_begin(self, logs={}):
         self.aucs = []
@@ -112,6 +110,9 @@ def define_model(init,lr,verbose,restart):
 
     input_img = Input(shape=(frames, height, width))
     x = Reshape((frames, height, width, 1))(input_img)
+
+    # x = BatchNormalization(mode=2, axis=1, input_shape=(ROWS, COLS, CHANNELS))
+    x = BatchNormalization(mode=2, axis=1)
 
     x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
     x = MaxPooling3D((2, 2, 2), padding='same')(x)
@@ -206,8 +207,15 @@ def unpickle(file):
 
 def read_data():
     def data_preprocess(data):
-        maxVal = np.max(data)
-        data = data / (maxVal+0.00001)
+        video,sample,height,width = data.shape
+        data = data.reshape((video*sample,height,width))
+        maxVal = np.max(data, axis = -1)
+        maxVal = np.max(maxVal, axis = -1)
+        minVal = np.min(data, axis = -1)
+        minVal = np.min(minVal, axis = -1)
+        for i in range(len(maxVal)):
+            data[i,...] = (data[i,...]-minVal[i]) / (maxVal[i]- minVal[i]+0.001)
+        data = data.reshape((video,sample,height,width))
         return data
     global train_file_name,  dataset_keyword
     data_slice_size = 202
@@ -232,11 +240,10 @@ def ensure_dir(files):
             os.makedirs(d)
     return 1
 
-
 def plot_group(history):
     # print history_record
     # print(history_record.history.keys())
-    # ['loss', 'val_binary_accuracy', 'lr', 'val_loss', 'binary_accuracy'] 
+    # ['loss', 'val_binary_accuracy', 'lr', 'val_loss', 'binary_accuracy']
     # summarize history for accuracy
     global experiment_root
     plt.plot(history.history['binary_accuracy'])
@@ -276,7 +283,7 @@ if __name__ == "__main__":
     filepath_best_weights='./exp'+experiment_num+'/save_dir/weights.best.hdf5'
     filepath_chpkt_weights = './exp'+experiment_num+'/save_dir/CheckPoint/'
     # filepath="./save_dir/exp1/weights-improvement-{epoch:02d}-{val_acc:.2f}.hdf5"
-    
+
     ensure_dir([visualization_filepath,filepath_best_weights, filepath_chpkt_weights, experiment_root])
 
     model = define_model(model_initializer, lr, verbose,restart=restart)
@@ -289,11 +296,6 @@ if __name__ == "__main__":
     (x_train, x_valid, x_test, y_train, y_valid, y_test) = (train_set_data, valid_set_data, test_set_data, train_set_labels, valid_set_labels, test_set_labels)
 
     # Callbacks
-    # Plot the loss after every epoch.
-    plot_loss_callback = LambdaCallback(
-        on_epoch_end=lambda epoch, logs: plt.plot(np.arange(epoch),
-                          logs['loss']))
-
     es = EarlyStopping(monitor='val_loss', min_delta=0, patience=15, verbose=verbose, mode='auto')
     checkpointer = ModelCheckpoint(filepath=filepath_best_weights, verbose=1, save_best_only=True)  # checkpoint
     chkpt = ModelCheckpoint(filepath_chpkt_weights+'weights.{epoch:02d}-{val_loss:.2f}.hdf5', monitor='val_loss', verbose=0, save_best_only=False, save_weights_only=False, mode='auto', period=1)
@@ -320,8 +322,9 @@ if __name__ == "__main__":
                         shuffle='batch',\
                         validation_data=(x_valid, x_valid), \
                         callbacks=callback_list)
-    
-    decoded_imgs = model.predict(x_test, batch_size=batch_size)
+
+    with open('model.json', 'w') as outfile:
+        json.dump(model.to_json(), outfile)
 
     # print(history.history.keys())
     plot_group(history)
