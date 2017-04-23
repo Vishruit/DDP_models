@@ -66,7 +66,7 @@ class TestCallback(Callback):
                 plt.gray()
                 ax.get_xaxis().set_visible(False)
                 ax.get_yaxis().set_visible(False)
-                plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+epoch+'.png' )
+                plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
 
 class Histories(keras.callbacks.Callback):
     def on_train_begin(self, logs={}):
