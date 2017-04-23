@@ -194,9 +194,11 @@ def unpickle(file):
 
 def read_data():
     def data_preprocess(data):
+        flag_isMultipleVids = 0
         if len(data.shape) == 4:
             video,sample,height,width = data.shape
             data = data.reshape((video*sample,height,width))
+            flag_isMultipleVids = 1
         print (video)
         maxVal = np.max(data, axis = -1)
         maxVal = np.max(maxVal, axis = -1)
@@ -204,9 +206,8 @@ def read_data():
         minVal = np.min(minVal, axis = -1)
         for i in range(len(maxVal)):
             data[i,...] = (data[i,...]-minVal[i]) / (maxVal[i]- minVal[i]+0.001)
-        if len(data.shape) == 4:
+        if flag_isMultipleVids == 1:
             data = data.reshape((video,sample,height,width))
-        print(data.shape)
         return data
 
     global train_file_name,  dataset_keyword
