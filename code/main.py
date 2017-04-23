@@ -199,7 +199,6 @@ def read_data():
             video,sample,height,width = data.shape
             data = data.reshape((video*sample,height,width))
             flag_isMultipleVids = 1
-        print (video)
         maxVal = np.max(data, axis = -1)
         maxVal = np.max(maxVal, axis = -1)
         minVal = np.min(data, axis = -1)
