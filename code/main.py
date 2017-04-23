@@ -194,15 +194,17 @@ def unpickle(file):
 
 def read_data():
     def data_preprocess(data):
-        video,sample,height,width = data.shape
-        data = data.reshape((video*sample,height,width))
+        if len(data.shape) == 4:
+            video,sample,height,width = data.shape
+            data = data.reshape((video*sample,height,width))
         maxVal = np.max(data, axis = -1)
         maxVal = np.max(maxVal, axis = -1)
         minVal = np.min(data, axis = -1)
         minVal = np.min(minVal, axis = -1)
         for i in range(len(maxVal)):
             data[i,...] = (data[i,...]-minVal[i]) / (maxVal[i]- minVal[i]+0.001)
-        data = data.reshape((video,sample,height,width))
+        if len(data.shape) == 4:
+            data = data.reshape((video,sample,height,width))
         return data
     global train_file_name,  dataset_keyword
     data_slice_size = 202
