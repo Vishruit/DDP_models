@@ -277,11 +277,13 @@ if __name__ == "__main__":
     append_CSVfile_FLAG = False
     #data = (nsamples, 202*100*256*320) float32
 
-    experiment_num = '1'
+    experiment_num = '2'
     experiment_root = './exp'+experiment_num+'/'
     visualization_filepath = './exp'+experiment_num+'/visualizations/'
     filepath_best_weights='./exp'+experiment_num+'/save_dir/weights.best.hdf5'
     filepath_chpkt_weights = './exp'+experiment_num+'/save_dir/CheckPoint/'
+    filepath_csvLogger = './exp'+experiment_num+'/save_dir/CheckPoint/csv_log_file.csv'
+
     # filepath="./save_dir/exp1/weights-improvement-{epoch:02d}-{val_acc:.2f}.hdf5"
 
     ensure_dir([visualization_filepath,filepath_best_weights, filepath_chpkt_weights, experiment_root])
@@ -302,7 +304,7 @@ if __name__ == "__main__":
     tensorboard = TensorBoard(log_dir=experiment_root+'logs2', histogram_freq=0, write_graph=False)  # Run using tensorboard --logdir=./logs
     testcallback = TestCallback((x_test, y_test), (x_valid, y_valid))
     reduceLR = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=10, verbose=1, mode='auto', epsilon=0.0001, cooldown=0, min_lr=0)
-    csvLogger = CSVLogger('./CheckPoint/csv_log_file.csv', separator=',', append=append_CSVfile_FLAG)
+    csvLogger = CSVLogger(filepath_csvLogger, separator=',', append=append_CSVfile_FLAG)
     # histories = Histories()
 
     callback_list = [es, checkpointer, chkpt, tensorboard, testcallback, reduceLR, csvLogger]
