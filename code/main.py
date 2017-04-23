@@ -196,8 +196,8 @@ def read_data():
     def data_preprocess(data):
         flag_isMultipleVids = 0
         if len(data.shape) == 4:
-            video,sample,height,width = data.shape
-            data = data.reshape((video*sample,height,width))
+            sample,frames,height,width = data.shape
+            data = data.reshape((sample*frames,height,width))
             flag_isMultipleVids = 1
         maxVal = np.max(data, axis = -1)
         maxVal = np.max(maxVal, axis = -1)
@@ -206,7 +206,7 @@ def read_data():
         for i in range(len(maxVal)):
             data[i,...] = (data[i,...]-minVal[i]) / (maxVal[i]- minVal[i]+0.001)
         if flag_isMultipleVids == 1:
-            data = data.reshape((video,sample,height,width))
+            data = data.reshape((sample,frames,height,width))
         return data
 
     global train_file_name,  dataset_keyword
