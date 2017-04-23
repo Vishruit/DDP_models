@@ -38,7 +38,7 @@ def f(i, option):
         return image
     elif option == 3:
         maxVal = maxVal_im
-        minVal = 0 # np.min(images[i])
+        minVal = 0
         image = (images[i] - minVal) / (maxVal - minVal)
         return image
     elif option == 4:
@@ -56,7 +56,7 @@ def f(i, option):
         stdVal = stdVal_im
         image = (images[i] - meanVal) / (stdVal)
         return image
-    elif option == 6:
+    elif option == 7:
         meanVal = meanVal_im
         stdVal = stdVal_im
         image = (images[i] - meanVal) / (stdVal)
@@ -70,7 +70,8 @@ def option(num):
 i=1
 imx = []
 for j in range(options):
-    imx.append(ax[j].imshow(f(i, option(j) ), animated=True))
+    imx.append(ax[j].imshow(f(i, option(j) ), cmap=plt.get_cmap('viridis'), animated=True))
+    fig.colorbar(imx[j],ax=ax[j])
 
 # im0 = ax_0.imshow(f(i, option(0) ), animated=True)
 # im1 = ax_1.imshow(f(i, option(1) ), animated=True)
