@@ -197,6 +197,7 @@ def read_data():
         if len(data.shape) == 4:
             video,sample,height,width = data.shape
             data = data.reshape((video*sample,height,width))
+        print (video)
         maxVal = np.max(data, axis = -1)
         maxVal = np.max(maxVal, axis = -1)
         minVal = np.min(data, axis = -1)
@@ -205,7 +206,9 @@ def read_data():
             data[i,...] = (data[i,...]-minVal[i]) / (maxVal[i]- minVal[i]+0.001)
         if len(data.shape) == 4:
             data = data.reshape((video,sample,height,width))
+        
         return data
+
     global train_file_name,  dataset_keyword
     data_slice_size = 202
     train_split, valid_split, test_split = 7, 1.5, 1.5
