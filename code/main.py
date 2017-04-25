@@ -273,13 +273,15 @@ if __name__ == "__main__":
     experiment_num = '3'
     experiment_root = './exp'+experiment_num+'/'
     visualization_filepath = './exp'+experiment_num+'/visualizations/'
+    visualization_filepath_test_time = './exp'+experiment_num+'/visualizations/Test_time/'
     filepath_best_weights='./exp'+experiment_num+'/save_dir/weights.best.hdf5'
     filepath_chpkt_weights = './exp'+experiment_num+'/save_dir/CheckPoint/'
     filepath_csvLogger = './exp'+experiment_num+'/save_dir/CheckPoint/csv_log_file.csv'
 
     # filepath="./save_dir/exp1/weights-improvement-{epoch:02d}-{val_acc:.2f}.hdf5"
 
-    ensure_dir([visualization_filepath,filepath_best_weights, filepath_chpkt_weights, experiment_root])
+    ensure_dir([visualization_filepath, filepath_best_weights, filepath_chpkt_weights, experiment_root])
+    ensure_dir([visualization_filepath_test_time])
 
     model = define_model(model_initializer, lr, verbose,restart=restart)
 
@@ -346,7 +348,7 @@ if __name__ == "__main__":
             plt.gray()
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
-            plt.savefig( visualization_filepath+ 'reconstruction_vid'+str(video)+'.png' )
+            plt.savefig( visualization_filepath+'reconstruction_vid'+str(video)+'.png' )
         plt.close()
 
 
