@@ -350,30 +350,14 @@ if __name__ == "__main__":
         plt.close()
 
 
-# Save models
-# with open('model.json', 'w') as outfile:
-#     json.dump(model.to_json(), outfile)
+    # Save models
+    # with open('model.json', 'w') as outfile:
+    #     json.dump(model.to_json(), outfile)
 
-# serialize model to JSON
-model_json = model.to_json()
-with open(experiment_root+"model.json", "w") as json_file:
-    json_file.write(model_json)
-# serialize weights to HDF5
-model.save_weights(experiment_root+"model.h5")
-print("Saved model to disk")
-#
-# # later...
-#
-# # load json and create model
-# json_file = open('model.json', 'r')
-# loaded_model_json = json_file.read()
-# json_file.close()
-# loaded_model = model_from_json(loaded_model_json)
-# # load weights into new model
-# loaded_model.load_weights("model.h5")
-# print("Loaded model from disk")
-#
-# # evaluate loaded model on test data
-# loaded_model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
-# score = loaded_model.evaluate(X, Y, verbose=0)
-# print("%s: %.2f%%" % (loaded_model.metrics_names[1], score[1]*100))
+    # serialize model to JSON
+    model_json = model.to_json()
+    with open(experiment_root+"model.json", "w") as json_file:
+        json_file.write(model_json)
+    # serialize weights to HDF5
+    model.save_weights(experiment_root+"model.h5")
+    print("Saved model to disk")
