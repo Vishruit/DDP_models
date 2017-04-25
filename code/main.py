@@ -348,6 +348,7 @@ if __name__ == "__main__":
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
             plt.savefig( visualization_filepath+ 'reconstruction_vid'+str(video)+'.png' )
+        plt.close()
 
 
 # Save models
@@ -356,10 +357,10 @@ if __name__ == "__main__":
 
 # serialize model to JSON
 model_json = model.to_json()
-with open("model.json", "w") as json_file:
+with open(experiment_root+"model.json", "w") as json_file:
     json_file.write(model_json)
 # serialize weights to HDF5
-model.save_weights("model.h5")
+model.save_weights(experiment_root+"model.h5")
 print("Saved model to disk")
 #
 # # later...
