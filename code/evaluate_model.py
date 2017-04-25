@@ -66,5 +66,5 @@ Y = X
 
 # evaluate loaded model on test data
 loaded_model.compile(loss='binary_crossentropy', optimizer='adadelta', metrics=['accuracy'])
-score = loaded_model.evaluate(X, Y, verbose=0)
+score = loaded_model.evaluate(X, Y, verbose=0, batch_size=2)
 print("%s: %.2f%%" % (loaded_model.metrics_names[1], score[1]*100))
