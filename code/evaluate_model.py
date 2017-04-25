@@ -47,6 +47,13 @@ def read_data():
                                                                  normalizer=lambda x: data_preprocess(x))
     return (train_set_data, train_set_data, valid_set_data, valid_set_data, test_set_data, test_set_data)
 
+def ensure_dir(files):
+    for f in files:
+        d = os.path.dirname(f)
+        if not os.path.exists(d):
+            os.makedirs(d)
+    return 1
+
 # later...
 experiment_num = '3'
 experiment_root = './exp'+experiment_num+'/'
