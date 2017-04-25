@@ -100,6 +100,7 @@ def define_model(init,lr,verbose,restart):
 
     # x = BatchNormalization(mode=2, axis=1, input_shape=(ROWS, COLS, CHANNELS))
     # x = BatchNormalization(mode=2, axis=1)
+    x = BatchNormalization()(x)
 
     x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
     x = MaxPooling3D((2, 2, 2), padding='same')(x)
@@ -224,7 +225,6 @@ def read_data():
     # return (train_set_data, train_set_labels, valid_set_data, valid_set_labels, test_set_data, test_set_labels)
     return (train_set_data, train_set_data, valid_set_data, valid_set_data, test_set_data, test_set_data)
 
-
 def ensure_dir(files):
     for f in files:
         d = os.path.dirname(f)
@@ -269,7 +269,7 @@ if __name__ == "__main__":
     append_CSVfile_FLAG = False
     #data = (nsamples, 202*100*256*320) float32
 
-    experiment_num = '2'
+    experiment_num = '3'
     experiment_root = './exp'+experiment_num+'/'
     visualization_filepath = './exp'+experiment_num+'/visualizations/'
     filepath_best_weights='./exp'+experiment_num+'/save_dir/weights.best.hdf5'
@@ -317,7 +317,7 @@ if __name__ == "__main__":
                         validation_data=(x_valid, x_valid), \
                         callbacks=callback_list)
 
-    with open('model.json', 'w') as outfile:
+    with open(experiment_root+'model.json', 'w') as outfile:
         json.dump(model.to_json(), outfile)
 
     # print(history.history.keys())
@@ -349,3 +349,32 @@ if __name__ == "__main__":
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
             plt.savefig( visualization_filepath+ 'reconstruction_vid'+str(video)+'.png' )
+
+
+# Save models
+# with open('model.json', 'w') as outfile:
+#     json.dump(model.to_json(), outfile)
+
+# # serialize model to JSON
+# model_json = model.to_json()
+# with open("model.json", "w") as json_file:
+#     json_file.write(model_json)
+# # serialize weights to HDF5
+# model.save_weights("model.h5")
+# print("Saved model to disk")
+#
+# # later...
+#
+# # load json and create model
+# json_file = open('model.json', 'r')
+# loaded_model_json = json_file.read()
+# json_file.close()
+# loaded_model = model_from_json(loaded_model_json)
+# # load weights into new model
+# loaded_model.load_weights("model.h5")
+# print("Loaded model from disk")
+#
+# # evaluate loaded model on test data
+# loaded_model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+# score = loaded_model.evaluate(X, Y, verbose=0)
+# print("%s: %.2f%%" % (loaded_model.metrics_names[1], score[1]*100))
