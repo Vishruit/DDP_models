@@ -317,9 +317,6 @@ if __name__ == "__main__":
                         validation_data=(x_valid, x_valid), \
                         callbacks=callback_list)
 
-    with open(experiment_root+'model.json', 'w') as outfile:
-        json.dump(model.to_json(), outfile)
-
     # print(history.history.keys())
     plot_group(history)
 
@@ -355,13 +352,13 @@ if __name__ == "__main__":
 # with open('model.json', 'w') as outfile:
 #     json.dump(model.to_json(), outfile)
 
-# # serialize model to JSON
-# model_json = model.to_json()
-# with open("model.json", "w") as json_file:
-#     json_file.write(model_json)
-# # serialize weights to HDF5
-# model.save_weights("model.h5")
-# print("Saved model to disk")
+# serialize model to JSON
+model_json = model.to_json()
+with open("model.json", "w") as json_file:
+    json_file.write(model_json)
+# serialize weights to HDF5
+model.save_weights("model.h5")
+print("Saved model to disk")
 #
 # # later...
 #
