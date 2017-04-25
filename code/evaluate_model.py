@@ -1,7 +1,8 @@
 # Evaluate a saved model
 from keras.models import Model, load_model
 from keras.models import load_model
-from models import model_from_json
+from keras.models import model_from_json
+from main import read_data()
 
 import numpy as np
 import tensorflow as tf
