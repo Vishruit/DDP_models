@@ -6,6 +6,8 @@ from keras.models import model_from_json
 from keras.utils.io_utils import HDF5Matrix
 # from main import read_data
 
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
@@ -57,8 +59,9 @@ def ensure_dir(files):
 # later...
 experiment_num = '3'
 experiment_root = './exp'+experiment_num+'/'
-# visualization_filepath = './exp'+experiment_num+'/visualizations/'
+visualization_filepath = './exp'+experiment_num+'/visualizations/'
 visualization_filepath_test_time = './exp'+experiment_num+'/visualizations/Test_time/'
+frames = 100
 ensure_dir([visualization_filepath_test_time])
 
 batch_size = 2
@@ -95,7 +98,6 @@ for video in video_index:
         # display original
         ax = plt.subplot(2, len(frame_index), i + 1)
         # TODO remove hard links
-        # print(x_test.shape)
         plt.imshow(x_test[video].reshape(frames, 256, 320)[frame_index[i],...])
         plt.gray()
         ax.get_xaxis().set_visible(False)
