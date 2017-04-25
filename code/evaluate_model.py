@@ -1,3 +1,4 @@
+# Evaluaytion pipeline is ready! :)
 # Evaluate a saved model
 from keras.models import Model, load_model
 from keras.models import load_model
@@ -49,6 +50,7 @@ def read_data():
 # later...
 experiment_num = '3'
 experiment_root = './exp'+experiment_num+'/'
+batch_size = 2
 
 # load json and create model
 json_file = open(experiment_root+'model.json', 'r')
@@ -66,5 +68,5 @@ Y = X
 
 # evaluate loaded model on test data
 loaded_model.compile(loss='binary_crossentropy', optimizer='adadelta', metrics=['accuracy'])
-score = loaded_model.evaluate(X, Y, verbose=0, batch_size=2)
+score = loaded_model.evaluate(X, Y, verbose=0, batch_size=batch_size)
 print("%s: %.2f%%" % (loaded_model.metrics_names[1], score[1]*100))
