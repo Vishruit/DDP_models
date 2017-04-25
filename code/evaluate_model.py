@@ -15,6 +15,6 @@ loaded_model.load_weights(experiment_root+"model.h5")
 print("Loaded model from disk")
 
 # evaluate loaded model on test data
-loaded_model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+loaded_model.compile(loss='binary_crossentropy', optimizer='adadelta', metrics=['accuracy'])
 score = loaded_model.evaluate(X, Y, verbose=0)
 print("%s: %.2f%%" % (loaded_model.metrics_names[1], score[1]*100))
