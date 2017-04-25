@@ -156,9 +156,10 @@ def load_model_weights(model, restart=False):
 
 def argAssigner(args):
     # TODO check the data types
-    global lr,batch_size,init_Code,model_initializer,save_dir, verbose,debug,restart
+    global lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart
     lr = float(args.lr)
     batch_size = int(args.batch_size)
+    num_epochs = int(args.num_epochs)
     save_dir = args.save_dir
     init_Code = int(args.init)
     # TODO check normal or uniform
@@ -171,6 +172,7 @@ def argParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--lr',default=0.0001, help='Initial learning rate (eta)', type=float)
     parser.add_argument('--batch_size',default=2, help='Batch size, -1 for vanilla gradient descent')
+    parser.add_argument('--num_epochs',default=100, help='Saves model parameters in this directory')
     parser.add_argument('--init',default=1, help='Initializer: 1 for Xavier init and 2 for He init')
     parser.add_argument('--save_dir',default='./save_dir/', help='Saves model parameters in this directory')
     # Custom debugging args
@@ -285,7 +287,7 @@ if __name__ == "__main__":
     img_size = 32
     num_channels = 3
     num_classes = 10
-    total_training_epochs = 200
+    total_training_epochs = num_epochs
     train_set_data, train_set_labels, valid_set_data, valid_set_labels, test_set_data, test_set_labels = read_data()
     (x_train, x_valid, x_test, y_train, y_valid, y_test) = (train_set_data, valid_set_data, test_set_data, train_set_labels, valid_set_labels, test_set_labels)
 
