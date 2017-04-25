@@ -67,7 +67,7 @@ batch_size = 2
 json_file = open(experiment_root+'model.json', 'r')
 loaded_model_json = json_file.read()
 json_file.close()
-loaded_model = model_from_json(loaded_model_json)
+model = model_from_json(loaded_model_json)
 # load weights into new model
 loaded_model.load_weights(experiment_root+"model.h5")
 print("Loaded model from disk")
@@ -79,9 +79,9 @@ Y = X
 x_test = test_set_data
 
 # evaluate loaded model on test data
-loaded_model.compile(loss='binary_crossentropy', optimizer='adadelta', metrics=['accuracy'])
-score = loaded_model.evaluate(X, Y, verbose=0, batch_size=batch_size)
-print("%s: %.2f%%" % (loaded_model.metrics_names[1], score[1]*100))
+model.compile(loss='binary_crossentropy', optimizer='adadelta', metrics=['accuracy'])
+score = model.evaluate(X, Y, verbose=0, batch_size=batch_size)
+print("%s: %.2f%%" % (model.metrics_names[1], score[1]*100))
 
 decoded_imgs = model.predict(x_test, batch_size=batch_size)
 # video_index = [1,5,10,50,100,150,200]
