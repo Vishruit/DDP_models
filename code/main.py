@@ -12,6 +12,7 @@ from keras.layers import Reshape,  Conv2D, UpSampling3D, Conv3D, MaxPooling3D
 from keras.layers.core import Lambda
 from keras.metrics import categorical_accuracy, binary_accuracy
 from keras.models import Model, load_model
+from models import model_from_json
 from keras.models import load_model
 from keras.optimizers import Adam
 from keras.preprocessing.image import ImageDataGenerator
