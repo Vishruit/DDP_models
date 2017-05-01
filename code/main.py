@@ -283,7 +283,11 @@ if __name__ == "__main__":
     ensure_dir([visualization_filepath, filepath_best_weights, filepath_chpkt_weights, experiment_root])
     ensure_dir([visualization_filepath_test_time])
 
-    model = define_model(model_initializer, lr, verbose,restart=restart)
+    import keras.backend.tensorflow_backend as K
+
+    with K.tf.device('/gpu:0'):
+        K._set_session(K.tf.Session(config=K.tf.ConfigProto(allow_soft_placement=True, log_device_placement=True)))
+        model = define_model(model_initializer, lr, verbose,restart=restart)
 
     img_size = 32
     num_channels = 3
