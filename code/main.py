@@ -286,7 +286,7 @@ if __name__ == "__main__":
     import keras.backend.tensorflow_backend as K
 
     with K.tf.device('/gpu:0'):
-        K._set_session(K.tf.Session(config=K.tf.ConfigProto(allow_soft_placement=True, log_device_placement=True)))
+        K.set_session(K.tf.Session(config=K.tf.ConfigProto(allow_soft_placement=True, log_device_placement=True)))
         model = define_model(model_initializer, lr, verbose,restart=restart)
 
     img_size = 32
