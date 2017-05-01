@@ -270,7 +270,7 @@ if __name__ == "__main__":
     append_CSVfile_FLAG = False
     #data = (nsamples, 202*100*256*320) float32
 
-    experiment_num = '3'
+    experiment_num = '3_test'
     experiment_root = './exp'+experiment_num+'/'
     visualization_filepath = './exp'+experiment_num+'/visualizations/'
     visualization_filepath_test_time = './exp'+experiment_num+'/visualizations/Test_time/'
