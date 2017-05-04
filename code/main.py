@@ -49,10 +49,12 @@ class TestCallback(Callback):
 
         #TODO TODO
         video_index = [1,5,10,15,20,25,30]
-        #frame_index = [1,5,10,25,40,50,60,75,90,99]
-        frame_index = [99,90,80,70,60,50,40,30,20,10]
+        frame_index = [1,5,10,25,40,50,60,75,90,99]
+        # frame_index = [99,90,80,70,60,50,40,30,20,10]
         decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
-        plt.figure(figsize=(20, 4))
+        # plt.figure(figsize=(20, 4))
+        fig, ax = plt.subplots(20)
+        fig.figsize
         ax = plt.subplot(2, len(frame_index), 1)
         for (video, vid_it) in zip(video_index, range(len(video_index))):
             # plt.figure(figsize=(20, 4))
@@ -303,7 +305,7 @@ if __name__ == "__main__":
     append_CSVfile_FLAG = False
     #data = (nsamples, 202*100*256*320) float32
 
-    experiment_num = '5_test'
+    experiment_num = 'test'
     experiment_root = './exp'+experiment_num+'/'
     visualization_filepath = './exp'+experiment_num+'/visualizations/'
     visualization_filepath_test_time = './exp'+experiment_num+'/visualizations/Test_time/'
