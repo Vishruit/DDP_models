@@ -42,7 +42,7 @@ class TestCallback(Callback):
         global batch_size
         x_val, y_val = self.valid_data
         x_test, y_test = self.test_data
-        #train_loss, train_acc = logs.get('loss'), logs.get('binary_accuracy')
+        ##train_loss, train_acc = logs.get('loss'), logs.get('binary_accuracy')
         #val_loss, val_acc = self.model.evaluate(x_val, y_val, verbose=0, batch_size=batch_size)
         #test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
         #print('\n \x1b[6;30;42m :=:> \x1b[0m train_loss: {0:.3f}, train_acc: {1:.2f}|| val_loss: {2:.3f}, val_acc: {3:.2f} || test_loss: {4:.3f}, test_acc: {5:.2f}\n'.format(np.asscalar(train_loss), np.asscalar(train_acc), np.asscalar(val_loss), np.asscalar(val_acc), np.asscalar(test_loss), np.asscalar(test_acc)))
