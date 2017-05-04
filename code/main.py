@@ -22,7 +22,7 @@ from keras.utils.vis_utils import plot_model
 import numpy as np
 import tensorflow as tf
 import cPickle, gzip, pickle, h5py
-import argparse
+import argparse, h5py
 import os, time, sys
 
 
@@ -42,30 +42,41 @@ class TestCallback(Callback):
         global batch_size
         x_val, y_val = self.valid_data
         x_test, y_test = self.test_data
-        train_loss, train_acc = logs.get('loss'), logs.get('binary_accuracy')
-        val_loss, val_acc = self.model.evaluate(x_val, y_val, verbose=0, batch_size=batch_size)
-        test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
-        print('\n \x1b[6;30;42m :=:> \x1b[0m train_loss: {0:.3f}, train_acc: {1:.2f}|| val_loss: {2:.3f}, val_acc: {3:.2f} || test_loss: {4:.3f}, test_acc: {5:.2f}\n'.format(np.asscalar(train_loss), np.asscalar(train_acc), np.asscalar(val_loss), np.asscalar(val_acc), np.asscalar(test_loss), np.asscalar(test_acc)))
+        #train_loss, train_acc = logs.get('loss'), logs.get('binary_accuracy')
+        #val_loss, val_acc = self.model.evaluate(x_val, y_val, verbose=0, batch_size=batch_size)
+        #test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
+        #print('\n \x1b[6;30;42m :=:> \x1b[0m train_loss: {0:.3f}, train_acc: {1:.2f}|| val_loss: {2:.3f}, val_acc: {3:.2f} || test_loss: {4:.3f}, test_acc: {5:.2f}\n'.format(np.asscalar(train_loss), np.asscalar(train_acc), np.asscalar(val_loss), np.asscalar(val_acc), np.asscalar(test_loss), np.asscalar(test_acc)))
 
         #TODO TODO
         video_index = [1,5,10,15,20,25,30]
-        frame_index = [1,5,10,25,40,50,60,75,90,99]
+        #frame_index = [1,5,10,25,40,50,60,75,90,99]
+        frame_index = [99,90,80,70,60,50,40,30,20,10]
         decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
+        plt.figure(figsize=(20, 4))
+        ax = plt.subplot(2, len(frame_index), 1)
         for (video, vid_it) in zip(video_index, range(len(video_index))):
-            plt.figure(figsize=(20, 4))
+            # plt.figure(figsize=(20, 4))
             for i in range(len(frame_index)):
+                '''
+                print(video, vid_it, x_test[video].shape, i, len(frame_index))
                 ax = plt.subplot(2, len(frame_index), i + 1)
                 plt.imshow(x_test[video].reshape(frames, 256, 320)[frame_index[i],...])
                 plt.gray()
                 ax.get_xaxis().set_visible(False)
                 ax.get_yaxis().set_visible(False)
-
-                ax = plt.subplot(2, len(frame_index), i + len(frame_index) + 1)
-                plt.imshow(decoded_imgs[vid_it].reshape(frames, 256, 320)[frame_index[i],...])
+                '''
+                print(video, vid_it, i, len(frame_index))
+                #ax = plt.subplot(2, len(frame_index), i + len(frame_index) + 1)
+                #ax = plt.subplot(2, len(frame_index), 1)
+                print ('this passes the test')
+                #plt.imshow(decoded_imgs[vid_it].reshape(frames, 256, 320)[frame_index[i],...])
                 plt.gray()
                 ax.get_xaxis().set_visible(False)
                 ax.get_yaxis().set_visible(False)
-                plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
+            #plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
+            # plt.gcf().clear()
+            plt.clf()
+
 
 def plot_video_plot(epoch,x_test):
     global batch_size, visualization_filepath
@@ -163,10 +174,10 @@ def define_model(init,lr,verbose,restart):
 
     load_model_weights(model,restart)
 
-    if verbose:
-        print model.summary()
-        # grapher.plot(model, './visualizations/model_grapher.png')
-        plot_model(model, to_file=visualization_filepath+'plot_model.png')
+    #if verbose:
+        #print (model.summary()
+        # )grapher.plot(model, './visualizations/model_grapher.png')
+        #plot_model(model, to_file=visualization_filepath+'plot_model.png')
     return model
 
 def load_model_weights(model, restart=False):
@@ -234,8 +245,8 @@ def read_data():
         return data
 
     global train_file_name,  dataset_keyword
-    data_slice_size = 202
-    train_split, valid_split, test_split = 7, 1.5, 1.5
+    data_slice_size = 100
+    train_split, valid_split, test_split = 1.5, 1.5, 7
     train_set_data = HDF5Matrix(train_file_name, dataset_keyword, start=0, \
                                                                   end=int( train_split *data_slice_size/10), \
                                                                   normalizer=lambda x: data_preprocess(x))
@@ -292,7 +303,7 @@ if __name__ == "__main__":
     append_CSVfile_FLAG = False
     #data = (nsamples, 202*100*256*320) float32
 
-    experiment_num = '4_test'
+    experiment_num = '5_test'
     experiment_root = './exp'+experiment_num+'/'
     visualization_filepath = './exp'+experiment_num+'/visualizations/'
     visualization_filepath_test_time = './exp'+experiment_num+'/visualizations/Test_time/'
@@ -307,14 +318,14 @@ if __name__ == "__main__":
 
     import keras.backend.tensorflow_backend as K
 
-    with K.tf.device('/gpu:0'):
-        # gpu_options.allow_growth = True
-        # config = tf.ConfigProto()
-        config = K.tf.ConfigProto(allow_soft_placement=True, log_device_placement=True)
-        config.gpu_options.allow_growth = True
-        K.set_session(K.tf.Session(config=config))
-        model = define_model(model_initializer, lr, verbose,restart=restart)
-
+#    with K.tf.device('/gpu:0'):
+#        # gpu_options.allow_growth = True
+#        # config = tf.ConfigProto()
+#        config = K.tf.ConfigProto(allow_soft_placement=True, log_device_placement=True)
+#        config.gpu_options.allow_growth = True
+#        K.set_session(K.tf.Session(config=config))
+#        model = define_model(model_initializer, lr, verbose,restart=restart)
+    model = define_model(model_initializer, lr, verbose,restart=restart)
     img_size = 32
     num_channels = 3
     num_classes = 10
@@ -333,6 +344,7 @@ if __name__ == "__main__":
     # histories = Histories()
 
     callback_list = [es, checkpointer, chkpt, tensorboard, testcallback, reduceLR, csvLogger]
+    #callback_list = [es, checkpointer, chkpt, tensorboard, reduceLR, csvLogger]
 
     if not debug:
         history = model.fit(x_train, y_train,
