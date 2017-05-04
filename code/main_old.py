@@ -43,10 +43,17 @@ class TestCallback(Callback):
         global batch_size
         x_val, y_val = self.valid_data
         x_test, y_test = self.test_data
+<<<<<<< HEAD
         #train_loss, train_acc = logs.get('loss'), logs.get('binary_accuracy')
         #val_loss, val_acc = self.model.evaluate(x_val, y_val, verbose=0, batch_size=batch_size)
         #test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
         #print('\n \x1b[6;30;42m :=:> \x1b[0m train_loss: {0:.3f}, train_acc: {1:.2f}|| val_loss: {2:.3f}, val_acc: {3:.2f} || test_loss: {4:.3f}, test_acc: {5:.2f}\n'.format(np.asscalar(train_loss), np.asscalar(train_acc), np.asscalar(val_loss), np.asscalar(val_acc), np.asscalar(test_loss), np.asscalar(test_acc)))
+=======
+        train_loss, train_acc = logs.get('loss'), logs.get('binary_accuracy')
+        val_loss, val_acc = self.model.evaluate(x_val, y_val, verbose=0, batch_size=batch_size)
+        test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
+        print('\n \x1b[6;30;42m :=:> \x1b[0m train_loss: {0:.3f}, train_acc: {1:.2f}|| val_loss: {2:.3f}, val_acc: {3:.2f} || test_loss: {4:.3f}, test_acc: {5:.2f}\n'.format(np.asscalar(train_loss), np.asscalar(train_acc), np.asscalar(val_loss), np.asscalar(val_acc), np.asscalar(test_loss), np.asscalar(test_acc)))
+>>>>>>> 0d359177f938e6574cecc087e3ab1830b89c032b
 
         #TODO TODO
         video_index = [1,5,10,15,20,25,30]
@@ -55,7 +62,10 @@ class TestCallback(Callback):
         for (video, vid_it) in zip(video_index, range(len(video_index))):
             plt.figure(figsize=(20, 4))
             for i in range(len(frame_index)):
+<<<<<<< HEAD
                 print(video, vid_it, i,frame_index[i])
+=======
+>>>>>>> 0d359177f938e6574cecc087e3ab1830b89c032b
                 ax = plt.subplot(2, len(frame_index), i + 1)
                 plt.imshow(x_test[video].reshape(frames, 256, 320)[frame_index[i],...])
                 plt.gray()
@@ -211,8 +221,13 @@ def read_data():
         return data
 
     global train_file_name,  dataset_keyword
+<<<<<<< HEAD
     data_slice_size = 100
     train_split, valid_split, test_split = 1.5, 1.5, 7
+=======
+    data_slice_size = 202
+    train_split, valid_split, test_split = 7, 1.5, 1.5
+>>>>>>> 0d359177f938e6574cecc087e3ab1830b89c032b
     train_set_data = HDF5Matrix(train_file_name, dataset_keyword, start=0, \
                                                                   end=int( train_split *data_slice_size/10), \
                                                                   normalizer=lambda x: data_preprocess(x))
@@ -270,7 +285,11 @@ if __name__ == "__main__":
     append_CSVfile_FLAG = False
     #data = (nsamples, 202*100*256*320) float32
 
+<<<<<<< HEAD
     experiment_num = '_test'
+=======
+    experiment_num = '2'
+>>>>>>> 0d359177f938e6574cecc087e3ab1830b89c032b
     experiment_root = './exp'+experiment_num+'/'
     visualization_filepath = './exp'+experiment_num+'/visualizations/'
     filepath_best_weights='./exp'+experiment_num+'/save_dir/weights.best.hdf5'

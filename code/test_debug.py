@@ -3,7 +3,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 import keras
-from keras import initializers
+#from keras import initializers
+from keras import initializations as initializers
 import keras.backend as K
 from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, Callback, ProgbarLogger, ReduceLROnPlateau
 from keras.callbacks import LambdaCallback, CSVLogger
@@ -15,14 +16,15 @@ from keras.models import Model, load_model
 from keras.optimizers import Adam
 from keras.preprocessing.image import ImageDataGenerator
 from keras.regularizers import l2
-from keras.utils import to_categorical
+#from keras.utils import to_categorical
+from keras.utils.np_utils import to_categorical
 from keras.utils.io_utils import HDF5Matrix
 from keras.utils.np_utils import normalize
-from keras.utils.vis_utils import plot_model
+#from keras.utils.vis_utils import plot_model
 import numpy as np
 import tensorflow as tf
 import cPickle, gzip, pickle, h5py
-import argparse, h5py
+import argparse
 import os, time, sys
 
 
@@ -52,10 +54,8 @@ class TestCallback(Callback):
         #frame_index = [1,5,10,25,40,50,60,75,90,99]
         frame_index = [99,90,80,70,60,50,40,30,20,10]
         decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
-        plt.figure(figsize=(20, 4))
-        ax = plt.subplot(2, len(frame_index), 1)
         for (video, vid_it) in zip(video_index, range(len(video_index))):
-            # plt.figure(figsize=(20, 4))
+            plt.figure(figsize=(20, 4))
             for i in range(len(frame_index)):
                 '''
                 print(video, vid_it, x_test[video].shape, i, len(frame_index))
@@ -65,40 +65,16 @@ class TestCallback(Callback):
                 ax.get_xaxis().set_visible(False)
                 ax.get_yaxis().set_visible(False)
                 '''
-                print(video, vid_it, i, len(frame_index))
-                #ax = plt.subplot(2, len(frame_index), i + len(frame_index) + 1)
-                #ax = plt.subplot(2, len(frame_index), 1)
-                print ('this passes the test')
+                print(video, vid_it, x_test[video].shape, i, len(frame_index))
+                ax = plt.subplot(2, len(frame_index), i + len(frame_index) + 1)
+                print 'this passes the test'
                 #plt.imshow(decoded_imgs[vid_it].reshape(frames, 256, 320)[frame_index[i],...])
                 plt.gray()
                 ax.get_xaxis().set_visible(False)
                 ax.get_yaxis().set_visible(False)
-            #plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
-            # plt.gcf().clear()
-            plt.clf()
+                #plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
+            #plt.cla()
 
-
-def plot_video_plot(epoch,x_test):
-    global batch_size, visualization_filepath
-    video_index = [1,5,10,15,20,25,30]
-    frame_index = [1,5,10,25,40,50,60,75,90,99]
-    decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
-    for (video, vid_it) in zip(video_index, range(len(video_index))):
-        plt.figure(figsize=(20, 4))
-        for i in range(len(frame_index)):
-            ax = plt.subplot(2, len(frame_index), i + 1)
-            plt.imshow(x_test[video].reshape(frames, 256, 320)[frame_index[i],...])
-            plt.gray()
-            ax.get_xaxis().set_visible(False)
-            ax.get_yaxis().set_visible(False)
-
-            ax = plt.subplot(2, len(frame_index), i + len(frame_index) + 1)
-            plt.imshow(decoded_imgs[vid_it].reshape(frames, 256, 320)[frame_index[i],...])
-            plt.gray()
-            ax.get_xaxis().set_visible(False)
-            ax.get_yaxis().set_visible(False)
-            plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
-    return
 
 class Histories(keras.callbacks.Callback):
     def on_train_begin(self, logs={}):
@@ -174,10 +150,10 @@ def define_model(init,lr,verbose,restart):
 
     load_model_weights(model,restart)
 
-    #if verbose:
-        #print (model.summary()
-        # )grapher.plot(model, './visualizations/model_grapher.png')
-        #plot_model(model, to_file=visualization_filepath+'plot_model.png')
+    if verbose:
+        print model.summary()
+        # grapher.plot(model, './visualizations/model_grapher.png')
+        plot_model(model, to_file=visualization_filepath+'plot_model.png')
     return model
 
 def load_model_weights(model, restart=False):
@@ -195,7 +171,7 @@ def argAssigner(args):
     save_dir = args.save_dir
     init_Code = int(args.init)
     # TODO check normal or uniform
-    model_initializer = initializers.glorot_normal(seed=None) if init_Code == 1 else initializers.he_normal(seed=None)
+    model_initializer = initializers.glorot_normal(0) if init_Code == 1 else initializers.he_normal(seed=None)
     verbose = args.verbose
     restart = args.restart
     debug = args.debug
@@ -344,7 +320,6 @@ if __name__ == "__main__":
     # histories = Histories()
 
     callback_list = [es, checkpointer, chkpt, tensorboard, testcallback, reduceLR, csvLogger]
-    #callback_list = [es, checkpointer, chkpt, tensorboard, reduceLR, csvLogger]
 
     if not debug:
         history = model.fit(x_train, y_train,
