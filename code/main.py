@@ -53,31 +53,30 @@ class TestCallback(Callback):
         # frame_index = [99,90,80,70,60,50,40,30,20,10]
         decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
         # plt.figure(figsize=(20, 4))
-        fig, ax = plt.subplots(20)
-        fig.figsize
-        ax = plt.subplot(2, len(frame_index), 1)
+        fig, axi = plt.subplots(2, len(frame_index), figsize=(20,4))
+        # ax = plt.subplot(2, len(frame_index), 1)
         for (video, vid_it) in zip(video_index, range(len(video_index))):
             # plt.figure(figsize=(20, 4))
             for i in range(len(frame_index)):
-                '''
-                print(video, vid_it, x_test[video].shape, i, len(frame_index))
-                ax = plt.subplot(2, len(frame_index), i + 1)
+                print(video, vid_it, i, len(frame_index))
+                # ax = plt.subplot(2, len(frame_index), i + 1)
+                ax1,ax2 = axi[:,i]
                 plt.imshow(x_test[video].reshape(frames, 256, 320)[frame_index[i],...])
                 plt.gray()
-                ax.get_xaxis().set_visible(False)
-                ax.get_yaxis().set_visible(False)
-                '''
-                print(video, vid_it, i, len(frame_index))
+                ax1.get_xaxis().set_visible(False)
+                ax1.get_yaxis().set_visible(False)
+                # ax1 = axi[i+1]
+                # ax2 = axi[i+len(frame_index)+1]
                 #ax = plt.subplot(2, len(frame_index), i + len(frame_index) + 1)
                 #ax = plt.subplot(2, len(frame_index), 1)
                 print ('this passes the test')
                 #plt.imshow(decoded_imgs[vid_it].reshape(frames, 256, 320)[frame_index[i],...])
                 plt.gray()
-                ax.get_xaxis().set_visible(False)
-                ax.get_yaxis().set_visible(False)
-            #plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
+                ax2.get_xaxis().set_visible(False)
+                ax2.get_yaxis().set_visible(False)
+            plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
             # plt.gcf().clear()
-            plt.clf()
+            # plt.clf()
 
 
 def plot_video_plot(epoch,x_test):
