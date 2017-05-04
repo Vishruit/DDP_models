@@ -40,7 +40,7 @@ class TestCallback(Callback):
 
     def on_epoch_end(self, epoch, logs={}):
         global batch_size
-        x_val, y_val = self.valid_data
+        #x_val, y_val = self.valid_data
         x_test, y_test = self.test_data
         ##train_loss, train_acc = logs.get('loss'), logs.get('binary_accuracy')
         #val_loss, val_acc = self.model.evaluate(x_val, y_val, verbose=0, batch_size=batch_size)
@@ -53,7 +53,9 @@ class TestCallback(Callback):
         # frame_index = [99,90,80,70,60,50,40,30,20,10]
         decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
         # plt.figure(figsize=(20, 4))
-        fig, axi = plt.subplots(2, len(frame_index), figsize=(20,4))
+        print('Hi1')
+        fig, axi = plt.subplots(2, len(frame_index)) #, figsize=(20,4))
+        print("Hi2")
         # ax = plt.subplot(2, len(frame_index), 1)
         for (video, vid_it) in zip(video_index, range(len(video_index))):
             # plt.figure(figsize=(20, 4))
@@ -61,7 +63,7 @@ class TestCallback(Callback):
                 print(video, vid_it, i, len(frame_index))
                 # ax = plt.subplot(2, len(frame_index), i + 1)
                 ax1,ax2 = axi[:,i]
-                plt.imshow(x_test[video].reshape(frames, 256, 320)[frame_index[i],...])
+                ax1.imshow(x_test[video].reshape(frames, 256, 320)[frame_index[i],...])
                 plt.gray()
                 ax1.get_xaxis().set_visible(False)
                 ax1.get_yaxis().set_visible(False)
@@ -77,6 +79,7 @@ class TestCallback(Callback):
             plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
             # plt.gcf().clear()
             # plt.clf()
+        plt.close()
 
 
 def plot_video_plot(epoch,x_test):
