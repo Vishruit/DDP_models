@@ -12,6 +12,7 @@ from keras.layers import Reshape,  Conv2D, UpSampling3D, Conv3D, MaxPooling3D
 from keras.layers.core import Lambda
 from keras.metrics import categorical_accuracy, binary_accuracy
 from keras.models import Model, load_model
+from keras.models import load_model
 from keras.optimizers import Adam
 from keras.preprocessing.image import ImageDataGenerator
 from keras.regularizers import l2
@@ -22,7 +23,7 @@ from keras.utils.vis_utils import plot_model
 import numpy as np
 import tensorflow as tf
 import cPickle, gzip, pickle, h5py
-import argparse, h5py
+import argparse
 import os, time, sys
 
 
@@ -49,34 +50,24 @@ class TestCallback(Callback):
 
         #TODO TODO
         video_index = [1,5,10,15,20,25,30]
-        #frame_index = [1,5,10,25,40,50,60,75,90,99]
-        frame_index = [99,90,80,70,60,50,40,30,20,10]
+        frame_index = [1,5,10,25,40,50,60,75,90,99]
         decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
-        plt.figure(figsize=(20, 4))
-        ax = plt.subplot(2, len(frame_index), 1)
         for (video, vid_it) in zip(video_index, range(len(video_index))):
-            # plt.figure(figsize=(20, 4))
+            plt.figure(figsize=(20, 4))
             for i in range(len(frame_index)):
-                '''
-                print(video, vid_it, x_test[video].shape, i, len(frame_index))
+                print(video, vid_it, i,frame_index[i])
                 ax = plt.subplot(2, len(frame_index), i + 1)
                 plt.imshow(x_test[video].reshape(frames, 256, 320)[frame_index[i],...])
                 plt.gray()
                 ax.get_xaxis().set_visible(False)
                 ax.get_yaxis().set_visible(False)
-                '''
-                print(video, vid_it, i, len(frame_index))
-                #ax = plt.subplot(2, len(frame_index), i + len(frame_index) + 1)
-                #ax = plt.subplot(2, len(frame_index), 1)
-                print ('this passes the test')
-                #plt.imshow(decoded_imgs[vid_it].reshape(frames, 256, 320)[frame_index[i],...])
+
+                ax = plt.subplot(2, len(frame_index), i + len(frame_index) + 1)
+                plt.imshow(decoded_imgs[vid_it].reshape(frames, 256, 320)[frame_index[i],...])
                 plt.gray()
                 ax.get_xaxis().set_visible(False)
                 ax.get_yaxis().set_visible(False)
-            #plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
-            # plt.gcf().clear()
-            plt.clf()
-
+                plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
 
 class Histories(keras.callbacks.Callback):
     def on_train_begin(self, logs={}):
@@ -110,7 +101,6 @@ def define_model(init,lr,verbose,restart):
 
     # x = BatchNormalization(mode=2, axis=1, input_shape=(ROWS, COLS, CHANNELS))
     # x = BatchNormalization(mode=2, axis=1)
-    x = BatchNormalization()(x)
 
     x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
     x = MaxPooling3D((2, 2, 2), padding='same')(x)
@@ -152,10 +142,10 @@ def define_model(init,lr,verbose,restart):
 
     load_model_weights(model,restart)
 
-    #if verbose:
-        #print (model.summary()
-        # )grapher.plot(model, './visualizations/model_grapher.png')
-        #plot_model(model, to_file=visualization_filepath+'plot_model.png')
+    if verbose:
+        print model.summary()
+        # grapher.plot(model, './visualizations/model_grapher.png')
+        plot_model(model, to_file=visualization_filepath+'plot_model.png')
     return model
 
 def load_model_weights(model, restart=False):
@@ -166,10 +156,9 @@ def load_model_weights(model, restart=False):
 
 def argAssigner(args):
     # TODO check the data types
-    global lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart
+    global lr,batch_size,init_Code,model_initializer,save_dir, verbose,debug,restart
     lr = float(args.lr)
     batch_size = int(args.batch_size)
-    num_epochs = int(args.num_epochs)
     save_dir = args.save_dir
     init_Code = int(args.init)
     # TODO check normal or uniform
@@ -182,7 +171,6 @@ def argParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--lr',default=0.0001, help='Initial learning rate (eta)', type=float)
     parser.add_argument('--batch_size',default=2, help='Batch size, -1 for vanilla gradient descent')
-    parser.add_argument('--num_epochs',default=100, help='Saves model parameters in this directory')
     parser.add_argument('--init',default=1, help='Initializer: 1 for Xavier init and 2 for He init')
     parser.add_argument('--save_dir',default='./save_dir/', help='Saves model parameters in this directory')
     # Custom debugging args
@@ -237,6 +225,7 @@ def read_data():
     # return (train_set_data, train_set_labels, valid_set_data, valid_set_labels, test_set_data, test_set_labels)
     return (train_set_data, train_set_data, valid_set_data, valid_set_data, test_set_data, test_set_data)
 
+
 def ensure_dir(files):
     for f in files:
         d = os.path.dirname(f)
@@ -281,33 +270,23 @@ if __name__ == "__main__":
     append_CSVfile_FLAG = False
     #data = (nsamples, 202*100*256*320) float32
 
-    experiment_num = '5_test'
+    experiment_num = '_test'
     experiment_root = './exp'+experiment_num+'/'
     visualization_filepath = './exp'+experiment_num+'/visualizations/'
-    visualization_filepath_test_time = './exp'+experiment_num+'/visualizations/Test_time/'
     filepath_best_weights='./exp'+experiment_num+'/save_dir/weights.best.hdf5'
     filepath_chpkt_weights = './exp'+experiment_num+'/save_dir/CheckPoint/'
     filepath_csvLogger = './exp'+experiment_num+'/save_dir/CheckPoint/csv_log_file.csv'
 
     # filepath="./save_dir/exp1/weights-improvement-{epoch:02d}-{val_acc:.2f}.hdf5"
 
-    ensure_dir([visualization_filepath, filepath_best_weights, filepath_chpkt_weights, experiment_root])
-    ensure_dir([visualization_filepath_test_time])
+    ensure_dir([visualization_filepath,filepath_best_weights, filepath_chpkt_weights, experiment_root])
 
-    import keras.backend.tensorflow_backend as K
-
-#    with K.tf.device('/gpu:0'):
-#        # gpu_options.allow_growth = True
-#        # config = tf.ConfigProto()
-#        config = K.tf.ConfigProto(allow_soft_placement=True, log_device_placement=True)
-#        config.gpu_options.allow_growth = True
-#        K.set_session(K.tf.Session(config=config))
-#        model = define_model(model_initializer, lr, verbose,restart=restart)
     model = define_model(model_initializer, lr, verbose,restart=restart)
+
     img_size = 32
     num_channels = 3
     num_classes = 10
-    total_training_epochs = num_epochs
+    total_training_epochs = 200
     train_set_data, train_set_labels, valid_set_data, valid_set_labels, test_set_data, test_set_labels = read_data()
     (x_train, x_valid, x_test, y_train, y_valid, y_test) = (train_set_data, valid_set_data, test_set_data, train_set_labels, valid_set_labels, test_set_labels)
 
@@ -322,7 +301,6 @@ if __name__ == "__main__":
     # histories = Histories()
 
     callback_list = [es, checkpointer, chkpt, tensorboard, testcallback, reduceLR, csvLogger]
-    #callback_list = [es, checkpointer, chkpt, tensorboard, reduceLR, csvLogger]
 
     if not debug:
         history = model.fit(x_train, y_train,
@@ -339,6 +317,9 @@ if __name__ == "__main__":
                         shuffle='batch',\
                         validation_data=(x_valid, x_valid), \
                         callbacks=callback_list)
+
+    with open('model.json', 'w') as outfile:
+        json.dump(model.to_json(), outfile)
 
     # print(history.history.keys())
     plot_group(history)
@@ -368,18 +349,4 @@ if __name__ == "__main__":
             plt.gray()
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
-            plt.savefig( visualization_filepath+'reconstruction_vid'+str(video)+'.png' )
-        plt.close()
-
-
-    # Save models
-    # with open('model.json', 'w') as outfile:
-    #     json.dump(model.to_json(), outfile)
-
-    # serialize model to JSON
-    model_json = model.to_json()
-    with open(experiment_root+"model.json", "w") as json_file:
-        json_file.write(model_json)
-    # serialize weights to HDF5
-    model.save_weights(experiment_root+"model.h5")
-    print("Saved model to disk")
+            plt.savefig( visualization_filepath+ 'reconstruction_vid'+str(video)+'.png' )
