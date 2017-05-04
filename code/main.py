@@ -40,7 +40,7 @@ class TestCallback(Callback):
 
     def on_epoch_end(self, epoch, logs={}):
         global batch_size
-        x_val, y_val = self.valid_data
+        #x_val, y_val = self.valid_data
         x_test, y_test = self.test_data
         ##train_loss, train_acc = logs.get('loss'), logs.get('binary_accuracy')
         #val_loss, val_acc = self.model.evaluate(x_val, y_val, verbose=0, batch_size=batch_size)
