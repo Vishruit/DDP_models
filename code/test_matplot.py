@@ -4,10 +4,14 @@ import matplotlib.pyplot as plt
 
 video_index = [1,5,10,15,20,25,30]
 frame_index = [1,5,10,25,40,50,60,75,90,99]
-# frame_index = [99,90,80,70,60,50,40,30,20,10]
-#decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
-# plt.figure(figsize=(20, 4))
-fig, axi = plt.subplots(2, 10, figsize=(20,4))
+
+
+
+# Reference counted: Helps with segmentation fault
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+
+# fig, axi = plt.subplots(2, 10, figsize=(20,4))
 # ax = plt.subplot(2, len(frame_index), i + len(frame_index) + 1)
 for (video, vid_it) in zip(video_index, range(len(video_index))):
     for i in range(len(frame_index)):
