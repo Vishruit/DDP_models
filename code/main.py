@@ -56,7 +56,6 @@ def plot_video_plot(epoch,x_test):
     global batch_size, visualization_filepath
     video_index = [1,5,10,15,20,25,30]
     frame_index = [1,5,10,25,40,50,60,75,90,99]
-    # frame_index = [99,90,80,70,60,50,40,30,20,10]
     decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
     # plt.figure(figsize=(20, 4))
     fig, axi = plt.subplots(2, len(frame_index), figsize=(20,4))
@@ -85,7 +84,7 @@ def plot_video_plot(epoch,x_test):
         # plt.clf()
     return
 
-def plot_video_plot(epoch,x_test):
+def plot_video_plot1 (epoch,x_test):
     global batch_size, visualization_filepath
     video_index = [1,5,10,15,20,25,30]
     frame_index = [1,5,10,25,40,50,60,75,90,99]
