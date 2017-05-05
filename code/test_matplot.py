@@ -22,4 +22,4 @@ for (video, vid_it) in zip(video_index, range(len(video_index))):
     # plt.gcf().clear()
     # fig.cla()
     # plt.close('all')
-    #plt.close(fig)
+    # plt.close(fig)
