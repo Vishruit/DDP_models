@@ -59,8 +59,8 @@ def plot_video_plot(epoch,x_test):
     global batch_size, visualization_filepath
     video_index = [1,5,10,15,20,25,30]
     frame_index = [1,5,10,25,40,50,60,75,90,99]
-    decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
-
+    decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size/2)
+    print (x_test.shape, decoded_imgs.shape)
     fig = Figure()
     canvas = FigureCanvas(fig)
     # decoded_imgs = autoencoder.predict(x_test)
@@ -69,16 +69,17 @@ def plot_video_plot(epoch,x_test):
     n = 10
     plt.figure(figsize=(20, 4))
     for i in range(n):
+        video = video_index[1]
         # display original
         ax = plt.subplot(2, n, i)
-        plt.imshow(x_test[i].reshape(28, 28))
+        plt.imshow(x_test[video, frame_index[i],...])
         plt.gray()
         ax.get_xaxis().set_visible(False)
         ax.get_yaxis().set_visible(False)
 
         # display reconstruction
         ax = plt.subplot(2, n, i + n)
-        plt.imshow(decoded_imgs[i].reshape(28, 28))
+        plt.imshow(decoded_imgs[video, frame_index[i],...])
         plt.gray()
         ax.get_xaxis().set_visible(False)
         ax.get_yaxis().set_visible(False)
@@ -102,7 +103,7 @@ def plot_video_plot3(epoch,x_test):
             ax1 = fig.add_subplot(2,len(frame_index),i+1)
             ax2 = fig.add_subplot(2,len(frame_index),i+len(frame_index)+1)
             # ax1,ax2 = axi[:,i]
-            ax1.imshow(x_test[video].reshape(frames, 256, 320)[frame_index[i],...])
+            ax1.imshow(x_test[video, frame_index[i],...])
             plt.gray()
             ax1.get_xaxis().set_visible(False)
             ax1.get_yaxis().set_visible(False)
@@ -385,8 +386,8 @@ if __name__ == "__main__":
     ensure_dir([visualization_filepath, filepath_best_weights, filepath_chpkt_weights, experiment_root])
     ensure_dir([visualization_filepath_test_time])
 
-    import keras.backend.tensorflow_backend as K
 
+    # import keras.backend.tensorflow_backend as K
 #    with K.tf.device('/gpu:0'):
 #        # gpu_options.allow_growth = True
 #        # config = tf.ConfigProto()
