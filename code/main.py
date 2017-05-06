@@ -64,8 +64,36 @@ def plot_video_plot(epoch,x_test):
 
     fig = Figure()
     canvas = FigureCanvas(fig)
+    # decoded_imgs = autoencoder.predict(x_test)
+    decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
 
-    fig, axi = plt.subplots(2, len(frame_index), figsize=(20,4))
+    n = 10
+    plt.figure(figsize=(20, 4))
+    for i in range(n):
+        # display original
+        ax = plt.subplot(2, n, i)
+        plt.imshow(x_test[i].reshape(28, 28))
+        plt.gray()
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+
+        # display reconstruction
+        ax = plt.subplot(2, n, i + n)
+        plt.imshow(decoded_imgs[i].reshape(28, 28))
+        plt.gray()
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+    plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
+
+def plot_video_plot3(epoch,x_test):
+    global batch_size, visualization_filepath
+    video_index = [1,5,10,15,20,25,30]
+    frame_index = [1,5,10,25,40,50,60,75,90,99]
+    decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
+
+    fig = Figure()
+    canvas = FigureCanvas(fig)
+    decoded_imgs = autoencoder.predict(x_test)
     # ax = plt.subplot(2, len(frame_index), 1)
     for (video, vid_it) in zip(video_index, range(len(video_index))):
         # plt.figure(figsize=(20, 4))
@@ -87,8 +115,6 @@ def plot_video_plot(epoch,x_test):
         canvas.print_figure( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
         # plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
     return
-
-
 
 def plot_video_plot2(epoch,x_test):
     global batch_size, visualization_filepath
