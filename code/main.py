@@ -12,7 +12,7 @@ import keras.backend as K
 from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, Callback, ProgbarLogger, ReduceLROnPlateau
 from keras.callbacks import LambdaCallback, CSVLogger
 from keras.layers import Input, Dense, Convolution2D, MaxPooling2D, BatchNormalization, Flatten, Activation, Dropout
-from keras.layers import Reshape,  Conv2D, UpSampling3D, Conv3D, MaxPooling3D
+from keras.layers import Reshape, Conv2D, UpSampling3D, Conv3D, MaxPooling3D
 from keras.layers.core import Lambda
 from keras.metrics import categorical_accuracy, binary_accuracy
 from keras.models import Model, load_model
@@ -270,13 +270,12 @@ if __name__ == "__main__":
 
     import keras.backend.tensorflow_backend as K
 
-#    with K.tf.device('/gpu:0'):
-#        # gpu_options.allow_growth = True
-#        # config = tf.ConfigProto()
-#        config = K.tf.ConfigProto(allow_soft_placement=True, log_device_placement=True)
-#        config.gpu_options.allow_growth = True
-#        K.set_session(K.tf.Session(config=config))
-#        model = define_model(model_initializer, lr, verbose,restart=restart)
+    with K.tf.device('/gpu:0'):
+       config = K.tf.ConfigProto(allow_soft_placement=True, log_device_placement=True)
+       config.gpu_options.allow_growth = True
+       K.set_session(K.tf.Session(config=config))
+       model = define_model(model_initializer, lr, verbose,restart=restart)
+       
     model = define_model(model_initializer, lr, verbose,restart=restart)
     img_size = 32
     num_channels = 3
