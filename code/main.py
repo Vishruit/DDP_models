@@ -59,12 +59,12 @@ def plot_video_plot(epoch,x_test):
     global batch_size, visualization_filepath
     video_index = [1,5,10,15,20,25,30]
     frame_index = [1,5,10,25,40,50,60,75,90,99]
-    decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
-
+    decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size/2)
+    print (x_test.shape, decoded_imgs.shape)
     fig = Figure()
     canvas = FigureCanvas(fig)
 
-    fig, axi = plt.subplots(2, len(frame_index), figsize=(20,4))
+    #fig, axi = plt.subplots(2, len(frame_index), figsize=(20,4))
     # ax = plt.subplot(2, len(frame_index), 1)
     for (video, vid_it) in zip(video_index, range(len(video_index))):
         # plt.figure(figsize=(20, 4))
