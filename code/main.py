@@ -65,8 +65,7 @@ def plot_video_plot(epoch,x_test):
     fig = Figure()
     canvas = FigureCanvas(fig)
     decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
-
-
+    
     for (video, vid_it) in zip(video_index, range(len(video_index))):
         for i in range(len(frame_index)):
             print(video, vid_it, i, len(frame_index))
