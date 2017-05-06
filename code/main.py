@@ -61,6 +61,9 @@ def plot_video_plot4(epoch,x_test):
     frame_index = [1,5,10,25,40,50,60,75,90,99]
     decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size/2)
     print (x_test.shape, decoded_imgs.shape)
+    fig, ax = plt.subplots(2, len(frame_index), figsize = (20,4))
+    line, = ax.plot(np.random.randn(100))
+
     fig = Figure()
     canvas = FigureCanvas(fig)
     decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
@@ -70,12 +73,10 @@ def plot_video_plot4(epoch,x_test):
             ax1 = fig.add_subplot(2,len(frame_index),i+1)
             ax2 = fig.add_subplot(2,len(frame_index),i+len(frame_index)+1)
             ax1.imshow(x_test[video].reshape(frames, 256, 320)[frame_index[i],...], cmap='gray')
-            plt.gray()
             ax1.get_xaxis().set_visible(False)
             ax1.get_yaxis().set_visible(False)
             print ('this passes the test')
             ax2.imshow(decoded_imgs[vid_it].reshape(frames, 256, 320)[frame_index[i],...], cmap='gray')
-            plt.gray()
             ax2.get_xaxis().set_visible(False)
             ax2.get_yaxis().set_visible(False)
             # plt.clf()
