@@ -12,7 +12,7 @@ import keras.backend as K
 from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, Callback, ProgbarLogger, ReduceLROnPlateau
 from keras.callbacks import LambdaCallback, CSVLogger
 from keras.layers import Input, Dense, Convolution2D, MaxPooling2D, BatchNormalization, Flatten, Activation, Dropout
-from keras.layers import Reshape,  Conv2D, UpSampling3D, Conv3D, MaxPooling3D
+from keras.layers import Reshape, Conv2D, UpSampling3D, Conv3D, MaxPooling3D
 from keras.layers.core import Lambda
 from keras.metrics import categorical_accuracy, binary_accuracy
 from keras.models import Model, load_model
@@ -50,7 +50,6 @@ class TestCallback(Callback):
         val_loss, val_acc = self.model.evaluate(x_val, y_val, verbose=0, batch_size=batch_size)
         test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
         print('\n \x1b[6;30;42m :=:> \x1b[0m train_loss: {0:.3f}, train_acc: {1:.2f}|| val_loss: {2:.3f}, val_acc: {3:.2f} || test_loss: {4:.3f}, test_acc: {5:.2f}\n'.format(np.asscalar(train_loss), np.asscalar(train_acc), np.asscalar(val_loss), np.asscalar(val_acc), np.asscalar(test_loss), np.asscalar(test_acc)))
-
 
 
 class Histories(keras.callbacks.Callback):
@@ -270,14 +269,13 @@ if __name__ == "__main__":
     ensure_dir([visualization_filepath_test_time])
 
 
-    # import keras.backend.tensorflow_backend as K
-#    with K.tf.device('/gpu:0'):
-#        # gpu_options.allow_growth = True
-#        # config = tf.ConfigProto()
-#        config = K.tf.ConfigProto(allow_soft_placement=True, log_device_placement=True)
-#        config.gpu_options.allow_growth = True
-#        K.set_session(K.tf.Session(config=config))
-#        model = define_model(model_initializer, lr, verbose,restart=restart)
+    import keras.backend.tensorflow_backend as K
+
+    with K.tf.device('/gpu:0'):
+       config = K.tf.ConfigProto(allow_soft_placement=True, log_device_placement=True)
+       config.gpu_options.allow_growth = True
+       K.set_session(K.tf.Session(config=config))
+       model = define_model(model_initializer, lr, verbose,restart=restart)
     model = define_model(model_initializer, lr, verbose,restart=restart)
     img_size = 32
     num_channels = 3
