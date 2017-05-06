@@ -65,23 +65,23 @@ def plot_video_plot(epoch,x_test):
     canvas = FigureCanvas(fig)
     decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
 
-for (video, vid_it) in zip(video_index, range(len(video_index))):
-    for i in range(len(frame_index)):
-        print(video, vid_it, i, len(frame_index))
-        ax1 = fig.add_subplot(2,len(frame_index),i+1)
-        ax2 = fig.add_subplot(2,len(frame_index),i+len(frame_index)+1)
-        #ax2 = fig.add_subplot(2,len(frame_index),i+len(frame_index)+1)
-        ax1.imshow(x_test[video, frame_index[i],...])
-        plt.gray()
-        ax1.get_xaxis().set_visible(False)
-        ax1.get_yaxis().set_visible(False)
-        # print ('this passes the test')
-        plt.imshow(decoded_imgs[vid_it,frame_index[i],...])
-        plt.gray()
-        ax2.get_xaxis().set_visible(False)
-        ax2.get_yaxis().set_visible(False)
-        # plt.clf()
-        canvas.print_figure( 'reconstruction_vid_'+str(video)+'_Epoch_'+'.png' )
+    for (video, vid_it) in zip(video_index, range(len(video_index))):
+        for i in range(len(frame_index)):
+            print(video, vid_it, i, len(frame_index))
+            ax1 = fig.add_subplot(2,len(frame_index),i+1)
+            ax2 = fig.add_subplot(2,len(frame_index),i+len(frame_index)+1)
+            #ax2 = fig.add_subplot(2,len(frame_index),i+len(frame_index)+1)
+            ax1.imshow(x_test[video, frame_index[i],...])
+            plt.gray()
+            ax1.get_xaxis().set_visible(False)
+            ax1.get_yaxis().set_visible(False)
+            # print ('this passes the test')
+            plt.imshow(decoded_imgs[vid_it,frame_index[i],...])
+            plt.gray()
+            ax2.get_xaxis().set_visible(False)
+            ax2.get_yaxis().set_visible(False)
+            # plt.clf()
+            canvas.print_figure( 'reconstruction_vid_'+str(video)+'_Epoch_'+'.png' )
 
 def plot_video_plot3(epoch,x_test):
     global batch_size, visualization_filepath
