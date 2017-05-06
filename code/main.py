@@ -101,7 +101,7 @@ def plot_video_plot3(epoch,x_test):
             print(video, vid_it, i, len(frame_index))
             # ax = plt.subplot(2, len(frame_index), i + 1)
             ax1 = fig.add_subplot(2,len(frame_index),i+1)
-            ax2 = fig.add_subplot(2,len(frame_index),i+len(frame_index)+1)
+            #ax2 = fig.add_subplot(2,len(frame_index),i+len(frame_index)+1)
             # ax1,ax2 = axi[:,i]
             ax1.imshow(x_test[video, frame_index[i],...])
             plt.gray()
@@ -110,9 +110,11 @@ def plot_video_plot3(epoch,x_test):
             print ('this passes the test')
             #plt.imshow(decoded_imgs[vid_it].reshape(frames, 256, 320)[frame_index[i],...])
             plt.gray()
-            ax2.get_xaxis().set_visible(False)
-            ax2.get_yaxis().set_visible(False)
+            #ax2.get_xaxis().set_visible(False)
+            #ax2.get_yaxis().set_visible(False)
+            plt.clf()
         canvas.print_figure( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
+        plt.close()
         # plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
     return
 
