@@ -3,6 +3,11 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
+import numpy as np
+
+
+from matplotlib.cbook import get_sample_data
+img = np.load(get_sample_data('axes_grid/bivariate_normal.npy'))
 
 global batch_size, visualization_filepath
 video_index = [1,5,10,15,20,25,30]
@@ -15,26 +20,21 @@ canvas = FigureCanvas(fig)
 for (video, vid_it) in zip(video_index, range(len(video_index))):
     # plt.figure(figsize=(20, 4))
     for i in range(len(frame_index)):
-        # print(video, vid_it, i, len(frame_index))
+        print(video, vid_it, i, len(frame_index))
         # ax = plt.subplot(2, len(frame_index), i + 1)
         ax1 = fig.add_subplot(2,len(frame_index),i+1)
         ax2 = fig.add_subplot(2,len(frame_index),i+len(frame_index)+1)
-        #ax2 = fig.add_subplot(2,len(frame_index),i+len(frame_index)+1)
-        # ax1.imshow(x_test[video, frame_index[i],...])
-        plt.gray()
+
+        ax1.imshow(img, cmap='gray')
         ax1.get_xaxis().set_visible(False)
         ax1.get_yaxis().set_visible(False)
-        # print ('this passes the test')
-        #plt.imshow(decoded_imgs[vid_it].reshape(frames, 256, 320)[frame_index[i],...])
-        plt.gray()
+        ax2.imshow(img, cmap='gray')
         ax2.get_xaxis().set_visible(False)
         ax2.get_yaxis().set_visible(False)
-        # plt.clf()
-        canvas.print_figure( 'reconstruction_vid_'+str(video)+'_Epoch_'+'.png' )
-        
-        ax1.cla()
-        ax2.cla()
-        print(ax1, ax2)
+        # print ('this passes the test')
+        #plt.imshow(decoded_imgs[vid_it].reshape(frames, 256, 320)[frame_index[i],...])
+        # print(ax1, ax2)
+    canvas.print_figure( 'test_reconstruction_vid_'+str(video)+'_Epoch_'+'.png' )
     print(fig, ax1)
     # plt.close('all')
     # plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
