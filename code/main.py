@@ -52,7 +52,7 @@ class TestCallback(Callback):
         #print('\n \x1b[6;30;42m :=:> \x1b[0m train_loss: {0:.3f}, train_acc: {1:.2f}|| val_loss: {2:.3f}, val_acc: {3:.2f} || test_loss: {4:.3f}, test_acc: {5:.2f}\n'.format(np.asscalar(train_loss), np.asscalar(train_acc), np.asscalar(val_loss), np.asscalar(val_acc), np.asscalar(test_loss), np.asscalar(test_acc)))
 
         #TODO TODO
-        plot_video_plot(epoch,x_test)
+        plot_video_plot2(epoch,x_test)
 
 
 def plot_video_plot(epoch,x_test):
@@ -121,26 +121,26 @@ def plot_video_plot2(epoch,x_test):
     video_index = [1,5,10,15,20,25,30]
     frame_index = [1,5,10,25,40,50,60,75,90,99]
     decoded_imgs = model.predict(x_test[video_index], batch_size=batch_size)
-    # plt.figure(figsize=(20, 4))
-    fig, axi = plt.subplots(2, len(frame_index), figsize=(20,4))
+    plt.figure(figsize=(20, 4))
+    # fig, axi = plt.subplots(2, len(frame_index), figsize=(20,4))
     # ax = plt.subplot(2, len(frame_index), 1)
     for (video, vid_it) in zip(video_index, range(len(video_index))):
         # plt.figure(figsize=(20, 4))
         for i in range(len(frame_index)):
             print(video, vid_it, i, len(frame_index))
-            # ax = plt.subplot(2, len(frame_index), i + 1)
-            ax1,ax2 = axi[:,i]
+            ax1 = plt.subplot(2, len(frame_index), i + 1)
+            #ax1,ax2 = axi[:,i]
             plt.imshow(x_test[video].reshape(frames, 256, 320)[frame_index[i],...])
-            plt.gray()
+            #plt.gray()
             ax1.get_xaxis().set_visible(False)
             ax1.get_yaxis().set_visible(False)
             # ax1 = axi[i+1]
             # ax2 = axi[i+len(frame_index)+1]
-            #ax = plt.subplot(2, len(frame_index), i + len(frame_index) + 1)
+            ax2 = plt.subplot(2, len(frame_index), i + len(frame_index) + 1)
             #ax = plt.subplot(2, len(frame_index), 1)
             print ('this passes the test')
             #plt.imshow(decoded_imgs[vid_it].reshape(frames, 256, 320)[frame_index[i],...])
-            plt.gray()
+            #plt.gray()
             ax2.get_xaxis().set_visible(False)
             ax2.get_yaxis().set_visible(False)
         plt.savefig( visualization_filepath+ 'reconstruction_vid_'+str(video)+'_Epoch_'+str(epoch)+'.png' )
