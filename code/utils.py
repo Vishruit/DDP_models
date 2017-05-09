@@ -29,7 +29,7 @@ def argParser():
     parser.add_argument('-d','--debug', help='For devs only, takes in no arguments', action="store_true")
     parser.add_argument('-v',"--verbose", help="Increase output verbosity",action="store_true")
     parser.add_argument('-r',"--restart", help="Restarts the network",action="store_true")
-    parser.add_argument('-m',"--machine_code", help="Restarts the network",action="store_true")
+    parser.add_argument('-m',"--machine_code", help="No plots mode for rise TitanX machine",action="store_true")
     args = parser.parse_args()
 
     if args.verbose:
