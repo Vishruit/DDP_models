@@ -1,6 +1,5 @@
 from imports_lib import *
 from utils import *
-from network import *
 from constants import *
 from main import *
 from utils import load_model_weights
