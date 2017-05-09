@@ -48,71 +48,6 @@ class Histories(keras.callbacks.Callback):
     def on_batch_end(self, batch, logs={}):
         return
 
-# def define_model(init,lr,verbose,restart):
-#     channels = 1
-#     global dropout_rate, frames, height, width, visualization_filepath
-#
-#     input_img = Input(shape=(frames, height, width))
-#     x = Reshape((frames, height, width, 1))(input_img)
-#
-#     # x = BatchNormalization(mode=2, axis=1, input_shape=(ROWS, COLS, CHANNELS))
-#     # x = BatchNormalization(mode=2, axis=1)
-#     x = BatchNormalization()(x)
-#
-#     x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
-#     x = MaxPooling3D((2, 2, 2), padding='same')(x)
-#
-#     x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
-#     x = MaxPooling3D((2, 2, 2), padding='same')(x)
-#
-#     x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
-#     encoded = MaxPooling3D((5, 2, 2), padding='same')(x)
-#
-#     # at this point the representation is (8, 4, 4) i.e. 128-dimensional
-#
-#     x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(encoded)
-#     x = UpSampling3D((5, 2, 2))(x)
-#
-#     x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
-#     x = UpSampling3D((2, 2, 2))(x)
-#
-#     x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
-#     x = UpSampling3D((2, 2, 2))(x)
-#
-#     decoded = Conv3D(1, (3, 3, 3), activation='sigmoid', padding='same')(x)
-#     decoded = Reshape((frames, height, width))(decoded)
-#
-#     # x = Dropout(dropout_rate)(x)
-#     # POOL3_flattened = Flatten()(DROP3)
-#     # FC1 = Dense(1024, activation='relu', kernel_initializer=init)(POOL3_flattened)
-#     # BN = BatchNormalization()(SOFTMAX_precomputation)
-#     # SOFTMAX = Activation('softmax')(BN)
-#
-#     model = Model(input_img, decoded)
-#     adam = Adam(lr=lr, beta_1=0.9, beta_2=0.999, epsilon=1e-8, decay=0.0)
-#     model.compile(optimizer='adadelta', loss='binary_crossentropy', metrics=[binary_accuracy])
-#
-#     # model.compile(optimizer=adam, loss='categorical_crossentropy', \
-#     #                 class_mode="categorical", metrics=[categorical_accuracy]) # TODO binary_crossentropy
-#
-#     model.summary()
-#
-#     load_model_weights(model,restart)
-#
-#     #if verbose:
-#         #print (model.summary()
-#         # )grapher.plot(model, './visualizations/model_grapher.png')
-#         #plot_model(model, to_file=visualization_filepath+'plot_model.png')
-#     return model
-#
-
-
-def load_model_weights(model, restart=False):
-    global filepath_best_weights
-    # load weights
-    if restart:
-        model.load_weights(filepath_best_weights)
-
 
 def read_data():
     def data_preprocess(data):
@@ -147,54 +82,16 @@ def read_data():
     return (train_set_data, train_set_data, valid_set_data, valid_set_data, test_set_data, test_set_data)
 
 
-def plot_group(history):
-    global experiment_root
-    plt.plot(history.history['binary_accuracy'])
-    plt.plot(history.history['val_binary_accuracy'])
-    plt.title('model accuracy')
-    plt.ylabel('accuracy')
-    plt.xlabel('epoch')
-    plt.legend(['train', 'validation'], loc='upper left')
-    plt.savefig( experiment_root + 'plot_valtrain_acc.jpg')
-    plt.show()
-    # summarize history for loss
-    plt.plot(history.history['loss'])
-    plt.plot(history.history['val_loss'])
-    plt.title('model loss')
-    plt.ylabel('loss')
-    plt.xlabel('epoch')
-    plt.legend(['train', 'validation'], loc='upper left')
-    plt.savefig( experiment_root + 'plot_valtrain_loss.jpg')
-
 if __name__ == "__main__":
+
     # parse the arguments from the command line
     args, argDict = argParser()
-    lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart = argAssigner(args)
-
-    # dataset_path = './data_small_100.h5'
-    # train_file_name,  dataset_keyword = '../data_small_100.h5', 'data_small'
-    # image_height, image_width, image_depth=32,32,3
-    # frames, height, width = 100, 256, 320
-    # dropout_rate = 0.7
-    # data_augmentation=False
-    # append_CSVfile_FLAG = False
-    # #data = (nsamples, 202*100*256*320) float32
-    #
-    # experiment_num = 'test'
-    # experiment_root = './exp'+experiment_num+'/'
-    # visualization_filepath = './exp'+experiment_num+'/visualizations/'
-    # visualization_filepath_test_time = './exp'+experiment_num+'/visualizations/Test_time/'
-    # filepath_best_weights='./exp'+experiment_num+'/save_dir/weights.best.hdf5'
-    # filepath_chpkt_weights = './exp'+experiment_num+'/save_dir/CheckPoint/'
-    # filepath_csvLogger = './exp'+experiment_num+'/save_dir/CheckPoint/csv_log_file.csv'
-
-    # filepath="./save_dir/exp1/weights-improvement-{epoch:02d}-{val_acc:.2f}.hdf5"
+    lr, batch_size, init_Code, num_epochs, model_initializer, save_dir, verbose, debug, restart = argAssigner(args)
 
     ensure_dir([visualization_filepath, filepath_best_weights, filepath_chpkt_weights, experiment_root])
     ensure_dir([visualization_filepath_test_time])
 
-
-    import keras.backend.tensorflow_backend as K
+    # import keras.backend.tensorflow_backend as K
 
     # with K.tf.device('/gpu:0'):
     #    config = K.tf.ConfigProto(allow_soft_placement=True, log_device_placement=True)
@@ -202,9 +99,7 @@ if __name__ == "__main__":
     #    K.set_session(K.tf.Session(config=config))
     #    model = define_model(model_initializer, lr, verbose,restart=restart)
     model = define_model(model_initializer, lr, verbose,restart=restart)
-    img_size = 32
-    num_channels = 3
-    num_classes = 10
+
     total_training_epochs = num_epochs
     train_set_data, train_set_labels, valid_set_data, valid_set_labels, test_set_data, test_set_labels = read_data()
     (x_train, x_valid, x_test, y_train, y_valid, y_test) = (train_set_data, valid_set_data, test_set_data, train_set_labels, valid_set_labels, test_set_labels)
@@ -242,41 +137,11 @@ if __name__ == "__main__":
     plot_group(history)
 
     decoded_imgs = model.predict(x_test, batch_size=batch_size)
-    video_index = [1,5,10,15,20,25,30]
-    frame_index = [1,5,10,25,40,50,60,75,90,99]
 
-    for video in video_index:
-        plt.figure(figsize=(20, 4))
-        print('Processing video:',video)
-        for i in range(len(frame_index)):
-            # decoded_imgs = autoencoder.predict(x_test[i].reshape(1, x_test.shape[1], x_test.shape[2], x_test.shape[3])
-            # display original
-            ax = plt.subplot(2, len(frame_index), i + 1)
-            # TODO remove hard links
-            # print(x_test.shape)
-            plt.imshow(x_test[video].reshape(frames, 256, 320)[frame_index[i],...])
-            plt.gray()
-            ax.get_xaxis().set_visible(False)
-            ax.get_yaxis().set_visible(False)
-            #plt.savefig('original.jpg')
-            # display reconstruction
-            ax = plt.subplot(2, len(frame_index), i + len(frame_index) + 1)
-            plt.imshow(decoded_imgs[video].reshape(frames, 256, 320)[frame_index[i],...])
-            plt.gray()
-            ax.get_xaxis().set_visible(False)
-            ax.get_yaxis().set_visible(False)
-            plt.savefig( visualization_filepath+'reconstruction_vid'+str(video)+'.png' )
-        plt.close()
+    plot_video(decoded_imgs)
 
+    save_model_and_weights(model)
 
     # Save models
     # with open('model.json', 'w') as outfile:
     #     json.dump(model.to_json(), outfile)
-
-    # serialize model to JSON
-    model_json = model.to_json()
-    with open(experiment_root+"model.json", "w") as json_file:
-        json_file.write(model_json)
-    # serialize weights to HDF5
-    model.save_weights(experiment_root+"model.h5")
-    print("Saved model to disk")

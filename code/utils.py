@@ -1,5 +1,9 @@
 # Utility functions
 from imports_lib import *
+from network import *
+from constants import *
+from main import *
+
 
 def argAssigner(args):
     # TODO check the data types
@@ -49,3 +53,60 @@ def ensure_dir(files):
         if not os.path.exists(d):
             os.makedirs(d)
     return 1
+
+def load_model_weights(model, restart=False):
+    global filepath_best_weights
+    if restart:
+        model.load_weights(filepath_best_weights)
+
+def save_model_and_weights(model):
+    # serialize model to JSON
+    model_json = model.to_json()
+    with open(experiment_root+"model.json", "w") as json_file:
+        json_file.write(model_json)
+    # serialize weights to HDF5
+    model.save_weights(experiment_root+"model.h5")
+    print("Saved model to disk")
+
+def plot_group(history):
+    global experiment_root
+    plt.plot(history.history['binary_accuracy'])
+    plt.plot(history.history['val_binary_accuracy'])
+    plt.title('model accuracy')
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'validation'], loc='upper left')
+    plt.savefig( experiment_root + 'plot_valtrain_acc.jpg')
+    plt.show()
+    # summarize history for loss
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.title('model loss')
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'validation'], loc='upper left')
+    plt.savefig( experiment_root + 'plot_valtrain_loss.jpg')
+
+def plot_video(decoded_imgs):
+    for video in video_index:
+        plt.figure(figsize=(20, 4))
+        print('Processing video:',video)
+        for i in range(len(frame_index)):
+            # decoded_imgs = autoencoder.predict(x_test[i].reshape(1, x_test.shape[1], x_test.shape[2], x_test.shape[3])
+            # display original
+            ax = plt.subplot(2, len(frame_index), i + 1)
+            # TODO remove hard links
+            # print(x_test.shape)
+            plt.imshow(x_test[video].reshape(frames, 256, 320)[frame_index[i],...])
+            plt.gray()
+            ax.get_xaxis().set_visible(False)
+            ax.get_yaxis().set_visible(False)
+            #plt.savefig('original.jpg')
+            # display reconstruction
+            ax = plt.subplot(2, len(frame_index), i + len(frame_index) + 1)
+            plt.imshow(decoded_imgs[video].reshape(frames, 256, 320)[frame_index[i],...])
+            plt.gray()
+            ax.get_xaxis().set_visible(False)
+            ax.get_yaxis().set_visible(False)
+            plt.savefig( visualization_filepath+'reconstruction_vid'+str(video)+'.png' )
+        plt.close()
