@@ -59,6 +59,7 @@ def load_model_weights(model, restart=False):
     global filepath_best_weights
     if restart:
         model.load_weights(filepath_best_weights)
+    return
 
 def save_model_and_weights(model):
     # serialize model to JSON
