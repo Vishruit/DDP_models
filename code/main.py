@@ -108,7 +108,3 @@ if __name__ == "__main__":
     plot_video(decoded_imgs, x_test)
 
     save_model_and_weights(model)
-
-    # Save models
-    # with open('model.json', 'w') as outfile:
-    #     json.dump(model.to_json(), outfile)

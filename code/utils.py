@@ -4,7 +4,7 @@ from constants import *
 
 def argAssigner(args):
     # TODO check the data types
-    global lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart
+    global lr, batch_size, init_Code,num_epochs, model_initializer, save_dir, verbose, debug, restart, mc
     lr = float(args.lr)
     batch_size = int(args.batch_size)
     num_epochs = int(args.num_epochs)
@@ -13,8 +13,9 @@ def argAssigner(args):
     # TODO check normal or uniform
     model_initializer = initializers.glorot_normal(seed=None) if init_Code == 1 else initializers.he_normal(seed=None)
     verbose = args.verbose
-    restart = args.restart
     debug = args.debug
+    restart = args.restart
+    mc = args.machine_code
     return lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart
 
 def argParser():
@@ -28,6 +29,7 @@ def argParser():
     parser.add_argument('-d','--debug', help='For devs only, takes in no arguments', action="store_true")
     parser.add_argument('-v',"--verbose", help="Increase output verbosity",action="store_true")
     parser.add_argument('-r',"--restart", help="Restarts the network",action="store_true")
+    parser.add_argument('-mc',"--machine_code", help="Restarts the network",action="store_true")
     args = parser.parse_args()
 
     if args.verbose:
@@ -127,7 +129,7 @@ def read_data():
         return data
 
     global train_file_name,  dataset_keyword, data_slice_size, train_split, valid_split, test_split
-    
+
     train_set_data = HDF5Matrix(train_file_name, dataset_keyword, start=0, \
                                                                   end=int( train_split *data_slice_size/10), \
                                                                   normalizer=lambda x: data_preprocess(x))
