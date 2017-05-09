@@ -108,3 +108,33 @@ def plot_video(decoded_imgs, x_test):
             ax.get_yaxis().set_visible(False)
             plt.savefig( visualization_filepath+'reconstruction_vid'+str(video)+'.png' )
         plt.close()
+
+def read_data():
+    def data_preprocess(data):
+        flag_isMultipleVids = 0
+        if len(data.shape) == 4:
+            sample,frames,height,width = data.shape
+            data = data.reshape((sample*frames,height,width))
+            flag_isMultipleVids = 1
+        maxVal = np.max(data, axis = -1)
+        maxVal = np.max(maxVal, axis = -1)
+        minVal = np.min(data, axis = -1)
+        minVal = np.min(minVal, axis = -1)
+        for i in range(len(maxVal)):
+            data[i,...] = (data[i,...]-minVal[i]) / (maxVal[i]- minVal[i]+0.001)
+        if flag_isMultipleVids == 1:
+            data = data.reshape((sample,frames,height,width))
+        return data
+
+    global train_file_name,  dataset_keyword, data_slice_size, train_split, valid_split, test_split
+    
+    train_set_data = HDF5Matrix(train_file_name, dataset_keyword, start=0, \
+                                                                  end=int( train_split *data_slice_size/10), \
+                                                                  normalizer=lambda x: data_preprocess(x))
+    valid_set_data = HDF5Matrix(train_file_name, dataset_keyword, start=int( train_split *data_slice_size/10), \
+                                                                  end=int( (train_split+valid_split) *data_slice_size/10), \
+                                                                  normalizer=lambda x: data_preprocess(x))
+    test_set_data = HDF5Matrix(train_file_name, dataset_keyword, start=int( (train_split+valid_split) *data_slice_size/10), \
+                                                                 end= 1 *data_slice_size, \
+                                                                 normalizer=lambda x: data_preprocess(x))
+    return (train_set_data, train_set_data, valid_set_data, valid_set_data, test_set_data, test_set_data)

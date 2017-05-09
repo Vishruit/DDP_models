@@ -19,5 +19,8 @@ img_size = 32
 num_channels = 3
 num_classes = 10
 
+data_slice_size = 100
+train_split, valid_split, test_split = 1.5, 1.5, 7
+
 video_index = [1,5,10,15,20,25,30]
 frame_index = [1,5,10,25,40,50,60,75,90,99]
