@@ -14,6 +14,7 @@ def argAssigner(args):
     verbose = args.verbose
     restart = args.restart
     debug = args.debug
+    return lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart
 
 def argParser():
     parser = argparse.ArgumentParser()

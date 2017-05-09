@@ -218,7 +218,8 @@ def plot_group(history):
 if __name__ == "__main__":
     # parse the arguments from the command line
     args, argDict = argParser()
-    argAssigner(args)
+    lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart = argAssigner(args)
+
 
     dataset_path = './data_small_100.h5'
     train_file_name,  dataset_keyword = '../data_small_100.h5', 'data_small'
