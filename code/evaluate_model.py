@@ -23,7 +23,7 @@ def read_data():
             data = data.reshape((sample,frames,height,width))
         return data
 
-    global train_file_name,  dataset_keyword
+    global train_file_name,  dataset_keyword, data_slice_size, train_split, valid_split, test_split
     data_slice_size = 202
     train_split, valid_split, test_split = 7, 1.5, 1.5
     train_set_data = HDF5Matrix(train_file_name, dataset_keyword, start=0, \
@@ -37,12 +37,6 @@ def read_data():
                                                                  normalizer=lambda x: data_preprocess(x))
     return (train_set_data, train_set_data, valid_set_data, valid_set_data, test_set_data, test_set_data)
 
-def ensure_dir(files):
-    for f in files:
-        d = os.path.dirname(f)
-        if not os.path.exists(d):
-            os.makedirs(d)
-    return 1
 
 # later...
 experiment_num = '3'
