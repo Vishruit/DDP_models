@@ -4,7 +4,7 @@ from constants import *
 
 def argAssigner(args):
     # TODO check the data types
-    global lr, batch_size, init_Code,num_epochs, model_initializer, save_dir, verbose, debug, restart, mc
+    global lr, batch_size, init_Code,num_epochs, model_initializer, save_dir, verbose, debug, restart, machine_code
     lr = float(args.lr)
     batch_size = int(args.batch_size)
     num_epochs = int(args.num_epochs)
@@ -15,8 +15,8 @@ def argAssigner(args):
     verbose = args.verbose
     debug = args.debug
     restart = args.restart
-    mc = args.machine_code
-    return lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart
+    machine_code = args.machine_code
+    return lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart,machine_code
 
 def argParser():
     parser = argparse.ArgumentParser()
@@ -29,7 +29,7 @@ def argParser():
     parser.add_argument('-d','--debug', help='For devs only, takes in no arguments', action="store_true")
     parser.add_argument('-v',"--verbose", help="Increase output verbosity",action="store_true")
     parser.add_argument('-r',"--restart", help="Restarts the network",action="store_true")
-    parser.add_argument('-mc',"--machine_code", help="Restarts the network",action="store_true")
+    parser.add_argument('-m',"--machine_code", help="Restarts the network",action="store_true")
     args = parser.parse_args()
 
     if args.verbose:

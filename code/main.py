@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
     # parse the arguments from the command line
     args, argDict = argParser()
-    lr, batch_size, init_Code, num_epochs, model_initializer, save_dir, verbose, debug, restart = argAssigner(args)
+    lr, batch_size, init_Code, num_epochs, model_initializer, save_dir, verbose, debug, restart, machine_code = argAssigner(args)
 
     ensure_dir([visualization_filepath, filepath_best_weights, filepath_chpkt_weights, experiment_root])
     ensure_dir([visualization_filepath_test_time])
@@ -105,6 +105,7 @@ if __name__ == "__main__":
 
     decoded_imgs = model.predict(x_test, batch_size=batch_size)
 
-    plot_video(decoded_imgs, x_test)
+    if machine_code == '1':
+        plot_video(decoded_imgs, x_test)
 
     save_model_and_weights(model)
