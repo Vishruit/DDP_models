@@ -121,7 +121,7 @@ def define_model(init,lr,verbose,restart):
 
     # x = BatchNormalization(mode=2, axis=1, input_shape=(ROWS, COLS, CHANNELS))
     # x = BatchNormalization(mode=2, axis=1)
-    x = BatchNormalization()(x)
+    # x = BatchNormalization()(x)
 
     x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
     x = MaxPooling3D((2, 2, 2), padding='same')(x)
