@@ -1,6 +1,9 @@
 # Utility functions
 from imports_lib import *
+from network import *
 from constants import *
+from main import *
+
 
 def argAssigner(args):
     # TODO check the data types
@@ -57,7 +60,10 @@ def load_model_weights(model, restart=False):
     global filepath_best_weights
     if restart:
         model.load_weights(filepath_best_weights)
+<<<<<<< HEAD
     return
+=======
+>>>>>>> de593ae... Restructruring
 
 def save_model_and_weights(model):
     # serialize model to JSON
@@ -87,7 +93,11 @@ def plot_group(history):
     plt.legend(['train', 'validation'], loc='upper left')
     plt.savefig( experiment_root + 'plot_valtrain_loss.jpg')
 
+<<<<<<< HEAD
 def plot_video(decoded_imgs, x_test):
+=======
+def plot_video(decoded_imgs):
+>>>>>>> de593ae... Restructruring
     for video in video_index:
         plt.figure(figsize=(20, 4))
         print('Processing video:',video)
@@ -110,6 +120,7 @@ def plot_video(decoded_imgs, x_test):
             ax.get_yaxis().set_visible(False)
             plt.savefig( visualization_filepath+'reconstruction_vid'+str(video)+'.png' )
         plt.close()
+<<<<<<< HEAD
 
 def read_data():
     def data_preprocess(data):
@@ -150,3 +161,5 @@ def copy_code(code_base_file_path):
     shutil.copy('utils.py', code_base_file_path)
     print('Copied files to the experiment root: '+ code_base_file_path)
     return
+=======
+>>>>>>> de593ae... Restructruring
