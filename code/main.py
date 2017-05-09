@@ -105,7 +105,7 @@ if __name__ == "__main__":
 
     decoded_imgs = model.predict(x_test, batch_size=batch_size)
 
-    if machine_code == '1':
+    if machine_code:
         plot_video(decoded_imgs, x_test)
 
     save_model_and_weights(model)
