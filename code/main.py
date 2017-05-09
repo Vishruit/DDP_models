@@ -1,4 +1,7 @@
-import imports_lib
+from imports_lib import *
+from utils import *
+from network import *
+
 
 # tf.device('/gpu:0')
 
@@ -20,7 +23,6 @@ class TestCallback(Callback):
         val_loss, val_acc = self.model.evaluate(x_val, y_val, verbose=0, batch_size=batch_size)
         test_loss, test_acc = self.model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
         print('\n \x1b[6;30;42m :=:> \x1b[0m train_loss: {0:.3f}, train_acc: {1:.2f}|| val_loss: {2:.3f}, val_acc: {3:.2f} || test_loss: {4:.3f}, test_acc: {5:.2f}\n'.format(np.asscalar(train_loss), np.asscalar(train_acc), np.asscalar(val_loss), np.asscalar(val_acc), np.asscalar(test_loss), np.asscalar(test_acc)))
-
 
 class Histories(keras.callbacks.Callback):
     def on_train_begin(self, logs={}):
@@ -45,62 +47,64 @@ class Histories(keras.callbacks.Callback):
     def on_batch_end(self, batch, logs={}):
         return
 
-def define_model(init,lr,verbose,restart):
-    channels = 1
-    global dropout_rate, frames, height, width, visualization_filepath
+# def define_model(init,lr,verbose,restart):
+#     channels = 1
+#     global dropout_rate, frames, height, width, visualization_filepath
+#
+#     input_img = Input(shape=(frames, height, width))
+#     x = Reshape((frames, height, width, 1))(input_img)
+#
+#     # x = BatchNormalization(mode=2, axis=1, input_shape=(ROWS, COLS, CHANNELS))
+#     # x = BatchNormalization(mode=2, axis=1)
+#     x = BatchNormalization()(x)
+#
+#     x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
+#     x = MaxPooling3D((2, 2, 2), padding='same')(x)
+#
+#     x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
+#     x = MaxPooling3D((2, 2, 2), padding='same')(x)
+#
+#     x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
+#     encoded = MaxPooling3D((5, 2, 2), padding='same')(x)
+#
+#     # at this point the representation is (8, 4, 4) i.e. 128-dimensional
+#
+#     x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(encoded)
+#     x = UpSampling3D((5, 2, 2))(x)
+#
+#     x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
+#     x = UpSampling3D((2, 2, 2))(x)
+#
+#     x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
+#     x = UpSampling3D((2, 2, 2))(x)
+#
+#     decoded = Conv3D(1, (3, 3, 3), activation='sigmoid', padding='same')(x)
+#     decoded = Reshape((frames, height, width))(decoded)
+#
+#     # x = Dropout(dropout_rate)(x)
+#     # POOL3_flattened = Flatten()(DROP3)
+#     # FC1 = Dense(1024, activation='relu', kernel_initializer=init)(POOL3_flattened)
+#     # BN = BatchNormalization()(SOFTMAX_precomputation)
+#     # SOFTMAX = Activation('softmax')(BN)
+#
+#     model = Model(input_img, decoded)
+#     adam = Adam(lr=lr, beta_1=0.9, beta_2=0.999, epsilon=1e-8, decay=0.0)
+#     model.compile(optimizer='adadelta', loss='binary_crossentropy', metrics=[binary_accuracy])
+#
+#     # model.compile(optimizer=adam, loss='categorical_crossentropy', \
+#     #                 class_mode="categorical", metrics=[categorical_accuracy]) # TODO binary_crossentropy
+#
+#     model.summary()
+#
+#     load_model_weights(model,restart)
+#
+#     #if verbose:
+#         #print (model.summary()
+#         # )grapher.plot(model, './visualizations/model_grapher.png')
+#         #plot_model(model, to_file=visualization_filepath+'plot_model.png')
+#     return model
+#
 
-    input_img = Input(shape=(frames, height, width))
-    x = Reshape((frames, height, width, 1))(input_img)
-
-    # x = BatchNormalization(mode=2, axis=1, input_shape=(ROWS, COLS, CHANNELS))
-    # x = BatchNormalization(mode=2, axis=1)
-    x = BatchNormalization()(x)
-
-    x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
-    x = MaxPooling3D((2, 2, 2), padding='same')(x)
-
-    x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
-    x = MaxPooling3D((2, 2, 2), padding='same')(x)
-
-    x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
-    encoded = MaxPooling3D((5, 2, 2), padding='same')(x)
-
-    # at this point the representation is (8, 4, 4) i.e. 128-dimensional
-
-    x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(encoded)
-    x = UpSampling3D((5, 2, 2))(x)
-
-    x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
-    x = UpSampling3D((2, 2, 2))(x)
-
-    x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
-    x = UpSampling3D((2, 2, 2))(x)
-
-    decoded = Conv3D(1, (3, 3, 3), activation='sigmoid', padding='same')(x)
-    decoded = Reshape((frames, height, width))(decoded)
-
-    # x = Dropout(dropout_rate)(x)
-    # POOL3_flattened = Flatten()(DROP3)
-    # FC1 = Dense(1024, activation='relu', kernel_initializer=init)(POOL3_flattened)
-    # BN = BatchNormalization()(SOFTMAX_precomputation)
-    # SOFTMAX = Activation('softmax')(BN)
-
-    model = Model(input_img, decoded)
-    adam = Adam(lr=lr, beta_1=0.9, beta_2=0.999, epsilon=1e-8, decay=0.0)
-    model.compile(optimizer='adadelta', loss='binary_crossentropy', metrics=[binary_accuracy])
-
-    # model.compile(optimizer=adam, loss='categorical_crossentropy', \
-    #                 class_mode="categorical", metrics=[categorical_accuracy]) # TODO binary_crossentropy
-
-    model.summary()
-
-    load_model_weights(model,restart)
-
-    #if verbose:
-        #print (model.summary()
-        # )grapher.plot(model, './visualizations/model_grapher.png')
-        #plot_model(model, to_file=visualization_filepath+'plot_model.png')
-    return model
 
 def load_model_weights(model, restart=False):
     global filepath_best_weights
@@ -108,46 +112,46 @@ def load_model_weights(model, restart=False):
     if restart:
         model.load_weights(filepath_best_weights)
 
-def argAssigner(args):
-    # TODO check the data types
-    global lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart
-    lr = float(args.lr)
-    batch_size = int(args.batch_size)
-    num_epochs = int(args.num_epochs)
-    save_dir = args.save_dir
-    init_Code = int(args.init)
-    # TODO check normal or uniform
-    model_initializer = initializers.glorot_normal(seed=None) if init_Code == 1 else initializers.he_normal(seed=None)
-    verbose = args.verbose
-    restart = args.restart
-    debug = args.debug
-
-def argParser():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--lr',default=0.0001, help='Initial learning rate (eta)', type=float)
-    parser.add_argument('--batch_size',default=2, help='Batch size, -1 for vanilla gradient descent')
-    parser.add_argument('--num_epochs',default=100, help='Saves model parameters in this directory')
-    parser.add_argument('--init',default=1, help='Initializer: 1 for Xavier init and 2 for He init')
-    parser.add_argument('--save_dir',default='./save_dir/', help='Saves model parameters in this directory')
-    # Custom debugging args
-    parser.add_argument('-d','--debug', help='For devs only, takes in no arguments', action="store_true")
-    parser.add_argument('-v',"--verbose", help="Increase output verbosity",action="store_true")
-    parser.add_argument('-r',"--restart", help="Restarts the network",action="store_true")
-    args = parser.parse_args()
-
-    if args.verbose:
-        print("verbosity turned on")
-        for k in args.__dict__:
-            print ('\x1b[6;30;42m' + str(k) + '\x1b[0m' + '\t\t' + str(args.__dict__[k]))
-
-    return args, args.__dict__
-
-def unpickle(file):
-    import cPickle
-    fo = open(file, 'rb')
-    dict = cPickle.load(fo)
-    fo.close()
-    return dict
+# def argAssigner(args):
+#     # TODO check the data types
+#     global lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart
+#     lr = float(args.lr)
+#     batch_size = int(args.batch_size)
+#     num_epochs = int(args.num_epochs)
+#     save_dir = args.save_dir
+#     init_Code = int(args.init)
+#     # TODO check normal or uniform
+#     model_initializer = initializers.glorot_normal(seed=None) if init_Code == 1 else initializers.he_normal(seed=None)
+#     verbose = args.verbose
+#     restart = args.restart
+#     debug = args.debug
+#
+# def argParser():
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument('--lr',default=0.0001, help='Initial learning rate (eta)', type=float)
+#     parser.add_argument('--batch_size',default=2, help='Batch size, -1 for vanilla gradient descent')
+#     parser.add_argument('--num_epochs',default=100, help='Saves model parameters in this directory')
+#     parser.add_argument('--init',default=1, help='Initializer: 1 for Xavier init and 2 for He init')
+#     parser.add_argument('--save_dir',default='./save_dir/', help='Saves model parameters in this directory')
+#     # Custom debugging args
+#     parser.add_argument('-d','--debug', help='For devs only, takes in no arguments', action="store_true")
+#     parser.add_argument('-v',"--verbose", help="Increase output verbosity",action="store_true")
+#     parser.add_argument('-r',"--restart", help="Restarts the network",action="store_true")
+#     args = parser.parse_args()
+#
+#     if args.verbose:
+#         print("verbosity turned on")
+#         for k in args.__dict__:
+#             print ('\x1b[6;30;42m' + str(k) + '\x1b[0m' + '\t\t' + str(args.__dict__[k]))
+#
+#     return args, args.__dict__
+#
+# def unpickle(file):
+#     import cPickle
+#     fo = open(file, 'rb')
+#     dict = cPickle.load(fo)
+#     fo.close()
+#     return dict
 
 def read_data():
     def data_preprocess(data):
@@ -181,12 +185,12 @@ def read_data():
     # return (train_set_data, train_set_labels, valid_set_data, valid_set_labels, test_set_data, test_set_labels)
     return (train_set_data, train_set_data, valid_set_data, valid_set_data, test_set_data, test_set_data)
 
-def ensure_dir(files):
-    for f in files:
-        d = os.path.dirname(f)
-        if not os.path.exists(d):
-            os.makedirs(d)
-    return 1
+# def ensure_dir(files):
+#     for f in files:
+#         d = os.path.dirname(f)
+#         if not os.path.exists(d):
+#             os.makedirs(d)
+#     return 1
 
 def plot_group(history):
     # print history_record
