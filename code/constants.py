@@ -1,9 +1,3 @@
-from imports_lib import *
-from utils import *
-from network import *
-from constants import *
-from main import *
-
 dataset_path = './data_small_100.h5'
 train_file_name,  dataset_keyword = '../data_small_100.h5', 'data_small'
 image_height, image_width, image_depth=32,32,3
