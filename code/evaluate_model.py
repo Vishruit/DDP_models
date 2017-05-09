@@ -1,19 +1,7 @@
 # Evaluaytion pipeline is ready! :)
 # Evaluate a saved model
-from keras.models import Model, load_model
-from keras.models import load_model
-from keras.models import model_from_json
-from keras.utils.io_utils import HDF5Matrix
-# from main import read_data
+from imports_lib import *
 
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import numpy as np
-import tensorflow as tf
-import cPickle, gzip, pickle, h5py
-import argparse
-import os, time, sys
 
 # TODO remove temporary fix
 train_file_name,  dataset_keyword = '../data_small_100.h5', 'data_small'

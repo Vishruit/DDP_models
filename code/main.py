@@ -116,7 +116,6 @@ if __name__ == "__main__":
     # histories = Histories()
 
     callback_list = [es, checkpointer, chkpt, tensorboard, testcallback, reduceLR, csvLogger]
-    #callback_list = [es, checkpointer, chkpt, tensorboard, reduceLR, csvLogger]
 
     if not debug:
         history = model.fit(x_train, y_train,
@@ -139,7 +138,7 @@ if __name__ == "__main__":
 
     decoded_imgs = model.predict(x_test, batch_size=batch_size)
 
-    plot_video(decoded_imgs)
+    plot_video(decoded_imgs, x_test)
 
     save_model_and_weights(model)
 

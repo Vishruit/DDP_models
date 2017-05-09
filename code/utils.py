@@ -1,8 +1,6 @@
 # Utility functions
 from imports_lib import *
-from utils import *
 from constants import *
-
 
 def argAssigner(args):
     # TODO check the data types
@@ -87,7 +85,7 @@ def plot_group(history):
     plt.legend(['train', 'validation'], loc='upper left')
     plt.savefig( experiment_root + 'plot_valtrain_loss.jpg')
 
-def plot_video(decoded_imgs):
+def plot_video(decoded_imgs, x_test):
     for video in video_index:
         plt.figure(figsize=(20, 4))
         print('Processing video:',video)

@@ -17,7 +17,7 @@ from keras.layers import Input, Dense, Convolution2D, MaxPooling2D, BatchNormali
 from keras.layers import Reshape, Conv2D, UpSampling3D, Conv3D, MaxPooling3D
 from keras.layers.core import Lambda
 from keras.metrics import categorical_accuracy, binary_accuracy
-from keras.models import Model, load_model
+from keras.models import Model, load_model, model_from_json
 from keras.optimizers import Adam
 from keras.preprocessing.image import ImageDataGenerator
 from keras.regularizers import l2
@@ -29,11 +29,6 @@ from keras.utils.vis_utils import plot_model
 # Miscellaneous
 import numpy as np
 import tensorflow as tf
-import cPickle, gzip, pickle, h5py
+import cPickle, gzip, pickle
 import argparse, h5py
 import os, time, sys
-
-# Files import
-# from utils import *
-# from network import *
-# from constants import *
