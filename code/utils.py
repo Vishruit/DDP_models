@@ -1,5 +1,5 @@
 # Utility functions
-import argparse
+from imports_lib import *
 
 def argAssigner(args):
     # TODO check the data types
