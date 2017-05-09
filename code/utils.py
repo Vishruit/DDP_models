@@ -2,7 +2,6 @@
 from imports_lib import *
 from constants import *
 
-
 def argAssigner(args):
     # TODO check the data types
     global lr, batch_size, init_Code,num_epochs, model_initializer, save_dir, verbose, debug, restart, machine_code
