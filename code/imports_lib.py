@@ -1,3 +1,4 @@
+# Matplotlib imports
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -6,6 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 
+# Keras Imports
 import keras
 from keras import initializers
 import keras.backend as K
@@ -23,8 +25,15 @@ from keras.utils import to_categorical
 from keras.utils.io_utils import HDF5Matrix
 from keras.utils.np_utils import normalize
 from keras.utils.vis_utils import plot_model
+
+# Miscellaneous
 import numpy as np
 import tensorflow as tf
 import cPickle, gzip, pickle, h5py
 import argparse, h5py
 import os, time, sys
+
+# Files import
+from utils import *
+from network import *
+from constants import *
