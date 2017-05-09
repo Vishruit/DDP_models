@@ -23,7 +23,8 @@ num_channels = 3
 num_classes = 10
 
 
-data_slice_size = 100
+data_slice_size = 50
+
 train_split, valid_split, test_split = 1.5, 1.5, 7
 
 video_index = [1,5,10,15,20,25,30]
