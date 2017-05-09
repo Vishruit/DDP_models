@@ -2,7 +2,6 @@
 from imports_lib import *
 from utils import *
 from constants import *
-from main import *
 
 
 def argAssigner(args):
