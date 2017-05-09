@@ -1,6 +1,5 @@
 from imports_lib import *
 
-
 def define_model(init,lr,verbose,restart):
     channels = 1
     global dropout_rate, frames, height, width, visualization_filepath

@@ -1,6 +1,7 @@
 from imports_lib import *
-from utils import *
-from network import *
+# from utils import *
+# from network import *
+# from constants import *
 
 
 # tf.device('/gpu:0')
@@ -112,46 +113,6 @@ def load_model_weights(model, restart=False):
     if restart:
         model.load_weights(filepath_best_weights)
 
-# def argAssigner(args):
-#     # TODO check the data types
-#     global lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart
-#     lr = float(args.lr)
-#     batch_size = int(args.batch_size)
-#     num_epochs = int(args.num_epochs)
-#     save_dir = args.save_dir
-#     init_Code = int(args.init)
-#     # TODO check normal or uniform
-#     model_initializer = initializers.glorot_normal(seed=None) if init_Code == 1 else initializers.he_normal(seed=None)
-#     verbose = args.verbose
-#     restart = args.restart
-#     debug = args.debug
-#
-# def argParser():
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument('--lr',default=0.0001, help='Initial learning rate (eta)', type=float)
-#     parser.add_argument('--batch_size',default=2, help='Batch size, -1 for vanilla gradient descent')
-#     parser.add_argument('--num_epochs',default=100, help='Saves model parameters in this directory')
-#     parser.add_argument('--init',default=1, help='Initializer: 1 for Xavier init and 2 for He init')
-#     parser.add_argument('--save_dir',default='./save_dir/', help='Saves model parameters in this directory')
-#     # Custom debugging args
-#     parser.add_argument('-d','--debug', help='For devs only, takes in no arguments', action="store_true")
-#     parser.add_argument('-v',"--verbose", help="Increase output verbosity",action="store_true")
-#     parser.add_argument('-r',"--restart", help="Restarts the network",action="store_true")
-#     args = parser.parse_args()
-#
-#     if args.verbose:
-#         print("verbosity turned on")
-#         for k in args.__dict__:
-#             print ('\x1b[6;30;42m' + str(k) + '\x1b[0m' + '\t\t' + str(args.__dict__[k]))
-#
-#     return args, args.__dict__
-#
-# def unpickle(file):
-#     import cPickle
-#     fo = open(file, 'rb')
-#     dict = cPickle.load(fo)
-#     fo.close()
-#     return dict
 
 def read_data():
     def data_preprocess(data):
@@ -185,18 +146,8 @@ def read_data():
     # return (train_set_data, train_set_labels, valid_set_data, valid_set_labels, test_set_data, test_set_labels)
     return (train_set_data, train_set_data, valid_set_data, valid_set_data, test_set_data, test_set_data)
 
-# def ensure_dir(files):
-#     for f in files:
-#         d = os.path.dirname(f)
-#         if not os.path.exists(d):
-#             os.makedirs(d)
-#     return 1
 
 def plot_group(history):
-    # print history_record
-    # print(history_record.history.keys())
-    # ['loss', 'val_binary_accuracy', 'lr', 'val_loss', 'binary_accuracy']
-    # summarize history for accuracy
     global experiment_root
     plt.plot(history.history['binary_accuracy'])
     plt.plot(history.history['val_binary_accuracy'])
@@ -220,23 +171,22 @@ if __name__ == "__main__":
     args, argDict = argParser()
     lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart = argAssigner(args)
 
-
-    dataset_path = './data_small_100.h5'
-    train_file_name,  dataset_keyword = '../data_small_100.h5', 'data_small'
-    image_height, image_width, image_depth=32,32,3
-    frames, height, width = 100, 256, 320
-    dropout_rate = 0.7
-    data_augmentation=False
-    append_CSVfile_FLAG = False
-    #data = (nsamples, 202*100*256*320) float32
-
-    experiment_num = 'test'
-    experiment_root = './exp'+experiment_num+'/'
-    visualization_filepath = './exp'+experiment_num+'/visualizations/'
-    visualization_filepath_test_time = './exp'+experiment_num+'/visualizations/Test_time/'
-    filepath_best_weights='./exp'+experiment_num+'/save_dir/weights.best.hdf5'
-    filepath_chpkt_weights = './exp'+experiment_num+'/save_dir/CheckPoint/'
-    filepath_csvLogger = './exp'+experiment_num+'/save_dir/CheckPoint/csv_log_file.csv'
+    # dataset_path = './data_small_100.h5'
+    # train_file_name,  dataset_keyword = '../data_small_100.h5', 'data_small'
+    # image_height, image_width, image_depth=32,32,3
+    # frames, height, width = 100, 256, 320
+    # dropout_rate = 0.7
+    # data_augmentation=False
+    # append_CSVfile_FLAG = False
+    # #data = (nsamples, 202*100*256*320) float32
+    #
+    # experiment_num = 'test'
+    # experiment_root = './exp'+experiment_num+'/'
+    # visualization_filepath = './exp'+experiment_num+'/visualizations/'
+    # visualization_filepath_test_time = './exp'+experiment_num+'/visualizations/Test_time/'
+    # filepath_best_weights='./exp'+experiment_num+'/save_dir/weights.best.hdf5'
+    # filepath_chpkt_weights = './exp'+experiment_num+'/save_dir/CheckPoint/'
+    # filepath_csvLogger = './exp'+experiment_num+'/save_dir/CheckPoint/csv_log_file.csv'
 
     # filepath="./save_dir/exp1/weights-improvement-{epoch:02d}-{val_acc:.2f}.hdf5"
 
@@ -292,7 +242,6 @@ if __name__ == "__main__":
     plot_group(history)
 
     decoded_imgs = model.predict(x_test, batch_size=batch_size)
-    # video_index = [1,5,10,50,100,150,200]
     video_index = [1,5,10,15,20,25,30]
     frame_index = [1,5,10,25,40,50,60,75,90,99]
 
