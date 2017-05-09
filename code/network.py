@@ -3,6 +3,7 @@ from utils import *
 from network import *
 from constants import *
 from main import *
+from utils import load_model_weights
 
 def define_model(init,lr,verbose,restart):
     channels = 1
