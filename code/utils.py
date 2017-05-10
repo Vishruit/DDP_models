@@ -142,6 +142,7 @@ def read_data():
                                                                  normalizer=lambda x: data_preprocess(x))
     return (train_set_data, train_set_data, valid_set_data, valid_set_data, test_set_data, test_set_data)
 
+
 def copy_code(code_base_file_path):
     import shutil
     shutil.copy('constants.py', code_base_file_path)

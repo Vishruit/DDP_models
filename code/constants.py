@@ -17,6 +17,7 @@ code_base_file_path = './exp' + experiment_num +'/code/'
 filepath_best_weights='./exp'+experiment_num+'/save_dir/weights.best.hdf5'
 filepath_chpkt_weights = './exp'+experiment_num+'/save_dir/CheckPoint/'
 filepath_csvLogger = './exp'+experiment_num+'/save_dir/CheckPoint/csv_log_file.csv'
+code_base_file_path = './exp' + experiment_num +'/code'
 
 img_size = 32
 num_channels = 3
