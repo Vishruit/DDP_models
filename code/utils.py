@@ -143,10 +143,10 @@ def read_data():
 
 def copy_code(code_base_file_path):
     import shutil
-    shutil.copy2('constants.py', code_base_file_path+'constants.py')
-    shutil.copy2('imports_lib.py', code_base_file_path+'imports_lib.py')
-    shutil.copy2('main.py', code_base_file_path+'main.py')
-    shutil.copy2('network.py', code_base_file_path+'network.py')
-    shutil.copy2('utils.py', code_base_file_path+'utils.py')
+    shutil.copy('constants.py', code_base_file_path)
+    shutil.copy('imports_lib.py', code_base_file_path)
+    shutil.copy('main.py', code_base_file_path)
+    shutil.copy('network.py', code_base_file_path)
+    shutil.copy('utils.py', code_base_file_path)
     print('Copied files to the experiment root: '+ code_base_file_path)
     return
