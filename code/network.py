@@ -13,7 +13,7 @@ def define_model(init,lr,verbose,restart):
 
     # x = BatchNormalization(mode=2, axis=1, input_shape=(ROWS, COLS, CHANNELS))
     # x = BatchNormalization(mode=2, axis=1)
-    x = BatchNormalization()(x)
+    # x = BatchNormalization()(x)
 
     x = Conv3D(128, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
     x = MaxPooling3D((2, 2, 2), padding='same')(x)
@@ -63,7 +63,6 @@ def define_model(init,lr,verbose,restart):
     # SOFTMAX = Activation('softmax')(BN)
 
     model = Model(input_img, decoded)
-    model.summary()
     adam = Adam(lr=lr, beta_1=0.9, beta_2=0.999, epsilon=1e-8, decay=0.0)
     model.compile(optimizer='adadelta', loss='binary_crossentropy', metrics=[binary_accuracy])
 
