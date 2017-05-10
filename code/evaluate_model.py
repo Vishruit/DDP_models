@@ -8,7 +8,7 @@ train_file_name,  dataset_keyword = '../data_small_100.h5', 'data_small'
 
 
 # later...
-experiment_num = '3'
+experiment_num = '6'
 experiment_root = './exp'+experiment_num+'/'
 visualization_filepath = './exp'+experiment_num+'/visualizations/'
 visualization_filepath_test_time = './exp'+experiment_num+'/visualizations/Test_time/'

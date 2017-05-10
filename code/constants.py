@@ -21,11 +21,11 @@ num_channels = 3
 num_classes = 10
 
 # if not debug:
-# data_slice_size = 202
-# train_split, valid_split, test_split = 7, 1.5, 1.5
+data_slice_size = 202
+train_split, valid_split, test_split = 7, 1.5, 1.5
 # else:
-data_slice_size = 50
-train_split, valid_split, test_split = 1.5, 1.5, 7
+# data_slice_size = 50
+# train_split, valid_split, test_split = 1.5, 1.5, 7
 
 video_index = [1,5,10,15,20,25,30]
 frame_index = [1,5,10,25,40,50,60,75,90,99]
