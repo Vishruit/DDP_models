@@ -141,6 +141,12 @@ def read_data():
                                                                  normalizer=lambda x: data_preprocess(x))
     return (train_set_data, train_set_data, valid_set_data, valid_set_data, test_set_data, test_set_data)
 
-def copy_code():
+def copy_code(code_base_file_path):
     import shutil
-    shutil.copy2('constants.py', )
+    shutil.copy2('constants.py', code_base_file_path)
+    shutil.copy2('imports_lib.py', code_base_file_path)
+    shutil.copy2('main.py', code_base_file_path)
+    shutil.copy2('network.py', code_base_file_path)
+    shutil.copy2('utils.py', code_base_file_path)
+    print('Copied files to the experiment root: '+ code_base_file_path)
+    return
