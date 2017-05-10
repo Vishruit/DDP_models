@@ -71,7 +71,6 @@ def define_model(init,lr,verbose,restart):
     #                 class_mode="categorical", metrics=[categorical_accuracy]) # TODO binary_crossentropy
 
     model.summary()
-    sys.exit()
 
     load_model_weights(model,restart)
 
