@@ -140,3 +140,7 @@ def read_data():
                                                                  end= 1 *data_slice_size, \
                                                                  normalizer=lambda x: data_preprocess(x))
     return (train_set_data, train_set_data, valid_set_data, valid_set_data, test_set_data, test_set_data)
+
+def copy_code():
+    import shutil
+    shutil.copy2('constants.py', )
