@@ -23,7 +23,10 @@ img_size = 32
 num_channels = 3
 num_classes = 10
 
-
+# if not debug:
+# data_slice_size = 202
+# train_split, valid_split, test_split = 7, 1.5, 1.5
+# else:
 data_slice_size = 50
 train_split, valid_split, test_split = 1.5, 1.5, 7
 
