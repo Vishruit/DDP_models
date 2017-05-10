@@ -68,7 +68,6 @@ if __name__ == "__main__":
     #    model = define_model(model_initializer, lr, verbose,restart=restart)
     model = define_model(model_initializer, lr, verbose,restart=restart)
     copy_code(code_base_file_path)
-    sys.exit()
 
     total_training_epochs = num_epochs
     train_set_data, train_set_labels, valid_set_data, valid_set_labels, test_set_data, test_set_labels = read_data()
