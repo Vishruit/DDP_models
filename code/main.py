@@ -57,7 +57,7 @@ if __name__ == "__main__":
     lr, batch_size, init_Code, num_epochs, model_initializer, save_dir, verbose, debug, restart, machine_code = argAssigner(args)
 
     ensure_dir([visualization_filepath, filepath_best_weights, filepath_chpkt_weights, experiment_root])
-    ensure_dir([visualization_filepath_test_time])
+    ensure_dir([visualization_filepath_test_time, code_base_file_path])
 
     # import keras.backend.tensorflow_backend as K
 
@@ -106,7 +106,7 @@ if __name__ == "__main__":
     plot_group(history)
 
     decoded_imgs = model.predict(x_test, batch_size=batch_size)
-    
+
     print(machine_code)
     if not machine_code:
         plot_video(decoded_imgs, x_test)
