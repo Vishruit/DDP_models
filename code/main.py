@@ -104,7 +104,8 @@ if __name__ == "__main__":
     plot_group(history)
 
     decoded_imgs = model.predict(x_test, batch_size=batch_size)
-
+    
+    print(machine_code)
     if not machine_code:
         plot_video(decoded_imgs, x_test)
 
