@@ -1,4 +1,4 @@
-from utils import ensure_dir, argParser
+# from utils import ensure_dir, argParser
 
 dataset_path = './data_small_100.h5'
 train_file_name,  dataset_keyword = '../data_small_100.h5', 'data_small'
