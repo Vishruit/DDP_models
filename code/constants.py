@@ -7,6 +7,11 @@ data_augmentation=False
 append_CSVfile_FLAG = False
 #data = (nsamples, 202*100*256*320) float32
 
+# parse the arguments from the command line
+args, argDict = argParser()
+lr, batch_size, init_Code, num_epochs, model_initializer, save_dir, verbose, debug, restart, machine_code = argAssigner(args)
+
+
 experiment_num = '8'
 
 experiment_root = './exp'+experiment_num+'/'
@@ -17,6 +22,9 @@ code_base_file_path = './exp' + experiment_num +'/code/'
 filepath_best_weights='./exp'+experiment_num+'/save_dir/weights.best.hdf5'
 filepath_chpkt_weights = './exp'+experiment_num+'/save_dir/CheckPoint/'
 filepath_csvLogger = './exp'+experiment_num+'/save_dir/CheckPoint/csv_log_file.csv'
+
+ensure_dir([visualization_filepath, filepath_best_weights, filepath_chpkt_weights, experiment_root])
+ensure_dir([visualization_filepath_test_time, code_base_file_path])
 
 img_size = 32
 num_channels = 3
