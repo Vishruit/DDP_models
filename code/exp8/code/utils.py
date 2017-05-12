@@ -18,7 +18,6 @@ def argAssigner(args):
     machine_code = args.machine_code
     return lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart,machine_code
 
-
 def argParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--lr',default=0.0001, help='Initial learning rate (eta)', type=float)
@@ -138,10 +137,9 @@ def read_data():
                                                                   end=int( (train_split+valid_split) *data_slice_size/10), \
                                                                   normalizer=lambda x: data_preprocess(x))
     test_set_data = HDF5Matrix(train_file_name, dataset_keyword, start=int( (train_split+valid_split) *data_slice_size/10), \
-                                                                  end= 1 *data_slice_size, \
+                                                                 end= 1 *data_slice_size, \
                                                                  normalizer=lambda x: data_preprocess(x))
     return (train_set_data, train_set_data, valid_set_data, valid_set_data, test_set_data, test_set_data)
-
 
 def copy_code(code_base_file_path):
     import shutil
