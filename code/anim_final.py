@@ -1,8 +1,8 @@
-import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-import h5py, numpy as np, sys
 import pylab
+import numpy as np
+import h5py, numpy as np, sys
 from keras.utils.io_utils import HDF5Matrix
 from skimage.filters import threshold_mean
 from image_thresholding import thresh_im
@@ -11,9 +11,7 @@ from skimage.filters import threshold_minimum
 from skimage.filters import threshold_otsu, threshold_local
 from skimage.filters import threshold_adaptive
 
-# # Set up formatting for the movie files
-# Writer = animation.writers['imagemagick']
-# writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
+
 epsilon = 0.0001
 def read_data():
     train_file_name,  dataset_keyword = '../Exp_17.ptw.h5', 'data_float32'
@@ -35,7 +33,7 @@ def auto_plot(options):
     return row, col
 
 options = 2
-filename = 'img_histeq_difference_no_rounding.gif'
+filename = 'difference_images_vid.gif'
 images, maxVal_im, minVal_im, meanVal_im, stdVal_im = read_data()
 
 fig = plt.figure()
@@ -46,6 +44,7 @@ for j in range(options):
 
 def f(i, option):
     if option == 1:
+        return images[i+1]-images[i]
         # Custom '1' for debugging
         image = images[i]
         num_points = image.shape[0] * image.shape[1]
