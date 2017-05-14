@@ -1,5 +1,5 @@
 from keras.backend import *
-from keras.backend.tensorflow_backend import _preprocess_conv3d_input, _preprocess_conv3d_kernel, _preprocess_border_mode, _postprocess_conv3d_output
+from keras.backend.tensorflow_backend import _preprocess_conv3d_input, _preprocess_conv3d_kernel, _preprocess_padding, _postprocess_conv3d_output
 
 def _preprocess_deconv3d_output_shape(shape, dim_ordering):
     if dim_ordering == 'th':
@@ -43,5 +43,3 @@ def deconv3d(x, kernel, output_shape, strides=(1, 1, 1),
     x = tf.nn.conv3d_transpose(x, kernel, output_shape, strides,
                                padding)
     return _postprocess_conv3d_output(x, dim_ordering)
-
- 

@@ -3,7 +3,8 @@ from keras.layers import Input
 from keras.layers.convolutional import Convolution3D
 from keras.layers.normalization import BatchNormalization
 from keras.callbacks import ModelCheckpoint, EarlyStopping
-from new.deconv3D import Deconvolution3D
+
+from deconv3D import Deconvolution3D
 
 
 import numpy as np
@@ -22,22 +23,22 @@ batch_sz = (10,)
 x = Input(batch_shape=(batch_sz + time_batch_sz +_shape + (1,)))
 
 conv1 = Convolution3D(nb_filter=5, kernel_dim1=3, kernel_dim2=3, kernel_dim3=3,
-                   border_mode='same', subsample=(1, 2, 2))
+                   border_mode='same', subsample=(1, 2, 2))(x)
 
 conv2 = Convolution3D(nb_filter=10, kernel_dim1=3, kernel_dim2=3, kernel_dim3=3,
-                   border_mode='same', subsample=(1, 2, 2))
+                   border_mode='same', subsample=(1, 2, 2))(conv1)
 
 out_shape_2 = (10, 15, 8, 8, 10)
 dconv1 = Deconvolution3D(nb_filter=10, kernel_dim1=3, kernel_dim2=3, kernel_dim3=3, output_shape=out_shape_2,
-                   border_mode='same', subsample=(1, 1, 1))
+                   border_mode='same', subsample=(1, 1, 1))(conv2)
 
 out_shape_1 = (10, 16, 17, 17, 5)
 dconv2 = Deconvolution3D(nb_filter=5, kernel_dim1=3, kernel_dim2=3, kernel_dim3=3, output_shape=out_shape_1,
-                   border_mode='same', subsample=(1, 1, 1))
+                   border_mode='same', subsample=(1, 1, 1))(dconv1)
 
-decoder_squash = Convolution3D(1, 2, 2, 2, border_mode='valid', activation='sigmoid')
+decoder_squash = Convolution3D(1, 2, 2, 2, border_mode='valid', activation='sigmoid')(dconv2)
 
-out = decoder_squash(dconv2(dconv1(conv2(conv1(x)))))
+out = decoder_squash
 
 seq = Model(x,out)
 seq.compile(loss='mse', optimizer='adadelta')
@@ -121,6 +122,7 @@ checkpointer.append(EarlyStopping(monitor='val_loss', patience=5, verbose=1, mod
 
 print noisy_movies.shape
 print shifted_movies.shape
+print 'Hi'
 
 seq.fit(noisy_movies[:1000], shifted_movies[:1000], batch_size=10,
         nb_epoch=300, validation_split=0.05, callbacks=checkpointer)
@@ -164,4 +166,3 @@ for i in range(15):
 
     plt.imshow(toplot)
     plt.savefig('%i_animate.png' % (i + 1))
-
