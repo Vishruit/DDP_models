@@ -112,6 +112,22 @@ def plot_video(decoded_imgs, x_test):
             plt.savefig( visualization_filepath+'reconstruction_vid'+str(video)+'.png' )
         plt.close()
 
+def data_preprocess_backup(data):
+    flag_isMultipleVids = 0
+    if len(data.shape) == 4:
+        sample,frames,height,width = data.shape
+        data = data.reshape((sample*frames,height,width))
+        flag_isMultipleVids = 1
+    maxVal = np.max(data, axis = -1)
+    maxVal = np.max(maxVal, axis = -1)
+    minVal = np.min(data, axis = -1)
+    minVal = np.min(minVal, axis = -1)
+    for i in range(len(maxVal)):
+        data[i,...] = (data[i,...]-minVal[i]) / (maxVal[i]- minVal[i]+0.001)
+    if flag_isMultipleVids == 1:
+        data = data.reshape((sample,frames,height,width))
+    return data
+
 def read_data():
     def data_preprocess(data):
         flag_isMultipleVids = 0
@@ -119,15 +135,85 @@ def read_data():
             sample,frames,height,width = data.shape
             data = data.reshape((sample*frames,height,width))
             flag_isMultipleVids = 1
-        maxVal = np.max(data, axis = -1)
-        maxVal = np.max(maxVal, axis = -1)
-        minVal = np.min(data, axis = -1)
-        minVal = np.min(minVal, axis = -1)
-        for i in range(len(maxVal)):
-            data[i,...] = (data[i,...]-minVal[i]) / (maxVal[i]- minVal[i]+0.001)
+        num_points = height * width
+        for i in range(len(data)):
+            image = data[i,...]
+            a, b = np.min(image), np.max(image)
+            im_flat = image.flatten()
+            table =  np.zeros( (int(b-a) + 1, 5) )
+
+            table[:,0] = np.array(range(int(a),int(b) + 1)) # Values
+            for i in im_flat:
+                table[int(i-a),1] += 1 # Count
+            table[:,2] = table[:,1] / num_points # PDF
+            # CDF
+            running_sum = 0
+            for i in range(int(b-a)):
+                # temp = table[i,2]
+                table[i,3] = running_sum + table[i,2]
+                running_sum = table[i,3]
+            # Thresholding
+            lower_level_threshold = 0.015 # 1.5%
+            upper_level_threshold = 1 - 0.010 # 1.5%
+            lower_level, upper_level = 0, 0
+            for val, cdf in zip(table[:,0],table[:,3]):
+                if cdf < lower_level_threshold:
+                    lower_level = val
+                if cdf >= upper_level_threshold:
+                    upper_level = val
+                    break
+            table[:int(lower_level-a), 3] = table[int(lower_level-a),3]
+            table[int(upper_level-a):, 3] = table[int(upper_level-a),3]
+
+            # Setting range
+            table[:,4] = table[:,3] * (upper_level - lower_level) + lower_level
+            # table[:,1] = np.round(table[:,1])
+            for i in im_flat:
+                i = table[int(i-a),4]
+            image_histeq = im_flat.reshape(image.shape)
+            data[i,...] = image_histeq
         if flag_isMultipleVids == 1:
             data = data.reshape((sample,frames,height,width))
         return data
+
+    def data_preprocess(data):
+        image = images[i]
+        num_points = image.shape[0] * image.shape[1]
+        a, b = np.min(image), np.max(image)
+        im_flat = image.flatten()
+        global table, image_histeq
+        table =  np.zeros( (int(b-a) + 1, 5) )
+        print (b, a)
+
+        for i in im_flat:
+            table[int(i-a),1] += 1 # Count
+        table[:,2] = table[:,1] / num_points # PDF
+        # CDF
+        running_sum = 0
+        for i in range(int(b-a)):
+            # temp = table[i,2]
+            table[i,3] = running_sum + table[i,2]
+            running_sum = table[i,3]
+        # Thresholding
+        lower_level_threshold = 0.015 # 1.5%
+        upper_level_threshold = 1 - 0.010 # 1.5%
+        lower_level, upper_level = 0, 0
+        for val, cdf in zip(table[:,0],table[:,3]):
+            if cdf < lower_level_threshold:
+                lower_level = val
+            if cdf >= upper_level_threshold:
+                upper_level = val
+                break
+        table[:int(lower_level-a), 3] = table[int(lower_level-a),3]
+        table[int(upper_level-a):, 3] = table[int(upper_level-a),3]
+
+        # Setting range
+        table[:,4] = table[:,3] * (upper_level - lower_level) + lower_level
+        # table[:,1] = np.round(table[:,1])
+        for i in im_flat:
+            i = table[int(i-a),4]
+        image_histeq = im_flat.reshape(image.shape)
+        return image_histeq - image
 
     global train_file_name,  dataset_keyword, data_slice_size, train_split, valid_split, test_split
 

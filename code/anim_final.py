@@ -44,7 +44,7 @@ for j in range(options):
 
 def f(i, option):
     if option == 1:
-        return images[i+1]-images[i]
+        return images[i+1]-images[i] # Difference image
         # Custom '1' for debugging
         image = images[i]
         num_points = image.shape[0] * image.shape[1]
