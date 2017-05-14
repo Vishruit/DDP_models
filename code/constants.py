@@ -9,7 +9,8 @@ data_augmentation=False
 append_CSVfile_FLAG = False
 #data = (nsamples, 202*100*256*320) float32
 
-experiment_num = '8'
+# experiment_num = '8'
+global experiment_num
 
 experiment_root = './exp'+experiment_num+'/'
 visualization_filepath = './exp'+experiment_num+'/visualizations/'

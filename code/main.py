@@ -1,3 +1,5 @@
+experiment_num = 'test'
+
 from imports_lib import *
 from utils import *
 from network import *
