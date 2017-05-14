@@ -48,8 +48,8 @@ def define_model(init,lr,verbose,restart):
     # x = Conv3D(128, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
     # x = UpSampling3D((2, 2, 2))(x)
 
-    decoded = Conv3D(1, (3, 3, 3), activation='sigmoid', padding='same')(x)
-    decoded = Reshape((frames, height, width))(decoded)
+    decoded = Conv3D(1, (3, 3, 3), activation='sigmoid', padding='same', name='conv3d_08')(x)
+    decoded = Reshape((frames, height, width), name='decoded')(decoded)
 
     # x = Dropout(dropout_rate)(x)
     # POOL3_flattened = Flatten()(DROP3)
