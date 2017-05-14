@@ -48,29 +48,6 @@ def ensure_dir(f):
         return 0
     return 1
 
-def createSmallJPGData_Randomly(imgfilepaths, imgfilenames, imgfilelocs):
-    global dataLocation_save, dataLocation, ext
-    imgfilelocs = np.unique(imgfilelocs)
-    sampleSize = 100
-    # 'frame_1002.png' format of the filename
-    for fileloc in imgfilelocs:
-        print fileloc
-        sample_fileloc = dataLocation_save + fileloc[len(dataLocation):len(fileloc)]
-        [file_paths, file_name, file_loc] = getJPGFilePaths(fileloc,[])
-        totalSize = len(file_name)
-        framesToLoad = random.sample(range(1,totalSize+1,1), sampleSize) if (totalSize>=sampleSize) else range(1,totalSize+1,1)
-        # frameBatch = min(totalSize, sampleSize)
-        framesToLoad = np.sort(framesToLoad)
-        print framesToLoad
-        # ensure_dir(sample_fileloc)
-        for frame in framesToLoad:
-            dst_file_name = sample_fileloc + '/frame_' + str(frame) + '.' + ext
-            src_file_name = fileloc + '/frame_' + str(frame) + '.' + ext
-            ensure_dir(dst_file_name)
-            shutil.copy(src_file_name, dst_file_name)
-
-
-
 def createDatasetForCaffe(imgfilepaths, imgfilenames, imgfilelocs):
     global dataLocation, ext, data_jpg_save, data_label_save, labelLocation
     imgfilelocs = np.unique(imgfilelocs)
@@ -121,12 +98,6 @@ data_label_save = dataLocation_save + '/DATA_mapped'
 # Actual filepaths and filenames list
 [file_paths_label, file_names_label, file_locs_label] = getLabelFilePaths(labelLocation, excludeFiles)
 
-# # Actual filepaths and filenames list
-# [file_paths, file_names, file_locs] = getJPGFilePaths(dataLocation, excludeFiles)
-# print file_paths[1]
-
-# numInstances = len(file_paths)
 print 'Start'
 createDatasetForCaffe(file_paths_label, file_names_label, file_locs_label)
-# createSmallJPGData_Randomly(file_paths, file_names, file_locs)
 print 'All is well !!! Finished.'
