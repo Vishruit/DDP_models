@@ -1,2 +1,3 @@
 import numpy as np
-ri
+
+dataset_folder = '/home/prabakaran/Vishruit/DDP/data_mapped'
