@@ -66,7 +66,7 @@ if __name__ == "__main__":
 
     # parse the arguments from the command line
     args, argDict = argParser()
-    lr, batch_size, init_Code, num_epochs, model_initializer, save_dir, verbose, debug, restart, machine_code = argAssigner(args)
+    lr, batch_size, init_Code, num_epochs, model_initializer, save_dir, verbose, debug, restart, machine_code, preprocess_pipeline = argAssigner(args)
 
     ensure_dir([visualization_filepath, filepath_best_weights, filepath_chpkt_weights, experiment_root])
     ensure_dir([visualization_filepath_test_time, code_base_file_path])

@@ -4,19 +4,20 @@ from constants import *
 
 def argAssigner(args):
     # TODO check the data types
-    global lr, batch_size, init_Code,num_epochs, model_initializer, save_dir, verbose, debug, restart, machine_code
+    global lr, batch_size, init_Code,num_epochs, model_initializer, save_dir, verbose, debug, restart, machine_code, preprocess_pipeline
     lr = float(args.lr)
     batch_size = int(args.batch_size)
     num_epochs = int(args.num_epochs)
     save_dir = args.save_dir
     init_Code = int(args.init)
+    preprocess_pipeline = int(args.preprocess_pipeline)
     # TODO check normal or uniform
     model_initializer = initializers.glorot_normal(seed=None) if init_Code == 1 else initializers.he_normal(seed=None)
     verbose = args.verbose
     debug = args.debug
     restart = args.restart
     machine_code = args.machine_code
-    return lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart,machine_code
+    return lr,batch_size,init_Code,num_epochs,model_initializer,save_dir, verbose,debug,restart,machine_code,preprocess_pipeline
 
 
 def argParser():
@@ -27,6 +28,7 @@ def argParser():
     parser.add_argument('--init',default=1, help='Initializer: 1 for Xavier init and 2 for He init')
     parser.add_argument('--save_dir',default='./save_dir/', help='Saves model parameters in this directory')
     # Custom debugging args
+    parser.add_argument('-p','--preprocess_pipeline',default=1, help='0: No data preprocess, 1: Normalization, 2: Image Equalization')
     parser.add_argument('-d','--debug', help='For devs only, takes in no arguments', action="store_true")
     parser.add_argument('-v',"--verbose", help="Increase output verbosity",action="store_true")
     parser.add_argument('-r',"--restart", help="Restarts the network",action="store_true")
@@ -112,6 +114,9 @@ def plot_video(decoded_imgs, x_test):
             plt.savefig( visualization_filepath+'reconstruction_vid'+str(video)+'.png' )
         plt.close()
 
+def data_no_preprocess(data):
+    return data
+
 def data_preprocess_normalized(data):
     flag_isMultipleVids = 0
     if len(data.shape) == 4:
@@ -177,47 +182,14 @@ def data_preprocess_image_equalized(data):
 
 def read_data():
     def data_preprocess(data):
-        data = data_preprocess_normalized(data)
+        global pipeline_preprocess
+        if preprocess_pipeline == 0:
+            data = data_no_preprocess(data)
+        elif preprocess_pipeline == 1:
+            data = data_preprocess_normalized(data)
+        elif preprocess_pipeline == 2:
+            data = data_preprocess_image_equalized(data)
         return data
-
-    def data_preprocess(data):
-        image = images[i]
-        num_points = image.shape[0] * image.shape[1]
-        a, b = np.min(image), np.max(image)
-        im_flat = image.flatten()
-        global table, image_histeq
-        table =  np.zeros( (int(b-a) + 1, 5) )
-        print (b, a)
-
-        for i in im_flat:
-            table[int(i-a),1] += 1 # Count
-        table[:,2] = table[:,1] / num_points # PDF
-        # CDF
-        running_sum = 0
-        for i in range(int(b-a)):
-            # temp = table[i,2]
-            table[i,3] = running_sum + table[i,2]
-            running_sum = table[i,3]
-        # Thresholding
-        lower_level_threshold = 0.015 # 1.5%
-        upper_level_threshold = 1 - 0.010 # 1.5%
-        lower_level, upper_level = 0, 0
-        for val, cdf in zip(table[:,0],table[:,3]):
-            if cdf < lower_level_threshold:
-                lower_level = val
-            if cdf >= upper_level_threshold:
-                upper_level = val
-                break
-        table[:int(lower_level-a), 3] = table[int(lower_level-a),3]
-        table[int(upper_level-a):, 3] = table[int(upper_level-a),3]
-
-        # Setting range
-        table[:,4] = table[:,3] * (upper_level - lower_level) + lower_level
-        # table[:,1] = np.round(table[:,1])
-        for i in im_flat:
-            i = table[int(i-a),4]
-        image_histeq = im_flat.reshape(image.shape)
-        return image_histeq - image
 
     global train_file_name,  dataset_keyword, data_slice_size, train_split, valid_split, test_split
 
