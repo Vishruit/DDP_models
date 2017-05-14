@@ -1,4 +1,5 @@
 # Utility functions
+from global_vars import *
 from imports_lib import *
 from constants import *
 

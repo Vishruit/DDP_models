@@ -1,5 +1,4 @@
-experiment_num = 'test'
-
+from global_vars import *
 from imports_lib import *
 from utils import *
 from network import *

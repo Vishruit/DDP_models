@@ -1,5 +1,5 @@
 # from utils import ensure_dir, argParser
-
+from global_vars import *
 dataset_path = './data_small_100.h5'
 train_file_name,  dataset_keyword = '../data_small_100.h5', 'data_small'
 image_height, image_width, image_depth=32,32,3
@@ -10,7 +10,6 @@ append_CSVfile_FLAG = False
 #data = (nsamples, 202*100*256*320) float32
 
 # experiment_num = '8'
-global experiment_num
 
 experiment_root = './exp'+experiment_num+'/'
 visualization_filepath = './exp'+experiment_num+'/visualizations/'
