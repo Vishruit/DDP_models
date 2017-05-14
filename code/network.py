@@ -18,31 +18,31 @@ def define_model(init,lr,verbose,restart):
     # x = Conv3D(128, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
     # x = MaxPooling3D((2, 2, 2), padding='same')(x)
 
-    x = Conv3D(32, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
-    x = MaxPooling3D((5, 2, 2), padding='same')(x)
-
-    x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
+    x = Conv3D(32, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init, name='conv3d_1')(x)
     x = MaxPooling3D((2, 2, 2), padding='same')(x)
 
-    x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
+    x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init, name='conv3d_2')(x)
+    x = MaxPooling3D((2, 2, 2), padding='same')(x)
+
+    x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init, name='conv3d_3')(x)
     x = MaxPooling3D((1, 2, 2), padding='same')(x)
 
-    x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
-    encoded = MaxPooling3D((1, 2, 2), padding='same')(x)
+    x = Conv3D(4, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init, name='conv3d_4')(x)
+    encoded = MaxPooling3D((1, 2, 2), padding='same', name='encoded')(x)
 
     # at this point the representation is (8, 4, 4) i.e. 128-dimensional
 
-    x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(encoded)
+    x = Conv3D(4, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init, name='conv3d_5')(encoded)
     x = UpSampling3D((1, 2, 2))(x)
 
-    x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
+    x = Conv3D(8, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init, name='conv3d_6')(x)
     x = UpSampling3D((1, 2, 2))(x)
 
-    x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
+    x = Conv3D(16, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init, name='conv3d_7')(x)
     x = UpSampling3D((2, 2, 2))(x)
 
-    x = Conv3D(32, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
-    x = UpSampling3D((5, 2, 2))(x)
+    x = Conv3D(32, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init, name='conv3d_8')(x)
+    x = UpSampling3D((2, 2, 2))(x)
 
     # x = Conv3D(128, (3, 3, 3), activation='relu', padding='same', kernel_initializer=init)(x)
     # x = UpSampling3D((2, 2, 2))(x)
