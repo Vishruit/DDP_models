@@ -26,6 +26,8 @@ from keras.utils.io_utils import HDF5Matrix
 from keras.utils.np_utils import normalize
 from keras.utils.vis_utils import plot_model
 
+from keras_contrib.layers import Deconvolution3D
+
 # Miscellaneous
 import numpy as np
 import tensorflow as tf

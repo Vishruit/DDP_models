@@ -1,12 +1,12 @@
 import numpy as np
 import warnings
 
-from keras import activations, initializations, regularizers
+from keras import activations, initializers, regularizers
 from keras.engine import Layer, InputSpec
-from keras.utils.np_utils import conv_output_length
+# from keras.utils.np_utils import conv_output_length
 from keras.layers.convolutional import Convolution3D
 
-from new import backend_updated as K
+import backend_updated as K
 
 class Deconvolution3D(Convolution3D):
     def __init__(self, nb_filter, kernel_dim1, kernel_dim2, kernel_dim3, output_shape,
@@ -52,7 +52,8 @@ class Deconvolution3D(Convolution3D):
             raise Exception('Invalid dim_ordering: ' + self.dim_ordering)
 
     def call(self, x, mask=None):
-    	input_shape = self.input_spec[0].shape
+    	input_shape = self.input_spec.shape
+        print (input_shape)
         output = K.deconv3d(x, self.W, self.output_shape_,
                             strides=self.subsample,
                             border_mode=self.border_mode,
