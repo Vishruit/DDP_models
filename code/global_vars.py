@@ -1,2 +1,2 @@
 
-experiment_num = 'test'
+experiment_num = '10'
