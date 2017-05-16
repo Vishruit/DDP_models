@@ -14,6 +14,7 @@
 # Executables
 *.exe
 *.h5
+*.pyc
 
 # DUB
 .dub
