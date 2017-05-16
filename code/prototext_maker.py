@@ -53,11 +53,23 @@ def createPrototextForCaffe(imgfilepaths, imgfilenames, imgfilelocs):
     labelLocation = dataset_label
     dataLocation = dataset_data
     imgfilelocs = np.unique(imgfilelocs)
-    prototext = open(prototext_file_location, 'w')
+    num_vids = len(imgfilelocs)
+    files = [open(prototext_file_location[0], 'w'), open(prototext_file_location[1], 'w'), open(prototext_file_location[2], 'w')]
     # sampleSize = 100
     # 'frame_1002.png' format of the filename
+    i=1
     for fileloc in imgfilelocs:
         print fileloc
+        if i < int(0.7*num_vids):
+            prototext = files[0] # train
+            print('train', i)
+        elif i < int(0.85*num_vids):
+            prototext = files[1] # valid
+            print('valid', i)
+        else:
+            prototext = files[2] # test
+            print('test', i)
+        i+=1
         # sample_fileloc = data_jpg_save + fileloc[len(labelLocation):len(fileloc)]
         relative_folderpath = fileloc[len(labelLocation):len(fileloc)]
 
@@ -80,14 +92,17 @@ def createPrototextForCaffe(imgfilepaths, imgfilenames, imgfilelocs):
             prototext.write('\n')
             # shutil.copy(src_file_name_data, dst_file_name_data)
     # save the file at the location required
-    prototext.close()
+    files[0].close()
+    files[1].close()
+    files[2].close()
+    # prototext.close()
     pass
 
 
 excludeFiles = []
 ext = 'png'
 datasetLocation = '/home/prabakaran/Vishruit/DDP/DATA_caffe'
-prototext_file_location = '/home/prabakaran/Vishruit/DDP/DATA_caffe/prototext.txt'
+prototext_file_location = [datasetLocation+'/train.txt', datasetLocation+'/valid.txt', datasetLocation+'/test.txt']
 
 label_file_name = 'label.png'
 
