@@ -13,7 +13,7 @@ from keras import initializers
 import keras.backend as K
 from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, Callback, ProgbarLogger, ReduceLROnPlateau
 from keras.callbacks import LambdaCallback, CSVLogger
-from keras.layers import Input, Dense, Convolution2D, MaxPooling2D, BatchNormalization, Flatten, Activation, Dropout
+from keras.layers import Input, Dense, ZeroPadding2D, Convolution2D, MaxPooling2D, BatchNormalization, Flatten, Activation, Dropout
 from keras.layers import Reshape, Conv2D, UpSampling3D, Conv3D, MaxPooling3D
 from keras.layers.core import Lambda
 from keras.metrics import categorical_accuracy, binary_accuracy
