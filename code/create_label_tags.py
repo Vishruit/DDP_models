@@ -34,40 +34,51 @@ def ensure_dir(f):
         return 0
     return 1
 
-def resize_all_files(imgfilepaths, imgfilenames, imgfilelocs):
+def apply_label_tag(pixel):
+    if pixel == 0:
+        return 1 # Background pixel
+    else:
+        tag = int(pixel / 25 ) + 2 # +1 for background and +1 for indexing from 1
+
+    if tag > 11:
+        return 11
+    else:
+        return tag
+
+def create_label_tags(imgfilepaths, imgfilenames, imgfilelocs):
     global datasetLocation, ext, height, width
     imgfilelocs = np.unique(imgfilelocs)
     num_vids = len(imgfilelocs)
     i = 1
     for fileloc in imgfilelocs:
         print fileloc
-        # sample_fileloc = data_jpg_save + fileloc[len(labelLocation):len(fileloc)]
         relative_folderpath = fileloc[len(datasetLocation):len(fileloc)]
         data_fileloc_actual = datasetLocation + relative_folderpath
 
         [file_paths, file_name, file_loc] = getJPGFilePaths(data_fileloc_actual,[])
         totalSize = len(file_name)
+        print totalSize
         framesToLoad = range(1,totalSize+1,1)
         framesToLoad = np.sort(framesToLoad)
 
         for fpath in file_paths:
             src_file_name_data = fpath
             im = Image.open(src_file_name_data)
-            print 'width: %d - height: %d' % im.size
-            if im.size != (width, height): # Prints cols * rows
-                temp = np.zeros((height,width))
-                img = np.array(im)
-                temp[ :img.shape[0], :img.shape[1] ] = img + temp[ :img.shape[0], :img.shape[1] ]
-                scipy.misc.imsave(src_file_name_data, temp)
-                print(i)
-                i += 1
+            temp = np.zeros(im.size)
+            im_array = np.array(im)
+            for i in range(im_array.shape[0]):
+                for j in range(im_array.shape[1]):
+                    im_array[i,j] = apply_label_tag(im_array[i,j])
+            scipy.misc.imsave(src_file_name_data, temp)
+            print(i)
+            i += 1
     pass
 
 
 excludeFiles = []
 ext = 'png'
-height, width = 256,320
-datasetLocation = '/home/prabakaran/Vishruit/DDP/DATA_caffe/DATA_mapped'
+# height, width = 256,320
+datasetLocation = '/partition1/vishruit/soft/DATA_caffe/DATA_mapped'
 
 # Actual filepaths and filenames list
 [file_paths_label, file_names_label, file_locs_label] = getJPGFilePaths(datasetLocation, excludeFiles)
@@ -78,5 +89,5 @@ print file_paths_label[1]
 
 # numInstances = len(file_paths)
 print 'Start'
-resize_all_files(file_paths_label, file_names_label, file_locs_label)
+create_label_tags(file_paths_label, file_names_label, file_locs_label)
 print 'All is well !!! Finished.'
