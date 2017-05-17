@@ -101,8 +101,8 @@ def createPrototextForCaffe(imgfilepaths, imgfilenames, imgfilelocs):
 
 excludeFiles = []
 ext = 'png'
-datasetLocation = '/home/prabakaran/Vishruit/DDP/DATA_caffe'
-prototext_file_location = [datasetLocation+'/train.txt', datasetLocation+'/valid.txt', datasetLocation+'/test.txt']
+datasetLocation = '/partition1/vishruit/soft/DATA_caffe'
+prototext_file_location = [datasetLocation+'/train_01.txt', datasetLocation+'/valid_01.txt', datasetLocation+'/test_01.txt']
 
 label_file_name = 'label.png'
 

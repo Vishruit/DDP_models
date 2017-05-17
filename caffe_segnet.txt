@@ -1,0 +1,5 @@
+./partition1/vishruit/soft/caffe-segnet/build/tools/caffe train -gpu 0 -solver /partition1/vishruit/soft/SegNet-Tutorial/Models/segnet_solver.prototxt  # This will begin training SegNet on GPU 0
+
+./SegNet/caffe-segnet/build/tools/caffe train -gpu 0 -solver /SegNet/Models/segnet_basic_solver.prototxt  # This will begin training SegNet-Basic on GPU 0
+
+./SegNet/caffe-segnet/build/tools/caffe train -gpu 0 -solver /SegNet/Models/segnet_solver.prototxt -weights /SegNet/Models/VGG_ILSVRC_16_layers.caffemodel  # This will begin training SegNet on GPU 0 with a pretrained encoder

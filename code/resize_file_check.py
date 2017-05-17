@@ -66,8 +66,8 @@ def resize_all_files(imgfilepaths, imgfilenames, imgfilelocs):
 
 excludeFiles = []
 ext = 'png'
-height, width = 256,320
-datasetLocation = '/home/prabakaran/Vishruit/DDP/DATA_caffe'
+height, width = 360, 480
+datasetLocation = '/partition1/vishruit/soft/DATA_caffe'
 
 # Actual filepaths and filenames list
 [file_paths_label, file_names_label, file_locs_label] = getJPGFilePaths(datasetLocation, excludeFiles)
