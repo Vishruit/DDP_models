@@ -61,17 +61,16 @@ def create_label_tags(imgfilepaths, imgfilenames, imgfilelocs):
         framesToLoad = range(1,totalSize+1,1)
         framesToLoad = np.sort(framesToLoad)
 
-        for fpath in file_paths:
-            src_file_name_data = fpath
-            im = Image.open(src_file_name_data)
-            temp = np.zeros(im.size)
-            im_array = np.array(im)
-            for i in range(im_array.shape[0]):
-                for j in range(im_array.shape[1]):
-                    im_array[i,j] = apply_label_tag(im_array[i,j])
-            scipy.misc.imsave(src_file_name_data, temp)
-            print(i)
-            i += 1
+        src_file_name_data = fpath
+        im = Image.open(src_file_name_data)
+        temp = np.zeros(im.size)
+        im_array = np.array(im)
+        for i in range(im_array.shape[0]):
+            for j in range(im_array.shape[1]):
+                im_array[i,j] = apply_label_tag(im_array[i,j])
+        scipy.misc.imsave(src_file_name_data, temp)
+        print(i)
+        i += 1
     pass
 
 
