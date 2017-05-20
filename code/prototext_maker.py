@@ -115,7 +115,7 @@ dataset_label = datasetLocation + '/DATA_mapped'
 
 # # Actual filepaths and filenames list
 # [file_paths, file_names, file_locs] = getJPGFilePaths(dataLocation, excludeFiles)
-print file_paths_label[1]
+# print file_paths_label[1]
 # print file_paths_data[1]
 
 # numInstances = len(file_paths)

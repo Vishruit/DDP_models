@@ -40,7 +40,7 @@ def resize_all_files(imgfilepaths, imgfilenames, imgfilelocs):
     num_vids = len(imgfilelocs)
     i = 1
     for fileloc in imgfilelocs:
-        print fileloc
+        # print fileloc
         # sample_fileloc = data_jpg_save + fileloc[len(labelLocation):len(fileloc)]
         relative_folderpath = fileloc[len(datasetLocation):len(fileloc)]
         data_fileloc_actual = datasetLocation + relative_folderpath
@@ -53,7 +53,8 @@ def resize_all_files(imgfilepaths, imgfilenames, imgfilelocs):
         for fpath in file_paths:
             src_file_name_data = fpath
             im = Image.open(src_file_name_data)
-            print 'width: %d - height: %d' % im.size
+            # print 'width: %d - height: %d' % im.size
+            # continue
             if im.size != (width, height): # Prints cols * rows
                 temp = np.zeros((height,width))
                 img = np.array(im)
@@ -68,7 +69,7 @@ excludeFiles = []
 ext = 'png'
 
 height, width = 360, 480
-datasetLocation = '/partition1/vishruit/soft/DATA_caffe'
+datasetLocation = '/partition1/vishruit/soft/DATA_caffe/DATA_jpg'
 
 # height, width = 256,320
 # datasetLocation = '/home/prabakaran/Vishruit/DDP/DATA_caffe/DATA_mapped'
