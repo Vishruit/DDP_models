@@ -57,7 +57,7 @@ def createPrototextForCaffe(imgfilepaths, imgfilenames, imgfilelocs):
     files = [open(prototext_file_location[0], 'w'), open(prototext_file_location[1], 'w'), open(prototext_file_location[2], 'w')]
     # sampleSize = 100
     # 'frame_1002.png' format of the filename
-    i=1
+    i=0
     for fileloc in imgfilelocs:
         print fileloc
         if i < int(0.7*num_vids):
@@ -101,7 +101,8 @@ def createPrototextForCaffe(imgfilepaths, imgfilenames, imgfilelocs):
 
 excludeFiles = []
 ext = 'png'
-datasetLocation = '/partition1/vishruit/soft/DATA_caffe'
+# datasetLocation = '/partition1/vishruit/soft/DATA_caffe'
+datasetLocation = '/home/prabakaran/Vishruit/DDP/DATA_caffe_test'
 prototext_file_location = [datasetLocation+'/train_01.txt', datasetLocation+'/valid_01.txt', datasetLocation+'/test_01.txt']
 
 label_file_name = 'label.png'
@@ -115,7 +116,7 @@ dataset_label = datasetLocation + '/DATA_mapped'
 
 # # Actual filepaths and filenames list
 # [file_paths, file_names, file_locs] = getJPGFilePaths(dataLocation, excludeFiles)
-print file_paths_label[1]
+# print file_paths_label[0]
 # print file_paths_data[1]
 
 # numInstances = len(file_paths)
