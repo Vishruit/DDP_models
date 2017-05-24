@@ -61,14 +61,13 @@ def create_label_tags(imgfilepaths, imgfilenames, imgfilelocs):
         framesToLoad = range(1,totalSize+1,1)
         framesToLoad = np.sort(framesToLoad)
 
-        src_file_name_data = fpath
+        src_file_name_data = file_paths[0]
         im = Image.open(src_file_name_data)
-        temp = np.zeros(im.size)
         im_array = np.array(im)
         for i in range(im_array.shape[0]):
             for j in range(im_array.shape[1]):
                 im_array[i,j] = apply_label_tag(im_array[i,j])
-        scipy.misc.imsave(src_file_name_data, temp)
+        scipy.misc.imsave(src_file_name_data, im_array)
         print(i)
         i += 1
     pass
@@ -77,13 +76,14 @@ def create_label_tags(imgfilepaths, imgfilenames, imgfilelocs):
 excludeFiles = []
 ext = 'png'
 # height, width = 256,320
-datasetLocation = '/partition1/vishruit/soft/DATA_caffe/DATA_mapped'
+# datasetLocation = '/partition1/vishruit/soft/DATA_caffe/DATA_mapped'
+datasetLocation = '/home/prabakaran/Vishruit/DDP/DATA_caffe/DATA_mapped'
 
 # Actual filepaths and filenames list
 [file_paths_label, file_names_label, file_locs_label] = getJPGFilePaths(datasetLocation, excludeFiles)
 
 # # Actual filepaths and filenames list
-print file_paths_label[1]
+# print file_paths_label[1]
 # print file_paths_data[1]
 
 # numInstances = len(file_paths)
