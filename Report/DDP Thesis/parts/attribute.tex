@@ -1,0 +1,30 @@
+%!TEX root = ../main.tex
+\chapter{CLASSIFICATION ON ATTRIBUTE}
+ \label{chap:attribute}
+\section{Introduction}
+Attribute information in a network is generally an information about the nodes itself. While we do any classification on a network, it is better to know about the nodes apart from the structural information of the network. These information can be in the form of text as in the case of social network where the information can be about the users, bio data, educational qualifications, current workplace, etc., and in the case of movies, it can be plot, genre, summary or cast of the movie. In various cases, one can find these attribute information serves better clarity in classification of the network when compared to the structural information. For example, summary information of the movies gives as more clarity to classify its genres than given the structural information of the movies where two movies have links if they same actor or director. So in the context of embedding on attribute information, I tend to classify the network only considering the attribute information and later use it to learn collective classification along with structural information in Chapter \ref{chap:attribute_structural}.
+\section{Related Work} 
+ \label{sec:rw_att}
+Attribute information in the form of text are studied as the problem of text summarization and classification based on attributes in the network can be related to the problem of document classification. Various natural language processing based text summarization techniques can be incorporated to get attribute classification. We focus on creating an embedding from term frequency–inverse document frequency (tf-idf) technique to achieve our task since our dataset contains tf-idf matrices. Simple ways of getting embeddings from tf-idf matrix are Latent Semantic Analysis (LSA), Principal Component Analysis (PCA) and Singular Value Decomposition (SVD). I tend to get the embeddings from tf-idf matrix through denoising autoencoder.
+
+\section{Dataset}
+\label{sec:data_att}
+Datasets for classification on attribute information are the tweets of the users in twitter dataset and the tags of the movies in movielens dataset. Both of them are available to us in tf-idf matrices.
+\begin{itemize}
+    \item Twitter Dataset : Tf-idf matrix of the tweet contents is of size 854 X 35352, where there are 854 users and 35352 words in the tweets.  
+    \item Movielens Dataset : Tf-idf matrix of the tags of the movie is of size 3911 X 1854, where there are 3911 movies and 1854 tags.
+\end{itemize}
+\section{Denoising Autoencoder}
+\label{sec:architecture_att}
+We use denoising autoencoder to get the embeddings of the tf-idf matrix. There is only one hidden layer of size equivalent to the size of our embeddings (128). The stacked autoencoder of several levels turned out to be a poor performer in our case as the fed in features are very sparse and the model gave an embedding more or less same values for all the 128 features. \par
+\begin{itemize}
+    \item Model : $ \hat{x}_{i} = f(x_{i}) = O(W^{1 T}(W^{1}x+b_{1})+b_{2}) $
+    \item Parameters : $\theta = W^{1}, b_{1}, b_{2} $
+    \item Loss Function : $
+        min \frac{1}{N} \sum_{i=1}^{N}(\hat{x}_{i}-x_{i})^2
+        $
+    \item Optimizer : RMSProp
+\end{itemize}
+
+\section{Experimental Results}
+\label{sec:results_att}

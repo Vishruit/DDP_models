@@ -1,0 +1,30 @@
+%!TEX root = ../main.tex
+\chapter{CLASSIFICATION ON STRUCTURAL INFORMATION}
+ \label{chap:structural}
+\section{Introduction}
+Any task done on the network typically considers the structure of the network rather than the attribute information of the nodes in the network. The structural information generally considers various features related to the neighbors or other nodes in the network like degree, centrality measures, random walk, neighbors, similarity measures, etc. Taking other nodes of the network into account, one can solve numerous tasks related to the network like clustering, classification, community detection, link prediction, etc. In this chapter, I deal with only structure of the network and I tend to learn the representation of the network with it. The relational data which is basically the network of nodes provides key information in solving in most cases as opposed to the attribute information, for example in the case of social network, one can find the community of the user based on his/her connections in the social network.
+\section{Related Work} 
+ \label{sec:rwgc}
+Embedding on the network considering structural information has wide range of studies and in the past three years, there are numerous papers have been published in the field of deep learning itself. Starting from deepwalk, \cite{deepwalk}
+\section{Dataset}
+\label{sec:datagc}
+The dataset for this task are the relational information of twitter dataset and movielens dataset.
+\begin{itemize}
+    \item Twitter Rugby Dataset : It has 6 relational views created based on the twitter users' followers, followed by, retweets, retweeted by, mentions and mentioned. There are 854 users and not every view has all 854 users as nodes when they form the network.
+    \item Movielens Dataset : It has 2 relational views such as actor-actor graph and director-director graph created out the movielens dataset, where two movies are linked if they have same actor/director.
+\end{itemize}
+
+\section{Model : Deepwalk (tensorflow)}
+The simple and the effective way of getting an embedding for relational data is  \cite{deepwalk}. More faster and efficient way of the author's version has been implemented by gensim. Their version is only cpu based code and still one can get good performance in terms of speed. But to incorporate the attribute information into this structural embedding in \ref{chap:attribute_structural}, gensim's version of code didn't result in good performance in terms of classification. So I modelled the working of deepwalk in a simpler way in tensorflow to certain extent such that it solves the basic ideas of \cite{word2vec} considering not only the random walks as proposed in \cite{deepwalk} but also including the neighbors of the node while training the model.
+\par
+\begin{itemize}
+    \item Data : $ \{x_{i},y_{i}\}^{N}_{i=1} $, where $x_{i}$ is the one-hot vector of the node and $y_{i}$ is the multi-hot vector in which nodes appearing in the context window of random of the node as well as the neighbors of the node will have ones in the vector and all others zero.
+    \item Model : $ \hat{x}_{i} = f(x_{i}) = O(W^{1 T}(W^{1}x+b_{1})+b_{2}) $
+    \item Parameters : $\theta = W^{1}, b_{1}, b_{2} $
+    \item Loss Function : $
+        min \frac{1}{N} \sum_{i=1}^{N}(\hat{x}_{i}-x_{i})^2
+        $
+    \item Optimizer : Adam 
+\end{itemize}
+
+\section{Experimental Results}

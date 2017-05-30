@@ -1,0 +1,23 @@
+%!TEX root = ../main.tex
+\chapter{INTRODUCTION}
+\label{chap:intro}
+\section{Overview}
+Rather than addressing problems like collective classification and link prediction directly, in recent years, many papers focused on creating a latent representation of the network so that those feature representations can be fed to off-the-shelf machine learning algorithms to solve our problems. At the same time, Deep learning has seen wide range of growth from image and text representations to graph network. It is more intuitive that deep learning performs extremely well in achieving state-of-the-art performance almost in all fields due to its computational power.\\
+
+Many deep learning based embedding papers such as \cite{word2vec, deepwalk, author2vec, triparty, hne} have been proposed in recent two-three years to address embeddings in various network models. All those papers doesn't learn embeddings in multi-relational data whereas Heterogeneous Network Embedding (HNE) \cite{hne} is too complex in its architecture as it uses convolutional neural network. Many real world applications consist of multi-relational data and not many papers have been published in this type of network. 
+
+\section{Motivation}
+
+
+
+\section{Major Contribution}
+\begin{itemize}
+	\item{System is based on content based recommendation rather than widely used collaborative filtering based recommendation. }
+	\item{System eliminates the cold start problem where a new song is hard to recommend.}
+	\item{System takes into consideration various aspects of music like genre, melody and lyrics to recommend which makes it highly versatile.}
+\end{itemize}
+
+\section{Organization of Thesis}
+I propose two simple methods to address the multi-relational network problem. In Chapter \ref{chap:collective}, I will be talking about my literature survey in various fields followed by Section III in which I will show some of my results achieved in implementing two papers. Section IV depicts the proposed architecture and Section V is the future work.
+
+Chapter \ref{chap:genre} discusses in detail the collective classification task performed for seven classes of songs. Next chapter in line is chapter \ref{chap:songMatch} where initial attempts for classification of songs based on likes and dislikes of user is given. This chapter discusses direct song to song matching techniques that were tried for recommending songs. After attempting this task, model based techniques were tried which is discussed in chapter \ref{chap:modelIntro}. Experiments performed on all the above discussed techniques are discussed in the respective chapters only. Chapter \ref{chap:concl} concludes the work with critical analysis of work done.

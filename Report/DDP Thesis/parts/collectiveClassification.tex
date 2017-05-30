@@ -1,0 +1,126 @@
+%!TEX root = ../main.tex
+\chapter{COLLECTIVE CLASSIFICATION}
+ \label{chap:collective}
+\section{Introduction}
+Many of the online music repositories like \textit{www.gaana.com} and \textit{www.saavn.com} classify songs in their repositories into various genres. This help a user to listen to songs of specific genre s/he wants. The attempt to classify Bollywood songs into various genres was motivated from these websites only. Figure 
+\ref{fig:saavn} shows how songs are classified into various genres on \textit{saavn.com}. 
+\par This chapter is divided into four sections. Section \ref{sec:rwgc} describes related work done in the area of genre classification. Section \ref{sec:datagc} describes the dataset used for the classification task. Section \ref{sec:fsgc} defines the feature extraction from audio files used for classification and the last section describes the pre-processing techniques and final classification techniques used for classification of genres. 
+
+\begin{figure}[!htpb]
+   \begin{center}
+	    \includegraphics[width=0.75\textwidth]{snaps/saavn.png}     
+     \caption {Snapshot taken from \textit{saavn.com} showing various classified genres.}
+   \label{fig:saavn}
+   \end{center}
+ \end{figure}
+ 
+\section{Related Work} 
+ \label{sec:rwgc}
+Genre classification has been done on western music, but not on Bollywood music. Also, genres of western music are very much different from Bollywood music. In western music, there are genres like jazz, hip hop, rock, pop etc which are not so popular in Bollywood music. Variation in melody in Bollywood music is more as compared to western music. So, that work is not exactly comparable to current work. For genre classification, researchers like \cite{indexing} and \cite{socp} used MFCC features and SVMs were outperforming other classifiers in case of western music. Pitch feature based genre classification has been attempted by \cite{mel-genre}.
+
+\section{Dataset}
+\label{sec:datagc}
+Data set for this task was created manually. Data set consists of seven classes of genres, all taken from Indian Bollywood music. These genres are as
+\begin{itemize}
+\item Oldest Bollywood songs from year 1950 to 1970.
+\item Purely classical songs based on Indian ragas.
+\item Ghazals.
+\item New party songs.
+\item New light songs.
+\item Old party songs.
+\item Old light songs.
+\end{itemize}
+Data set contained about 40 songs of each class of which about 70\% were used for training and the rest were used for testing.
+
+\section{Feature Selection}
+\label{sec:fsgc}
+This is the major part of our work because it is choice of features for any classifier that results in the efficiency and effectiveness of classifier. We used Mel Frequency Cepstral Coefficients (MFCC) for the extraction of features from the songs. \par
+The MFCCs used in my work has following configuration :
+\begin{itemize} 
+\item Sampling rate : 44.1 KHz
+\item Window Length : 0.1 s
+\item Window shift : 0.01 s
+\item Number of Cepstral Coefficients : 13, 20
+\item Number of filters : 26
+\item FFT size : 1024
+\item Low frequency : 200 Hz
+\item High frequency : None
+\item Pre-emphasis Coefficients : 0.97
+\item Lifter to Cepstral Coeff : 22
+\end{itemize}
+The choice of this MFCC\footnote{details of MFCC extraction is available in appendix.} configuration is playing a major role in performance of the system. This configuration is chosen based on the work that was done earlier in the field of genre classification of music.\par
+By observing the configuration, one can see that the window length is very small (0.1 second) and window shift is further small (0.01 second). Such configuration with low window length and shift increases the resolution of extraction and gives the best detail that can be obtained from the song. The average length of a Bollywood song is about 5 minutes, so the number of feature vectors extracted from a song is very huge. In our case, we were getting around 50000 feature vectors for a song. Also, the model was trained for about 70\% of songs. So, the data that was there was huge.
+
+\section{Song Summarization}
+\label{sec:songsumgc}
+The raw set of MFCC features for a single song was so huge that it was not intuitive to apply techniques like SVM and decision trees directly on them. So, options were explored for reducing the feature matrix size per song. In order to account for the time series nature inherent to songs, it was necessary to take the consequent MFCC feature of a particular length of each song. In most papers related to music content analysis, the second 30 second clip was taken for this analysis. However, it was not intuitive that this approach will work in case of Bollywood music. \par
+So, in order to summarize the huge number of MFCC features, a summarization technique by \cite{cooper} was used. It is based on cosine similarity analysis where the cosine similarity between every other feature vector is calculated and stored in a matrix format. Conclusions are later drawn from this matrix. However, to create the similarity matrix, O(n$^2$) operations are needed. A point here is an MFCC feature vector. Since a single song has about 50,000 MFCC features, matrix computation was an expensive process. Hence, we  
+\begin{enumerate} 
+\item Sampled the songs at 10 different starting points
+\item Computed the summary of length 200 for each of the segment
+\item Merged these summaries 
+\item Computed the final summary of length 500 to represent the entire song
+\end{enumerate}
+The process of summarization is as :
+\begin{enumerate}
+\item If there are n features, a cosine similarity matrix of size $n \times n$ is formed.
+\item All rows are summed up of this $n \times n$ matrix and a column matrix is obtained. $i^{th}$ element in this column vector shows similarity of $i^{th}$ feature vector with all other feature vectors.
+\item A consecutive length of $n/20$ having maximum sum is chosen giving maximum similarity.
+\end{enumerate}
+A sample similarity matrix of a song is shown in figure \ref{fig:sim}. The segments that are light blue in color (or light colored in case of black and white image) are those which are more similar to the rest of the song.
+\begin{figure}[!htbp]
+\centering
+\includegraphics[scale=0.75]{snaps/similarity.png}
+\caption{Similarity matrix}
+\label{fig:sim}
+\end{figure}
+Figure \ref{fig:sim2} summarizes the process of song summarization at a broader level while figure \ref{fig:sim3} shows how each matrix is calculated and is worked upon.
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{snaps/summary.pdf}
+\caption{Process of song summarization at smaller level.}
+\label{fig:sim3}
+\end{figure}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{snaps/sim2.pdf}
+\caption{Process of song summarization at broader level.}
+\label{fig:sim2}
+\end{figure}
+\pagebreak
+
+\section{Classifiers Used}
+Following classifiers were used for genre classification :
+\begin{enumerate}
+\item Gaussian Mixture Model\footnote{\label{note1} Details of classifier can be found in Appendix.} : Gaussian mixture model with 90 mixtures was used. This number was chosen after experimentation. The complete data set of songs was used for the experiment.
+\item Continuous Density Hidden Markov Model$^{\ref{note1}}$: Ten states were chosen in the model, approximating it with the number of 'Swara' in Indian music. Each state was a mixture of 3 Gaussians as there exists multimodality even in one 'Swara'. HTK toolkit was used to train and test the Hidden Markov Model. Since the training time of HMMs was huge for the complete songs, we had to go for 50 seconds clip for each song. The clip was not chosen from the beginning of the song, but was chosen from in between.
+\item Random Forest$^{\ref{note1}}$: Random forest were used after summarizing the data using Cooper summarization technique. Number of trees used in random forests were 50. This was again obtained after experimentation. Matlab toolkit was used for implementing random forests.
+\item Support Vector Machine$^{\ref{note1}}$ : C-SVM with Gaussian kernel was used in this technique. Software used was SVM torch. We experimented with various values of C and kernel width, but it did not prove very much fruitful. 
+\end{enumerate}
+\section{Experimental Results}
+As talked in section \ref{sec:datagc}, seven classes of genres were classified using various machine learning techniques and using MFCC as features. GMM, SVM and RF were ran using matlab toolkit while HMM was ran using HTK toolkit. Following table shows the performances of various classifiers.
+\begin{table}[!htbp]
+\centering
+
+
+\begin{tabular}{|c|c|c|c|} 
+\hline
+ Model Name & Accuracy & Training Time Taken & Space Taken  \\ \hline
+ GMM & $80\%$ & 10 hours & 30 GB RAM \\ \hline
+ HMM & $65\%$ & 2 days & 1.5 GB RAM \\ \hline
+ SVM & $53\%$ & 4 hrs  & 1000 MB RAM \\ \hline
+ RF & $75\%$   &  10 mins & 300 MB RAM  \\ \hline
+\end{tabular}
+\caption{Performance of various models for genre classification task.}
+\label{table:perf1}	
+	\end{table}
+	\pagebreak
+\subsection{Inferences}
+Following inferences were made from the results in table \ref{table:perf1} :
+\begin{enumerate} %\itemsep0pt \parskip0pt \parsep0pt
+\item As seen in the table, GMM is most accurate. This is due to the soft clustering nature of GMM and also due to its ability to model any kind of distribution through an appropriate number of clusters. 
+\item Next in line is Random Forests. It is amazingly fast in terms of the training period. However, the size of the model is large in case of RF, around 180 MB. Also, it required preprocessing of songs to produce summary clips.
+\item The issue with models other than GMM is that we were unable to use the full training data. The reduction of song length to smaller sizes might be the cause of lesser performance. 
+\item In HMM, analysis to find intelligent analogies from song data to states could help in deciding			 the number of states more appropriately.
+\item In the case of SVM, poor performance is due to the highly overlapping nature of classes and difficulty to reach the correct value of parameters.
+\end{enumerate}
