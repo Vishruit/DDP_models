@@ -1,0 +1,216 @@
+%!TEX root = ../main.tex
+\chapter{CLASSIFICATION BASED ON MODEL CREATION}
+ \label{chap:modelIntro}
+\section{Introduction}
+After working on number of song similarity techniques which involved direct song to song match, it was observed that there is no direct connection between song similarity and likes and dislikes of user. So, it was thought to go for model based techniques. After attempting direct model based methods, it was felt that some pre processing of features or intelligent machine learning is required to reach the goal. So that was done and results improved. Also, lyrics of songs as a new feature was added as lyrics can tell a lot about the feelings in a song. This was again a very important step which took the work in correct direction.
+ 
+
+\section{Dataset}
+\label{sec:datamodel}
+
+
+\section{Classification techniques used\protect\footnote{Details of classification techniques can be found in appendix.}}
+This section discusses the various classification techniques used for classification using model creation. Different classification techniques used with different features are discussed in this section.
+\subsection{Gaussian Mixture Model with MFCC}
+\label{sub:GMM}
+ Initially, Gaussian mixture model with MFCC features were tried with various numbers of mixtures. Choice of number of mixtures is based on the 5-cross validation that was done on validation data. This was one of the first attempts when we tried to classify songs into likes and dislikes. It did not work. But as soon as many experiments began to fail, we thought of applying the same Cooper summarization technique that was used in chapter \ref{chap:genre} of genre classification task. This technique has proved helpful for many researchers and the same happened with us. Details of technique are already explained in the thesis in section \ref{sec:songsumgc}. After performing this, performance was gained by about 10\%. Matlab toolkit was used for implementing GMMs.
+\par The main reason behind this technique being proved useful is that when we were trying with MFCC features of full song, there was lot of confusion as there was lot of data that was redundant. So, when the redundant data was reduced to only meaningful one using the technique, classifier was able to perform better.
+
+\subsection{Hidden Markov Model with MFCC}
+After trying GMMs on MFCC features, an attempt was given to check whether sequence information is playing any major role in predicting likes and dislikes. Ten states were chosen in the model, approximating it with the number of 'Swara' in Indian music. Each state was a mixture of three Gaussians as there exists multimodality even in one 'Swara'. HTK toolkit was used to train and test the Hidden Markov Model. Since the training time of HMMs was huge for the complete songs, we had to go for 50 seconds clip for each song. The clip was not chosen from the beginning of the song, but was chosen from in between. Even after performing this, results were not good and something out of the box was needed to be thought.
+
+\subsection{Hidden Markov Model with Pitch}
+\label{sub:HMM}
+The earlier way of using HMMs with MFCC was not intelligent. Task of initialization of means of states was given to HTK toolkit and hence good results were not seen. But same thing was not repeated here. The first step while working with pitch was to normalize the tonic and bring tonic of all songs to the same level so as to use them for comparison.\par
+After normalizing the tonic, the pitch histogram of collection of likes and dislike, separately was seen and it looked something like in figure \ref{fig:hist}. In the figure, one can observe that certain pitch values are repeating again and again. So, the idea was to initialize the means of states of HMM to the peaks in the histogram. This ensures uniform distribution of pitch values across various states. Work based on Indian classical raga verification is also based on same fundamentals.
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{snaps/combined.eps}
+\caption{A sample histogram of pitch of all songs combined.}
+\label{fig:hist}
+\end{figure}
+\subsection{Classification using Lyrics}
+\label{sub:lyric}
+When it comes to music, we sometimes forget to feel the emotions present in lyrics. This is what happened with us. We just kept the focus on music and never thought to consider lyrics. Lyricists spend significant amount of time on writing the lyrics of song and try to fill that with the emotions. So, lyrics must contain something which can decide whether a person will like a song or not. Figure \ref{fig:lyric} shows how the lyrics were processed to perform classification.
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{snaps/Lyrics.pdf}
+\caption{A simplified process showing classification using lyrics.}
+\label{fig:lyric}
+\end{figure}
+Firstly, lyrics of all songs were collected manually for web. Hindi lyrics were obtained in roman script from web. Because of this, lot of errors were present in the lyrics. So, dictionary of all the words was created and error was removed from them. Even after reducing errors, dictionary obtained contained huge number of words. For about 600 songs, dictionary contained 9000 words (for one-gram). This was again reduced by combining similar words. Similar words refer to words having similar meaning or synonyms. This process was done manually and this reduced the dictionary size from 9000 words to about 4000 (for one-gram). After processing these words, every document was represented as a feature vector having dimension equal to length of dictionary, where weight of each dimension was considered as a product of term-frequency and inverse document frequency (tf-idf). TF-IDF feature vectors are widely used for processing bag of words model. Experiments were carried out for one-gram and two-grams of data.\par
+Dimension of the dataset was further reduced using PCA. Choice of number of dimension in PCA was experimented in the range from 50 to 500. While doing so, it was ensured that dimension is as minimum and 99.5\% variance of data of data is retained. This data was then given to two classifiers, Gaussian Mixture Models and Support Vector Machine. A bit of detail on classifiers is as :
+\begin{itemize}
+\item Gaussian Mixture Model: GMMs with various number of mixtures was experimented for each class of songs. Choice of number of mixtures was done using 5-cross validation with validation data. Experimentation was done for both one-grams and two grams of data. Toolkit used was python scikit learn toolkit.
+\item Support Vector Machine: C-SVM was experimented with gaussian kernel was experimented with various values of C and kernel width. This was again experimented on one-grams as well as two-grams using python scikit learn toolkit for SVMs.
+\end{itemize}
+\subsection{Late Fusion of Scores}
+\label{sub:fusion}
+After getting the performance on various classifiers having different features, it was intuitive to combine the scores of various classifiers to know if there is any disjoint set of scores that is being formed in order to improve the current performance of classifiers. Scores were fused of three best performing models, namely HMM with pitch, GMM on MFCC and GMM on lyrics. In order to perform the operation, following techniques were used :
+\begin{enumerate}
+\item \textbf{Random Forest} : First way used was to combine the scores and feed them to Random Forest. Since the scores from the three classifiers were in different range, they were normalized in the range $0$ to $1$. These scores were then fed to random forests in usual way where data was divided into train, test and validation, and performance of score fusion was evaluated.
+      \item \textbf{Weighted Scores} : In this technique, scores of the three techniques were normalized and a weight corresponding to score of each feature was found that corresponded best on training, such that
+      $$w1+w2+w3=1$$
+      After getting the values of weights from training, final score for comparison between likes and dislikes was calculated as :
+      $$finalScore=w1 \times score1+w2 \times score2+w3 \times score3$$
+      and this $finalScore$ was used for final evaluation.
+\end{enumerate}
+\section{Early Recommendation}
+\label{early}
+Since the technique that is proving promising for recommendation is based on creation of model and requires data, so recommendation with less number of songs is a difficult task. Most of the experiments done till now are done on either about 200 songs or 600 songs, which in itself is not less. \par
+In order to handle the situation where training data for recommendation is very less, some very preliminary concept of semi supervised learning are used. Same models are generated as talked about in this chapter earlier, namely HMM with pitch and GMM with lyrics and MFCCs, but there are two differences,
+\begin{enumerate}
+\item Data for training the models is less.
+\item Configuration of model is difficult to decide as no validation data exist.
+\end{enumerate}
+In order to deal with these two issues, following steps are considered :
+\begin{enumerate}
+\item While prediction, only those predictions are given which are getting predicted with at least certain confidence threshold.
+\item Parameters for the model are decided based on certain criteria discussed in more detail in the chapter below.
+\end{enumerate}
+Following variations are made to the three models used for classification with less number of songs:
+\begin{enumerate}
+\item \textbf{HMM with Pitch} : The confidence threshold used here is 0.85. This is decided after experimentation. Another important thing to decide here is choice of number of states, and this was decided to be five after experimentation done on three different users.
+\item \textbf{GMM with MFCC} : This model also used the confidence threshold of 0.85. Choice of number of mixtures in GMM model was decided after analyzing the elbow point in plot of log-likelihood of train data and number of mixtures. After certain number of mixtures, it was observed that change in log-likelihood becomes very less. The number of mixtures where this happens is usually called the elbow point and is the optimal number of mixture that is chosen. A sample elbow analysis is shown in figure \ref{fig:elbow}.
+\item \textbf{GMM with Lyrics} : Unlike above two classifiers, where even with 20 songs, we have large number of feature sequence or feature vectors which are not very less for training the model! However, while using lyrics, we just have one feature vector corresponding to each song, with huge dimension. In order to work in this situation, dimension of the data was reduced to one less than number of examples using PCA and diagonal covariance was used in Gaussian mixture model. Also, the choice of number of mixture were experimented from 1 to 5 in the same way as done with GMM with MFCC.
+\end{enumerate}
+\section{Experimental Results}
+As seen in the experiments of last chapter, techniques used there were quite direct and did not use any kind of preprocessing of data. So, something new was needed to be tried to classify the songs into likes and dislikes. So, model based techniques were tried, as talked in previous sections of the chapter. Even in model based classification techniques, direct GMM and HMM model creation techniques having raw MFCC features did not prove useful. So, lyrics in addition to pitch and MFCC features were experimented but with processing involved. The process of feature extraction and processing of these features has been talked about in previous sections of the chapter. Following subsections illustrates the performance for each technique applied. Configuration used in these classifiers is discussed after the performance of various techniques in the current section.
+\subsection{GMM and HMM on Raw MFCC} Performance of GMM and HMM on raw MFCC (i.e. without processing) can be seen in table \ref{tab:raw}. GMM was trained on complete set of songs, while HMM was trained on about 50 second clips of songs chosen randomly between songs. Both of the models were trained on about 300 songs per class.
+\begin{table}[!htbp]
+
+\centering
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ Classifier & Accuracy & Precision & Recall \\ \hline
+  GMM & $56\%$ & 0.63 & 0.65 \\ \hline
+ HMM & $54\%$ & 0.61 & 0.57 \\ \hline
+ 
+ \hline
+\end{tabular}
+\caption{Performance of GMM and HMM on raw MFCC features}
+\label{tab:raw}
+\end{table}
+
+
+\subsection{GMM and SVM on Lyrics} Performance of lyrics on GMM and SVM with one-gram and two-gram of words considered can be found in table \ref{tab:lyric}. This table shows the best performance obtained after 5-cross validation on validation data. Accuracy mentioned in the table is average accuracy over the five folds. The performance shown is on about 600 songs, divided in two classes of like and dislike. 
+\begin{table}[!htbp]
+
+\centering
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ Classifier & Accuracy(Avg.) & Precision(Avg.) & Recall(Avg.) \\ \hline
+ GMM (1 gram) & 70 \% & 0.74 & 0.81 \\ 
+ GMM (2 gram) & 72 \% & 0.78 & 0.79\\
+ C-SVM (1 gram) & 66 \% & 0.71  & 0.76\\ 
+ C-SVM (2 gram) & 68 \% & 0.76 & 0.66\\ 
+ 
+ \hline
+\end{tabular}
+\caption{Performance of GMM and SVM on TF-IDF features of lyrics.}
+\label{tab:lyric}
+\end{table}
+\subsection{GMM on summarized MFCC} Performance of summarized MFCCs on GMM can be found in table \ref{tab:mfcc}. This table shows the best performance obtained after 5-cross validation on validation data. Accuracy mentioned in the table is average accuracy over the five folds. Again, this was computed on 600 songs, divided in two classes. MFCCs obtained from songs were first summarized using Cooper summarization and then experiments were performed. 
+\begin{table}[!htbp]
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ Classifier & Accuracy (Avg) & Precision (Avg) & Recall (Avg) \\ \hline
+ GMM   & 68 \%  & 0.63 & 0.85\\ 
+  \hline
+\end{tabular}
+\end{center}
+\caption{Performance of GMM on summarized MFCC features}
+\label{tab:mfcc}
+\end{table}
+\subsection{HMM on pitch} Performance of HMM on pitch features can be found in table \ref{tab:pitch}. Since pitch in this experiment was tonic normalized and tonic was obtained manually, which was bit tedious task to perform on Bollywood music, this experiment was performed on 100 songs per class. Tonic was found manually by a musician and the accuracy shown in the table in average accuracy on validation data over the 5 folds of validation.
+\begin{table}[!htbp]
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ Number of states in HMM & Accuracy & Precision & Recall  \\ \hline
+ 4 & 60 \% & 0.57 & 0.68 \\ 
+ 5 & 60 \% & 0.66 & 0.55 \\
+ 6 & 58 \% & 0.60 & 0.51 \\ 
+ 7 & 54 \% & 0.53 & 0.46 \\ 
+ 8 & 51 \% & 0.54 & 0.45\\
+ 
+ \hline
+\end{tabular}
+\end{center}
+\caption{Performance of HMM on tonic normalized pitch. }\label{tab:pitch}
+\end{table}
+\subsection{Fusion of Scores And Scalability Check} Scores obtained from three techniques, namely GMM on lyrics, HMM on normalized pitch and GMM on summarized MFCC were fed to two different techniques as discussed in section \ref{sub:fusion}, namely random forests and weighted fusion. Also, in order to check the scalability of applied techniques, these techniques were tested on two more users. For every user, techniques were tested on a database of about 200 songs where every user classified a song as either liked or disliked. Table \ref{tab:comb} shows the results of fusion of scores on three different users.
+\begin{table}[!htbp]
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+  Feature & User1 & User2 & User3 \\ \hline
+ GMM with Lyrics & 72 \% & \textbf{76 \%} & 73 \% \\ 
+ HMM with Pitch & 60 \% & 62 \%  & 54 \% \\
+ GMM with MFCCs & 68 \% & 61 \% & \textbf{79 \%} \\ \hline
+ Fused with decision trees & 68 \% & \textbf{78 \%}   & 76 \% \\
+ \hline
+ Fused using weighted scores & 64 \% & 68 \%  & 70 \%\\
+ \hline
+\end{tabular}
+\end{center}
+\caption{Performance on three users along with fusion of scores.} \label{tab:comb}
+\end{table}
+\subsection{Early Recommendation}
+As discussed in section \ref{early}, this subsection discusses the situation where train data is very less. Since this is not a normal situation, experimentation for this is done on all the three users. Table \ref{tab:early} shows the performance of the three classifiers along with the threshold selected. Choice of threshold was such that large number of songs with low confidence gets eliminated.
+\begin{table}[!htbp]
+\begin{center}
+\begin{tabular}{ |c|c|c|c|c| } 
+ \hline
+  Feature & Threshold & User1 & User2 & User3 \\ \hline
+ GMM with Lyrics & 0.9 & 76 \% & 64 \% & 70 \% \\ 
+ HMM with Pitch & 0.85 & 77 \% & 86 \%  & 57 \% \\
+ GMM with MFCCs & 0.85 & 61 \% & 59 \% & 68 \% \\ \hline
+ \end{tabular}
+\end{center}
+\caption{Performance on three users having less number of songs for training.} \label{tab:early}
+\end{table}
+\par The number of mixture for GMM were chosen using elbow analysis of plot of log likelihood and number of mixtures. A sample plot is shown in figure \ref{fig:elbow}. Seeing the figure, optimal number of mixtures look around 20.
+\begin{figure}[!htpb]
+   \begin{center}
+	    \includegraphics[width=0.75\textwidth]{snaps/loglike.eps}     
+     \caption {Elbow analysis for the choice of number of mixtures for early recommendation.}
+   \label{fig:elbow}
+   \end{center}
+ \end{figure}
+\par The choice of number of states in HMM modeled with pitch sequence was found after experimentation. Optimal number of states was found to be five after experimentation. Table \ref{tab:hmmproof} shows the performance after varying the number of states, obtained after 5-cross validation.
+\begin{table}[!htbp]
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+  Number of states  & User1 & User2 & User3 \\ \hline
+ 4  & 52 \% & 66 \% & 35 \% \\ 
+ \textbf{5} & \textbf{77} \% & \textbf{86} \%  & \textbf{57} \% \\
+ 6 & 64 \% & 68 \% & 55 \% \\ 
+7 & 67 \% & 57 \% & 48 \% \\ 
+8 & 42 \% & 88 \% & 48 \% \\ \hline
+ \end{tabular}
+\end{center}
+\caption{Performance of HMM with pitch with varying number of states for three different users.} \label{tab:hmmproof}
+\end{table}
+\subsection{Configuration of Classifiers} Following parameters were played with while experimenting with various classifiers :
+\begin{itemize}
+\item With Gaussian Mixture Model, experimentation was done with various mixture components. Configuration with best average accuracy over 5-folds of validation was chosen but in case of early recommendation when less data is present, plot of log-likelihood with mixture helped us decide the number of mixtures. Matlab toolkit and python scikit-learn was used for the implementation of it. With lyrics, only diagonal covariance was used since number of examples were not huge to approximate large number of values of covariance matrix.
+
+\item With SVM, experimentation was done with value of C (weight given to slack variables) and kernel width. Because of large amount of data, these values were experimented by changing them exponentially. Python scikit-learn toolkit was used for experimentation on it.
+\item With HMM on pitch, experimentation was done with various number of states, ranging from 4 to 15. Here, the means of the states were initialized with the peak in the histogram. HMM used here was continuous density HMM.
+\item With HMM on MFCC, experimentation was done ranging the number of states from 8 to 12, approximating it to be equal to number of 'swara' in Indian music. Each state again was mixture of three Gaussians. HTK toolkit was used for implementing and evaluating the performance of HMM.
+\item Matlab's tree bagger toolkit was used to implement Random Forests. Experimentation was done with various number of trees in random forests to reach the final decision.
+\end{itemize}
+\subsection{Inferences}
+\begin{itemize}
+\item Raw MFCC did not prove useful with either of HMM and GMM.
+\item Since lyricists write lyrics with a lot of emphasis on feeling, use of lyrics for classification proved fruitful.
+\item Summarized MFCCs defined the genre of the songs and choice of a song is dependent on taste of user. So, for some users, like user 3, MFCCs were outperforming other two features.
+\item HMM on normalized pitch definitely performed better than actual pitch but still was not outperforming MFCC and lyrics. The reason could be high occurrence of lower 'sa', 'pa' and upper 'sa', i.e. high occurrence of pitch values 0, 600 and 1200 which was creating confusion between two classes. This is also evident from the fact that when number of songs were less, HMM on pitch was performing well.
+\item For some of the users, fusion of scores was proving helpful with Random Forests, while for some users, confusion was getting created on score fusion. With weighted sum of scores, performance was poor than Random Forests for all the three users. This result was expected also as Random Forest is widely known classifier for such an application while with weighted score, it was pretty normal technique.
+\item The number of states corresponding to best performance in HMM of pitch gave some relation between number of clusters in histogram of pitch and number of states chosen.
+\item Early recommendation of songs gave good results with pitch and lyrics but not performed well with MFCCs.  
+\end{itemize}

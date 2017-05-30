@@ -1,0 +1,128 @@
+\documentclass[MTech]{iitmdiss}
+\usepackage{times}
+\usepackage{epsf}
+\usepackage{threeparttable}
+\usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{txfonts,pxfonts,amsfonts}
+\usepackage{epsfig}	
+\usepackage{caption}
+\usepackage{subfig}
+\usepackage{listings}
+\usepackage{epstopdf}
+%\usepackage[dvips]{graphicx}
+\usepackage{graphicx}
+%\usepackage{pstricks,pst-node,pst-tree,pstricks-add}
+% \usepackage[square,numbers,sort]{natbib}
+%\usepackage{biblatex}
+\usepackage[square]{natbib}
+\usepackage{hyperref}
+%\usepackage[hypertex]{hyperref} % hyperlinks for references.
+%\usepackage{algorithmic}
+%\usepackage{algorithm}
+
+
+%\include{commands}
+
+% Strut macros for skipping spaces above and below text in tables. 
+\def\abovestrut#1{\rule[0in]{0in}{#1}\ignorespaces}
+\def\belowstrut#1{\rule[-#1]{0in}{#1}\ignorespaces}
+
+% \def\abovespace{\abovestrut{0.20in }}
+\def\aroundspace{\abovestrut{0.20in}\belowstrut{0.10in}}
+\def\belowspace{\belowstrut{0.10in}}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\thesistitle{Extraction of Defect features from Thermographic welding videos using Machine Learning}
+\def\thesisauthor{Vishruit Kulshreshtha}
+\def\thesisauthorroll{ME12B159}
+
+\begin{document}
+\bibliographystyle{iitm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+% Title page
+
+\title{\thesistitle}
+\author{\thesisauthor}
+
+\date{May 2017}
+\department{Mechanical Engineering}
+
+%\nocite{*}
+\begin{singlespace}
+\maketitle 
+\end{singlespace} 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Certificate
+\include{parts/certificate}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Acknowledgements
+\include{parts/acknowledgement}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Abstract
+\include{parts/abstract}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table of contents etc.
+\begin{singlespace}
+\tableofcontents
+\thispagestyle{empty}
+\listoftables
+\addcontentsline{toc}{chapter}{LIST OF TABLES}
+\listoffigures
+\addcontentsline{toc}{chapter}{LIST OF FIGURES}
+\end{singlespace}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Abbreviations
+\include{parts/abbreviation}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Notation
+
+% \chapter*{\centerline{NOTATION}}
+% \addcontentsline{toc}{chapter}{NOTATION}
+ 
+% \begin{singlespace}
+% \begin{tabbing}
+% xxxxxxxxxxx \= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \kill
+% \textbf{$r$}  \> Radius, $m$ \\
+% \textbf{$\alpha$}  \> Angle of thesis in degrees \\
+% \textbf{$\beta$}   \> Flight path in degrees \\
+% \end{tabbing}
+% \end{singlespace}
+ 
+% \pagebreak
+% \clearpage
+
+%The main text will follow from this point so set the page numbering
+%to arabic from here on.
+\pagenumbering{arabic}
+
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ % Chapters.
+ \include{parts/introduction}
+ \include{parts/literature_survey}
+ \include{parts/comsol_simulation}
+ \include{parts/dataset}
+ \include{parts/attribute}
+ \include{parts/structural}
+ \include{parts/attribute_structural}
+ \include{parts/conclusion}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Appendices.
+\include{parts/python-dnn}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bibliography.
+\nocite{*}
+\pagebreak
+\bibliographystyle{IEEEtran}
+\bibliography{scholar}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

@@ -1,0 +1,156 @@
+\begin{thebibliography}{21}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{{\tt #1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+
+\bibitem[{Adamic and Adar(2001)}]{adamicadar}
+{\bf Adamic, L.} and {\bf E.~Adar} (2001).
+\newblock Friends and neighbors on the web.
+\newblock {\em Social Networks\/}, {\bf 25}, 211--230.
+
+\bibitem[{Backstrom and Leskovec(2011)}]{supervisedrandomwalk}
+{\bf Backstrom, L.} and {\bf J.~Leskovec}, Supervised random walks: Predicting
+  and recommending links in social networks.
+\newblock {\em In\/} {\em Proceedings of the Fourth ACM International
+  Conference on Web Search and Data Mining\/}, WSDM '11. ACM, New York, NY,
+  USA, 2011.
+\newblock ISBN 978-1-4503-0493-1.
+
+\bibitem[{Bopeng~Li()}]{handlingclassimbalance}
+{\bf Bopeng~Li, A.~T., Sougata~Chaudhuri}, Handling class imbalance in link
+  prediction using learning to rank techniques.
+
+\bibitem[{Cao {\em et~al.\/}(2014)Cao, Kong, and Yu}]{collectiveprediction}
+{\bf Cao, B.}, {\bf X.~Kong}, and {\bf P.~S. Yu}, Collective prediction of
+  multiple types of links in heterogeneous information networks.
+\newblock {\em In\/} {\em Proceedings of the 2014 IEEE International Conference
+  on Data Mining\/}, ICDM '14. IEEE Computer Society, Washington, DC, USA,
+  2014.
+\newblock ISBN 978-1-4799-4302-9.
+
+\bibitem[{Chang {\em et~al.\/}(2015)Chang, Han, Tang, Qi, Aggarwal, and
+  Huang}]{hne}
+{\bf Chang, S.}, {\bf W.~Han}, {\bf J.~Tang}, {\bf G.-J. Qi}, {\bf C.~C.
+  Aggarwal}, and {\bf T.~S. Huang}, Heterogeneous network embedding via deep
+  architectures.
+\newblock {\em In\/} {\em Proceedings of the 21th ACM SIGKDD International
+  Conference on Knowledge Discovery and Data Mining\/}, KDD '15. ACM, New York,
+  NY, USA, 2015.
+\newblock ISBN 978-1-4503-3664-2.
+
+\bibitem[{Duan {\em et~al.\/}(2016)Duan, Aggarwal, Ma, Hu, and Huai}]{scale}
+{\bf Duan, L.}, {\bf C.~Aggarwal}, {\bf S.~Ma}, {\bf R.~Hu}, and {\bf J.~Huai},
+  Scaling up link prediction with ensembles.
+\newblock {\em In\/} {\em Proceedings of the Ninth ACM International Conference
+  on Web Search and Data Mining\/}, WSDM '16. ACM, New York, NY, USA, 2016.
+\newblock ISBN 978-1-4503-3716-8.
+
+\bibitem[{J {\em et~al.\/}(2016)J, Ganguly, Gupta, Varma, and
+  Pudi}]{author2vec}
+{\bf J, G.}, {\bf S.~Ganguly}, {\bf M.~Gupta}, {\bf V.~Varma}, and {\bf
+  V.~Pudi}, Author2vec: Learning author representations by combining content
+  and link information.
+\newblock {\em In\/} {\em Proceedings of the 25th International Conference
+  Companion on World Wide Web\/}, WWW '16 Companion. International World Wide
+  Web Conferences Steering Committee, Republic and Canton of Geneva,
+  Switzerland, 2016.
+\newblock ISBN 978-1-4503-4144-8.
+
+\bibitem[{Janardhan Rao~Doppa()}]{socp}
+{\bf Janardhan Rao~Doppa, P. T. L.~G., Jun~Yu}, Chance-constrained programs for
+  link prediction.
+
+\bibitem[{Le and Mikolov(2014)}]{paragraph2vec}
+{\bf Le, Q.~V.} and {\bf T.~Mikolov} (2014).
+\newblock Distributed representations of sentences and documents.
+\newblock {\em CoRR\/}, {\bf abs/1405.4053}.
+
+\bibitem[{Liben-Nowell and Kleinberg(2003)}]{linkpred}
+{\bf Liben-Nowell, D.} and {\bf J.~Kleinberg}, The link prediction problem for
+  social networks.
+\newblock {\em In\/} {\em Proceedings of the Twelfth International Conference
+  on Information and Knowledge Management\/}, CIKM '03. ACM, New York, NY, USA,
+  2003.
+\newblock ISBN 1-58113-723-0.
+
+\bibitem[{Menon and Elkan(2011)}]{lpmf}
+{\bf Menon, A.~K.} and {\bf C.~Elkan}, Link prediction via matrix
+  factorization.
+\newblock {\em In\/} {\em Proceedings of the 2011 European Conference on
+  Machine Learning and Knowledge Discovery in Databases - Volume Part II\/},
+  ECML PKDD'11. Springer-Verlag, Berlin, Heidelberg, 2011.
+\newblock ISBN 978-3-642-23782-9.
+
+\bibitem[{Mikolov {\em et~al.\/}(2013{\natexlab{{\em a\/}}})Mikolov, Chen,
+  Corrado, and Dean}]{word2vec}
+{\bf Mikolov, T.}, {\bf K.~Chen}, {\bf G.~Corrado}, and {\bf J.~Dean}
+  (2013{\natexlab{{\em a\/}}}).
+\newblock Efficient estimation of word representations in vector space.
+\newblock {\em CoRR\/}, {\bf abs/1301.3781}.
+
+\bibitem[{Mikolov {\em et~al.\/}(2013{\natexlab{{\em b\/}}})Mikolov, Sutskever,
+  Chen, Corrado, and Dean}]{word2vec2}
+{\bf Mikolov, T.}, {\bf I.~Sutskever}, {\bf K.~Chen}, {\bf G.~Corrado}, and
+  {\bf J.~Dean} (2013{\natexlab{{\em b\/}}}).
+\newblock Distributed representations of words and phrases and their
+  compositionality.
+\newblock {\em CoRR\/}, {\bf abs/1310.4546}.
+
+\bibitem[{Pan {\em et~al.\/}(2016)Pan, Wu, Zhu, Zhang, and Wang}]{triparty}
+{\bf Pan, S.}, {\bf J.~Wu}, {\bf X.~Zhu}, {\bf C.~Zhang}, and {\bf Y.~Wang},
+  Tri-party deep network representation.
+\newblock {\em In\/} {\em Proceedings of the Twenty-Fifth International Joint
+  Conference on Artificial Intelligence, {IJCAI} 2016, New York, NY, USA, 9-15
+  July 2016\/}. 2016.
+
+\bibitem[{Parotsidis {\em et~al.\/}(2016)Parotsidis, Pitoura, and
+  Tsaparas}]{centrality}
+{\bf Parotsidis, N.}, {\bf E.~Pitoura}, and {\bf P.~Tsaparas}, Centrality-aware
+  link recommendations.
+\newblock {\em In\/} {\em Proceedings of the Ninth ACM International Conference
+  on Web Search and Data Mining\/}, WSDM '16. ACM, New York, NY, USA, 2016.
+\newblock ISBN 978-1-4503-3716-8.
+
+\bibitem[{Perozzi {\em et~al.\/}(2014)Perozzi, Al{-}Rfou, and
+  Skiena}]{deepwalk}
+{\bf Perozzi, B.}, {\bf R.~Al{-}Rfou}, and {\bf S.~Skiena} (2014).
+\newblock Deepwalk: Online learning of social representations.
+\newblock {\em CoRR\/}, {\bf abs/1403.6652}.
+
+\bibitem[{Prithviraj~Sen()}]{collectiveclassification}
+{\bf Prithviraj~Sen, M. B. L. G. B. G. T. E.-R., Galileo~Namata}, Collective
+  classification in network data.
+
+\bibitem[{Satchidanand {\em et~al.\/}(2015)Satchidanand, Ananthapadmanaban, and
+  Ravindran}]{harini}
+{\bf Satchidanand, S.~N.}, {\bf H.~Ananthapadmanaban}, and {\bf B.~Ravindran},
+  Extended discriminative random walk: a hypergraph approach to multi-view
+  multi-relational transductive learning.
+\newblock {\em In\/} {\em Proceedings of the 24th International Conference on
+  Artificial Intelligence\/}. AAAI Press, 2015.
+
+\bibitem[{Tang {\em et~al.\/}(2015)Tang, Qu, Wang, Zhang, Yan, and Mei}]{line}
+{\bf Tang, J.}, {\bf M.~Qu}, {\bf M.~Wang}, {\bf M.~Zhang}, {\bf J.~Yan}, and
+  {\bf Q.~Mei} (2015).
+\newblock {LINE:} large-scale information network embedding.
+\newblock {\em CoRR\/}, {\bf abs/1503.03578}.
+
+\bibitem[{Vijayan {\em et~al.\/}(2014)Vijayan, Subramanian, and
+  Ravindran}]{priyesh}
+{\bf Vijayan, P.}, {\bf S.~Subramanian}, and {\bf B.~Ravindran}, Multi-label
+  collective classification in multi-attribute multi-relational network data.
+\newblock {\em In\/} {\bf X.~Wu}, {\bf M.~Ester}, and {\bf G.~Xu} (eds.), {\em
+  ASONAM\/}. IEEE Computer Society, 2014.
+\newblock ISBN 978-1-4799-5877-1.
+
+\bibitem[{Wang {\em et~al.\/}(2007)Wang, Satuluri, and
+  Parthasarathy}]{probabilistic}
+{\bf Wang, C.}, {\bf V.~Satuluri}, and {\bf S.~Parthasarathy}, Local
+  probabilistic models for link prediction.
+\newblock {\em In\/} {\em Proceedings of the 2007 Seventh IEEE International
+  Conference on Data Mining\/}, ICDM '07. IEEE Computer Society, Washington,
+  DC, USA, 2007.
+\newblock ISBN 0-7695-3018-4.
+
+\end{thebibliography}

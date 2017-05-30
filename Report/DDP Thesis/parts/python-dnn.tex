@@ -1,0 +1,18 @@
+%!TEX root = ../main.tex
+\appendix
+\label{app:class}
+\chapter{CLASSIFICATION AND FEATURE EXTRACTION TECHNIQUES USED}
+\section{Collective Classification}
+
+\indent Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum
+\begin{flushleft}
+\textbf{Approximate Inference Algorithms for Approaches based on Local Conditional Classifiers :}
+\end{flushleft}
+
+Iterative Classification Algorithm (ICA) : This is an iterative algorithm where in each iteration, all unobserved nodes are taken and for those nodes in that iteration, we calculate the likelihood of the labels of a node based on its neighborhood labels predicted by the local classifier. We only assign a label to a node which has the maximum likelihood for that label. This iteration process can be continued till all class labels have been classified or till a threshold is reached.
+
+Gibbs Sampling (GS) : The original algorithm of Gibbs Sampling is computationally expensive as they need to determine the convergence of the procedure. Thus an approximate version of gibbs sampling is proposed where they assume the conditional probability distribution given by the local classifier is correct. Gibbs sampling is very similar to ICA except that the number of iterations is initially fixed a to period called "burn-in". Once the burn-in period is reached, the algorithm start having a statistical count for each unobserved label, a count of labels assigned to the nodes. After certain sampling of the nodes, each node is assigned a label which has the maximum count from the statistical count.
+
+\section{Classification Techniques}
+
+\subsection{Logistic Regression}
