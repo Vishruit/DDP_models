@@ -3,3 +3,14 @@
 ./SegNet/caffe-segnet/build/tools/caffe train -gpu 0 -solver /SegNet/Models/segnet_basic_solver.prototxt  # This will begin training SegNet-Basic on GPU 0
 
 ./SegNet/caffe-segnet/build/tools/caffe train -gpu 0 -solver /SegNet/Models/segnet_solver.prototxt -weights /SegNet/Models/VGG_ILSVRC_16_layers.caffemodel  # This will begin training SegNet on GPU 0 with a pretrained encoder
+
+
+
+# Compute_bn_stats
+python /partition1/vishruit/soft/SegNet-Tutorial/Scripts/compute_bn_statistics.py /partition1/vishruit/soft/SegNet-Tutorial/Models/segnet_train.prototxt /partition1/vishruit/soft/SegNet-Tutorial/Models/Training/segnet1/segnet1_iter_10000.caffemodel /partition1/vishruit/soft/SegNet-Tutorial/Models/Inference/segnet1/  # compute BN statistics for SegNet
+python /partition1/vishruit/soft/SegNet-Tutorial/Scripts/compute_bn_statistics.py /partition1/vishruit/soft/SegNet-Tutorial/Models/segnet_basic_train.prototxt /partition1/vishruit/soft/SegNet-Tutorial/Models/Training/segnet_basic_iter_10000.caffemodel /partition1/vishruit/soft/SegNet-Tutorial/Models/Inference/  # compute BN statistics for SegNet-Basic
+
+# Test_segmentation_camvid
+python /partition1/vishruit/soft/SegNet-Tutorial/Scripts/test_segmentation_camvid.py --model /partition1/vishruit/soft/SegNet-Tutorial/Models/segnet_inference.prototxt --weights /partition1/vishruit/soft/SegNet-Tutorial/Models/Inference/segnet1/test_weights.caffemodel --iter 233  # Test SegNet
+
+python /SegNet/Scripts/test_segmentation_camvid.py --model /SegNet/Models/segnet_basic_inference.prototxt --weights /SegNet/Models/Inference/test_weights.caffemodel --iter 233  # Test SegNetBasic
